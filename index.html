@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/src/project.css">
     <title>Code Journey</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" type="image/png" href="./Images/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="./Images/favicon.svg" />
     <link rel="shortcut icon" href="./Images/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="./Images/apple-touch-icon.png" />
     <link rel="manifest" href="./Images/site.webmanifest" />
-    <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Custom transitions for the mobile menu */
         #mobile-menu {
@@ -207,7 +207,7 @@
                 <a href="#First-Section" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-all duration-200 ease-in-out">
                     Get started
                 </a>
-                <a href="#" class="text-sm font-semibold leading-6 text-gray-900 transition-all hover:text-blue-500 hover:scale-110">
+                <a href="#" id="openModal" class="text-sm font-semibold leading-6 text-gray-900 transition-all hover:text-blue-500 hover:scale-110">
                     Browse Courses <span aria-hidden="true">→</span>
                 </a>
             </div>
@@ -215,6 +215,101 @@
     </div>
 </div>
 <!-- Hero Section Ends-->
+
+<!-- Modal -->
+<div id="modal" class="relative z-10 hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <!-- Background backdrop with blur effect -->
+    <div id="modalBackdrop" class="fixed inset-0 bg-gray-500 bg-opacity-0 transition-opacity duration-300 ease-out opacity-0 backdrop-blur-none" aria-hidden="true"></div>
+
+    <div class="fixed inset-0 z-10 w-screen overflow-y-auto flex items-center justify-center p-4">
+        <div id="modalPanel" class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all duration-300 sm:my-8 sm:w-full sm:max-w-lg opacity-0 translate-y-4 sm:scale-95">
+
+            <div class="relative z-10 grid grid-cols-2 gap-10 p-4" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                <!-- HTML Section -->
+                <div class="card bg-white rounded-lg shadow-lg p-4">
+                    <div class="flex items-start">
+                        <div class="icon bg-red-100 rounded-full p-3">
+                            <!-- HTML Icon -->
+                            <svg class="h-6 w-6" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><title>file_type_html</title><polygon points="5.902 27.201 3.655 2 28.345 2 26.095 27.197 15.985 30 5.902 27.201" style="fill:#e44f26"/><polygon points="16 27.858 24.17 25.593 26.092 4.061 16 4.061 16 27.858" style="fill:#f1662a"/><polygon points="16 13.407 11.91 13.407 11.628 10.242 16 10.242 16 7.151 15.989 7.151 8.25 7.151 8.324 7.981 9.083 16.498 16 16.498 16 13.407" style="fill:#ebebeb"/><polygon points="16 21.434 15.986 21.438 12.544 20.509 12.324 18.044 10.651 18.044 9.221 18.044 9.654 22.896 15.986 24.654 16 24.65 16 21.434" style="fill:#ebebeb"/><polygon points="15.989 13.407 15.989 16.498 19.795 16.498 19.437 20.507 15.989 21.437 15.989 24.653 22.326 22.896 22.372 22.374 23.098 14.237 23.174 13.407 22.341 13.407 15.989 13.407" style="fill:#fff"/><polygon points="15.989 7.151 15.989 9.071 15.989 10.235 15.989 10.242 23.445 10.242 23.445 10.242 23.455 10.242 23.517 9.548 23.658 7.981 23.732 7.151 15.989 7.151" style="fill:#fff"/></svg>
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-lg font-bold text-gray-900">HTML</h3>
+                            <p class="text-sm text-gray-500">The standard markup language used to create and structure web pages...</p>
+                            <a href="html.html">
+                                <button class="mt-2 inline-flex justify-center rounded-md bg-slate-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500">Know More</button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            
+                <!-- CSS Section -->
+                <div class="card bg-white rounded-lg shadow-lg p-4">
+                    <div class="flex items-start">
+                        <div class="icon bg-blue-100 rounded-full p-3">
+                            <!-- CSS Icon -->
+                            <svg class="h-6 w-6" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M6 28L4 3H28L26 28L16 31L6 28Z" fill="#1172B8"/>
+                                <path d="M26 5H16V29.5L24 27L26 5Z" fill="#33AADD"/>
+                                <path d="M19.5 17.5H9.5L9 14L17 11.5H9L8.5 8.5H24L23.5 12L17 14.5H23L22 24L16 26L10 24L9.5 19H12.5L13 21.5L16 22.5L19 21.5L19.5 17.5Z" fill="white"/>
+                                </svg>
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-lg font-bold text-gray-900">CSS</h3>
+                            <p class="text-sm text-gray-500">A stylesheet language that controls the presentation of HTML...</p>
+                            <a href="css.html">
+                                <button class="mt-2 inline-flex justify-center rounded-md bg-slate-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500">Know More</button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            
+                <!-- JavaScript Section -->
+                <div class="card bg-white rounded-lg shadow-lg p-4">
+                    <div class="flex items-start">
+                        <div class="icon bg-gray-100 rounded-full p-3">
+                            <!-- JS Icon -->
+                            <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M13 6C13 5.44772 13.4477 5 14 5H17C17.5523 5 18 5.44772 18 6C18 6.55228 17.5523 7 17 7H15.2C15.0895 7 15 7.08954 15 7.2V8.8C15 8.91046 15.0895 9 15.2 9H17C17.5523 9 18 9.44772 18 10V13C18 13.2652 17.8946 13.5196 17.7071 13.7071L14.7071 16.7071C14.3166 17.0976 13.6834 17.0976 13.2929 16.7071C12.9024 16.3166 12.9024 15.6834 13.2929 15.2929L15.9414 12.6444C15.9789 12.6069 16 12.556 16 12.5029V11.2C16 11.0895 15.9105 11 15.8 11H14C13.4477 11 13 10.5523 13 10V6Z" fill="#0F0F0F"/>
+                                <path d="M11 6C11 5.44772 10.5523 5 10 5C9.44771 5 9 5.44772 9 6V13.1029C9 13.2811 8.78457 13.3704 8.65858 13.2444L8.05858 12.6444C8.02107 12.6069 8 12.556 8 12.5029V12C8 11.4477 7.55228 11 7 11C6.44771 11 6 11.4477 6 12V13C6 13.2652 6.10536 13.5196 6.29289 13.7071L9.29289 16.7071C9.57889 16.9931 10.009 17.0787 10.3827 16.9239C10.7564 16.7691 11 16.4045 11 16V6Z" fill="#0F0F0F"/>
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M1.33617 4.42426C1.07798 2.61696 2.48037 1 4.30602 1H19.694C21.5196 1 22.922 2.61696 22.6638 4.42426L21.0948 15.4074C20.9933 16.1178 20.6405 16.7683 20.1005 17.2409L13.9755 22.6002C12.8444 23.5899 11.1556 23.5899 10.0245 22.6002L3.89952 17.2409C3.35945 16.7683 3.00667 16.1178 2.90519 15.4074L1.33617 4.42426ZM4.30602 3C3.69747 3 3.23001 3.53899 3.31607 4.14142L4.88509 15.1245C4.91892 15.3613 5.03651 15.5782 5.21653 15.7357L11.3415 21.095C11.7185 21.4249 12.2815 21.4249 12.6585 21.095L18.7835 15.7357C18.9635 15.5782 19.0811 15.3613 19.1149 15.1245L20.6839 4.14142C20.77 3.53899 20.3025 3 19.694 3H4.30602Z" fill="#0F0F0F"/>
+                                </svg>
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-lg font-bold text-gray-900">JavaScript</h3>
+                            <p class="text-sm text-gray-500">A programming language for adding interactive functionality...</p>
+                            <a href="js.html">
+                                <button class="mt-2 inline-flex justify-center rounded-md bg-slate-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-500">Know More</button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            
+                <!-- Database Section -->
+                <div class="card bg-white rounded-lg shadow-lg p-4">
+                    <div class="flex items-start">
+                        <div class="icon bg-purple-200 rounded-full p-3">
+                            <!-- Database Icon -->
+                            <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 10C16.4183 10 20 8.20914 20 6C20 3.79086 16.4183 2 12 2C7.58172 2 4 3.79086 4 6C4 8.20914 7.58172 10 12 10Z" fill="#1C274C"/>
+                                <path opacity="0.5" d="M4 12V18C4 20.2091 7.58172 22 12 22C16.4183 22 20 20.2091 20 18V12C20 14.2091 16.4183 16 12 16C7.58172 16 4 14.2091 4 12Z" fill="#1C274C"/>
+                                <path opacity="0.7" d="M4 6V12C4 14.2091 7.58172 16 12 16C16.4183 16 20 14.2091 20 12V6C20 8.20914 16.4183 10 12 10C7.58172 10 4 8.20914 4 6Z" fill="#1C274C"/>
+                                </svg>
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-lg font-bold text-gray-900">Database (DB)</h3>
+                            <p class="text-sm text-gray-500">A structured system for storing, managing, and retrieving data...</p>
+                            <a href="db.html">
+                                <button class="mt-2 inline-flex justify-center rounded-md bg-slate-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-purple-500">Know More</button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Modal Ends -->
 
 <!-- First Section -->
 <div id="First-Section" class="relative isolate overflow-hidden bg-white px-6 py-24 sm:py-32 lg:overflow-visible lg:px-0 w-full">
@@ -419,5 +514,51 @@ if (productMenu.classList.contains('opacity-0')) {
     productMenu.classList.remove('opacity-100', 'translate-y-0');
 }
 });
+
+// JavaScript to handle modal toggle and transitions 
+const openModalButton = document.getElementById('openModal');
+const closeModalButton = document.getElementById('closeModal');
+const modal = document.getElementById('modal');
+const modalBackdrop = document.getElementById('modalBackdrop');
+const modalPanel = document.getElementById('modalPanel');
+
+// Function to show the modal with transitions and apply background blur
+function showModal() {
+    modal.classList.remove('hidden'); // Show modal
+    setTimeout(() => {
+        // Apply transitions after a slight delay to ensure smooth transition
+        modalBackdrop.classList.remove('opacity-0', 'backdrop-blur-none');
+        modalBackdrop.classList.add('opacity-100', 'backdrop-blur-sm');
+        modalPanel.classList.remove('opacity-0', 'translate-y-4', 'sm:scale-95');
+        modalPanel.classList.add('opacity-100', 'translate-y-0', 'sm:scale-100');
+    }, 10); // Delay to ensure CSS transition applies smoothly
+}
+
+// Function to hide the modal with transitions and remove background blur
+function hideModal() {
+    modalBackdrop.classList.remove('opacity-100', 'backdrop-blur-sm'); // Remove visible and blur states
+    modalBackdrop.classList.add('opacity-0', 'backdrop-blur-none'); // Add hidden and non-blur states
+    modalPanel.classList.remove('opacity-100', 'translate-y-0', 'sm:scale-100'); // Transition for modal panel
+    modalPanel.classList.add('opacity-0', 'translate-y-4', 'sm:scale-95');
+    setTimeout(() => {
+        modal.classList.add('hidden'); // Hide modal after transition
+    }, 300); // Duration of exit transition matches the CSS duration
+}
+
+// Event listeners
+openModalButton.addEventListener('click', (e) => {
+    e.preventDefault();
+    showModal();
+});
+
+// closeModalButton.addEventListener('click', hideModal);
+
+// Close modal when clicking outside the modal panel
+modal.addEventListener('click', (event) => {
+        if (!modalPanel.contains(event.target)) {
+            hideModal();
+        }
+    });
+
 </script>
 </html>
