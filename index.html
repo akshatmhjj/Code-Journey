@@ -129,7 +129,7 @@
         <a href="company.html" class="text-md font-bold leading-6 text-white hover:text-blue-400 transition-all hover:scale-110">Company</a>
     </div>
     <div class=" hidden lg:flex lg:flex-1 lg:justify-end">
-        <a href="#" class="text-md font-bold leading-6 text-white hover:text-blue-400 transition-all hover:scale-110">Log in <span aria-hidden="true">&rarr;</span></a>
+        <a href="#" id="showLoginModal" class="text-md font-bold leading-6 text-white hover:text-blue-400 transition-all hover:scale-110">Log in <span aria-hidden="true">&rarr;</span></a>
     </div>
     </nav>
     
@@ -171,7 +171,9 @@
             <a href="company.html" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-200 transition-all ">Company</a>
             </div>
             <div class="py-6">
-            <a href="#" class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-200 transition-all">Log in <span aria-hidden="true">&rarr;</span></a>
+                <a href="#" id="loginLink" class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-200 transition-all">
+                    Log in <span aria-hidden="true">&rarr;</span>
+                </a>
             </div>
         </div>
         </div>
@@ -233,7 +235,7 @@
                             <svg class="h-6 w-6" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><title>file_type_html</title><polygon points="5.902 27.201 3.655 2 28.345 2 26.095 27.197 15.985 30 5.902 27.201" style="fill:#e44f26"/><polygon points="16 27.858 24.17 25.593 26.092 4.061 16 4.061 16 27.858" style="fill:#f1662a"/><polygon points="16 13.407 11.91 13.407 11.628 10.242 16 10.242 16 7.151 15.989 7.151 8.25 7.151 8.324 7.981 9.083 16.498 16 16.498 16 13.407" style="fill:#ebebeb"/><polygon points="16 21.434 15.986 21.438 12.544 20.509 12.324 18.044 10.651 18.044 9.221 18.044 9.654 22.896 15.986 24.654 16 24.65 16 21.434" style="fill:#ebebeb"/><polygon points="15.989 13.407 15.989 16.498 19.795 16.498 19.437 20.507 15.989 21.437 15.989 24.653 22.326 22.896 22.372 22.374 23.098 14.237 23.174 13.407 22.341 13.407 15.989 13.407" style="fill:#fff"/><polygon points="15.989 7.151 15.989 9.071 15.989 10.235 15.989 10.242 23.445 10.242 23.445 10.242 23.455 10.242 23.517 9.548 23.658 7.981 23.732 7.151 15.989 7.151" style="fill:#fff"/></svg>
                         </div>
                         <div class="ml-4">
-                            <h3 class="sm:text-lg text-md font-bold text-gray-900">HTML</h3>
+                            <h3 class="text-lg font-bold text-gray-900">HTML</h3>
                             <p class="text-sm text-gray-500">The standard markup language used to create and structure web pages...</p>
                             <a href="html.html">
                                 <button class="mt-2 inline-flex justify-center rounded-md bg-slate-600 px-2 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500">Know More</button>
@@ -254,7 +256,7 @@
                                 </svg>
                         </div>
                         <div class="ml-4">
-                            <h3 class="sm:text-lg text-md font-bold text-gray-900">CSS</h3>
+                            <h3 class="text-lg font-bold text-gray-900">CSS</h3>
                             <p class="text-sm text-gray-500">A stylesheet language that controls the presentation of HTML...</p>
                             <a href="css.html">
                                 <button class="mt-2 inline-flex justify-center rounded-md bg-slate-600 px-2 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500">Know More</button>
@@ -275,7 +277,7 @@
                                 </svg>
                         </div>
                         <div class="ml-4">
-                            <h3 class="sm:text-lg text-md font-bold text-gray-900">JavaScript</h3>
+                            <h3 class="text-lg font-bold text-gray-900">JavaScript</h3>
                             <p class="text-sm text-gray-500">A programming language for adding interactive functionality...</p>
                             <a href="js.html">
                                 <button class="mt-2 inline-flex justify-center rounded-md bg-slate-600 px-2 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-500">Know More</button>
@@ -296,7 +298,7 @@
                                 </svg>
                         </div>
                         <div class="ml-4">
-                            <h3 class="sm:text-lg text-md font-bold text-gray-900">Database (DB)</h3>
+                            <h3 class="text-lg font-bold text-gray-900">Database (DB)</h3>
                             <p class="text-sm text-gray-500">A structured system for storing, managing, and retrieving data...</p>
                             <a href="db.html">
                                 <button class="mt-2 inline-flex justify-center rounded-md bg-slate-600 px-2 py-2 text-sm font-semibold text-white shadow-sm hover:bg-purple-500">Know More</button>
@@ -310,6 +312,42 @@
     </div>
 </div>
 <!-- Modal Ends -->
+
+<!-- Login Modal -->
+<div id="loginModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 backdrop-blur-sm transition-opacity duration-300">
+    <div id="loginModalPanel" class="bg-white rounded-2xl shadow-lg p-8 w-full max-w-md mx-4 sm:mx-0 opacity-0 translate-y-4 scale-95 transition-all duration-300">
+
+        <button id="closeLoginModal" class="absolute top-5 right-5 text-gray-500 hover:text-gray-700 focus:outline-none">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+
+        <div class="flex items-center justify-center mt-5 mb-6 text-3xl font-bold text-gray-900">
+            <img class="w-12 h-12 mr-4 rounded-xl" src="Images/CJ.jpg" alt="Code Journey Logo">
+            <span>Code Journey</span>
+        </div>
+        <h1 class="text-xl font-semibold text-center text-gray-900 mb-4">Sign in to your account</h1>
+        <form class="space-y-6" action="#">
+            <div>
+                <label for="email" class="block text-sm font-medium text-gray-700">Your email</label>
+                <input type="email" id="email" name="email" placeholder="name@company.com" required class="w-full px-4 py-2 mt-2 text-gray-900 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                <input type="password" id="password" name="password" placeholder="••••••••" required class="w-full px-4 py-2 mt-2 text-gray-900 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div class="flex justify-end">
+                <a href="#" class="text-sm font-medium text-blue-600 hover:underline">Forgot password?</a>
+            </div>
+            <button type="submit" class="w-full py-3 text-white bg-blue-600 rounded-lg hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500">Sign in</button>
+            <p class="text-center text-sm text-gray-500">
+                Don't have an account? <a href="sign-up.html" class="text-blue-600 hover:underline">Sign up</a>
+            </p>
+        </form>
+    </div>
+</div>
+<!-- Login Modal Ends -->
 
 <!-- First Section -->
 <div id="First-Section" class="relative isolate overflow-hidden bg-white px-6 py-24 sm:py-32 lg:overflow-visible lg:px-0 w-full">
@@ -417,7 +455,7 @@
 <!-- Footer -->
 <footer class="w-full bg-gradient-to-r from-slate-500 to-slate-800 px-4 text-white pt-8 flex flex-col md:flex-row flex-wrap justify-between md:px-12 py-10">
     <div class="flex flex-col items-center justify-center ml-10">
-        <img class="h-12 w-auto transition-all cursor-pointer" src="./Images/CJ.jpg" alt="Your Company">
+        <img class="h-12 w-auto transition-all cursor-pointer rounded-xl" src="./Images/CJ.jpg" alt="Your Company">
         <p class="my-4 text-left"></p>
     </div>
     <div class="text-left">
@@ -551,14 +589,69 @@ openModalButton.addEventListener('click', (e) => {
     showModal();
 });
 
-// closeModalButton.addEventListener('click', hideModal);
-
 // Close modal when clicking outside the modal panel
 modal.addEventListener('click', (event) => {
         if (!modalPanel.contains(event.target)) {
             hideModal();
         }
     });
+
+
+// JavaScript for handling login modal toggle and transitions
+const showLoginButton = document.getElementById('showLoginModal');
+const loginLinkButton = document.getElementById('loginLink'); // New login link button
+const closeLoginButton = document.getElementById('closeLoginModal');
+const loginModal = document.getElementById('loginModal');
+const loginModalPanel = document.getElementById('loginModalPanel');
+
+// Function to display the login modal with transitions and background blur
+function displayLoginModal() {
+    loginModal.classList.remove('hidden'); // Show modal
+    setTimeout(() => {
+        loginModal.classList.add('opacity-100'); // Fade-in effect
+        loginModalPanel.classList.remove('opacity-0', 'translate-y-4', 'scale-95');
+        loginModalPanel.classList.add('opacity-100', 'translate-y-0', 'scale-100');
+    }, 10); // Delay for smooth transition
+}
+
+// Function to hide the login modal with transitions and remove background blur
+function hideLoginModal() {
+    loginModal.classList.remove('opacity-100');
+    loginModalPanel.classList.remove('opacity-100', 'translate-y-0', 'scale-100');
+    loginModalPanel.classList.add('opacity-0', 'translate-y-4', 'scale-95');
+    setTimeout(() => {
+        loginModal.classList.add('hidden'); // Hide modal after transition completes
+    }, 300); // Duration matches CSS transition time
+}
+
+// Event listeners for modal toggle
+showLoginButton.addEventListener('click', (e) => {
+    e.preventDefault();
+    displayLoginModal();
+});
+
+// New event listener for the "Log in" link
+loginLinkButton.addEventListener('click', (e) => {
+    e.preventDefault();
+    displayLoginModal();
+});
+
+// Close modal when clicking the close button or outside the modal panel
+closeLoginButton.addEventListener('click', hideLoginModal);
+loginModal.addEventListener('click', (event) => {
+    if (!loginModalPanel.contains(event.target)) {
+        hideLoginModal();
+    }
+});
+
+// Optional: Event listener for closing the modal on pressing the 'Esc' key
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && !loginModal.classList.contains('hidden')) {
+        hideLoginModal();
+    }
+});
+
+
 
 </script>
 </html>
