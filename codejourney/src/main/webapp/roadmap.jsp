@@ -1,10 +1,31 @@
+<%@ page session="true" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%
+    String userEmail = (String) session.getAttribute("userEmail");
+    String userName = (String) session.getAttribute("userName");
+
+    if (userEmail == null && userName == null) {
+        // If user is not logged in, redirect to index.jsp with loginFirst flag
+        response.sendRedirect("index.jsp?loginFirst=true");
+        return; // Ensure no further code is executed
+    } else {
+        request.setAttribute("userName", userName);
+    }
+
+    // Disable caching
+    response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
+    response.setHeader("Pragma", "no-cache");
+    response.setDateHeader("Expires", 0);
+%>
+
+
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/src/project.css">
-    <title>Code Journey/about-us</title>
+    <title>Code Journey</title>
     <link rel="icon" type="image/png" href="./Images/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="./Images/favicon.svg" />
     <link rel="shortcut icon" href="./Images/favicon.ico" />
@@ -40,7 +61,7 @@
 <header class="bg-slate-900 shadow-lg bg-gradient-to-r from-slate-500 to-slate-800">
     <nav class="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
     <div class="flex lg:flex-1">
-        <a href="index.jsp" class="-m-1.5 p-1.5">
+        <a href="index.html" class="-m-1.5 p-1.5">
         <img class="h-12 w-auto transition-all hover:scale-125 rounded-2xl" src="./Images/CJ.jpg" alt="Your Company">
         </a>
     </div>
@@ -70,7 +91,7 @@
                     </svg>
                     </div>
                     <div class="flex-auto">
-                    <a href="html.jsp" class="block font-semibold text-black">
+                    <a href="html.html" class="block font-semibold text-black">
                         HTML (HyperText Markup Language)
                         <span class="absolute inset-0"></span>
                     </a>
@@ -84,7 +105,7 @@
                 </svg>
                 </div>
                 <div class="flex-auto">
-                <a href="css.jsp" class="block font-semibold text-black">
+                <a href="css.html" class="block font-semibold text-black">
                     CSS (Cascading Style Sheets)
                     <span class="absolute inset-0"></span>
                 </a>
@@ -99,7 +120,7 @@
                     </svg>
                 </div>
                 <div class="flex-auto">
-                <a href="js.jsp" class="block font-semibold text-black">
+                <a href="js.html" class="block font-semibold text-black">
                     JavaScript (JS)
                     <span class="absolute inset-0"></span>
                 </a>
@@ -113,7 +134,7 @@
                 </svg>
                 </div>
                 <div class="flex-auto">
-                <a href="db.jsp" class="block font-semibold text-black">
+                <a href="db.html" class="block font-semibold text-black">
                     Databases (DB)
                     <span class="absolute inset-0"></span>
                 </a>
@@ -124,9 +145,9 @@
         </div>
         </div>
 
-        <a href="roadmap.jsp" class="text-md font-bold leading-6 text-white hover:text-blue-400 transition-all hover:scale-110">Roadmap</a>
-        <a href="marketplace.jsp" class="text-md font-bold leading-6 text-white hover:text-blue-400 transition-all hover:scale-110">Marketplace</a>
-        <a href="company.jsp" class="text-md font-bold leading-6 text-white hover:text-blue-400 transition-all hover:scale-110">Company</a>
+        <a href="roadmap.html" class="text-md font-bold leading-6 text-white hover:text-blue-400 transition-all hover:scale-110">Roadmap</a>
+        <a href="marketplace.html" class="text-md font-bold leading-6 text-white hover:text-blue-400 transition-all hover:scale-110">Marketplace</a>
+        <a href="company.html" class="text-md font-bold leading-6 text-white hover:text-blue-400 transition-all hover:scale-110">Company</a>
     </div>
     <div class=" hidden lg:flex lg:flex-1 lg:justify-end">
         <a href="#" class="text-md font-bold leading-6 text-white hover:text-blue-400 transition-all hover:scale-110">Log in <span aria-hidden="true">&rarr;</span></a>
@@ -136,9 +157,9 @@
     <!-- Mobile menu with slide-in transition -->
     <div id="mobile-menu" class="lg:hidden fixed inset-0 z-10 w-full bg-gray-400 px-6 py-6 transform translate-x-full transition-transform duration-300 ease-in-out">
         <div class="flex items-center justify-between">
-        <a href="index.jsp" class="-m-1.5 p-1.5">
+        <a href="index.html" class="-m-1.5 p-1.5">
             <span class="sr-only">Your Company</span>
-            <img class="h-8 w-auto transition-all hover:scale-125 rounded-2xl" src="Images/CJ.jpg" alt="Your Company">
+            <img class="h-8 w-auto transition-all hover:scale-125 rounded-2xl" src="./Images/CJ.jpg" alt="Your Company">
         </a>
         <button id="mobile-menu-close" type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700">
             <span class="sr-only">Close menu</span>
@@ -160,15 +181,15 @@
 
                 <!-- Product dropdown in mobile menu -->
                 <div id="mobile-product-dropdown" class="ml-6 space-y-2">
-                    <a href="html.jsp" class="block text-base font-semibold leading-7 text-gray-900 transition-all hover:text-white hover:px-1">HTML</a>
-                    <a href="css.jsp" class="block text-base font-semibold leading-7 text-gray-900 transition-all hover:text-white hover:px-1">CSS</a>
-                    <a href="js.jsp" class="block text-base font-semibold leading-7 text-gray-900 transition-all hover:text-white hover:px-1">JavaScript</a>
-                    <a href="db.jsp" class="block text-base font-semibold leading-7 text-gray-900 transition-all hover:text-white hover:px-1">Databases</a>
+                    <a href="html.html" class="block text-base font-semibold leading-7 text-gray-900 transition-all hover:text-white hover:px-1">HTML</a>
+                    <a href="css.html" class="block text-base font-semibold leading-7 text-gray-900 transition-all hover:text-white hover:px-1">CSS</a>
+                    <a href="js.html" class="block text-base font-semibold leading-7 text-gray-900 transition-all hover:text-white hover:px-1">JavaScript</a>
+                    <a href="db.html" class="block text-base font-semibold leading-7 text-gray-900 transition-all hover:text-white hover:px-1">Databases</a>
                 </div>
             </div>
-            <a href="roadmap.jsp" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-200 transition-all ">Roadmap</a>
-            <a href="marketplace.jsp" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-200 transition-all ">Marketplace</a>
-            <a href="company.jsp" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-200 transition-all ">Company</a>
+            <a href="roadmap.html" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-200 transition-all ">Roadmap</a>
+            <a href="marketplace.html" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-200 transition-all ">Marketplace</a>
+            <a href="company.html" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-200 transition-all ">Company</a>
             </div>
             <div class="py-6">
             <a href="#" class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-200 transition-all">Log in <span aria-hidden="true">&rarr;</span></a>
@@ -179,131 +200,133 @@
 </header>
 <!-- Header Ends-->
 
-<!-- About section -->
-<section class="py-24 relative">
-    <div class="w-full max-w-7xl px-4 md:px-5 lg:px-5 mx-auto">
-        <div class="w-full justify-start items-center gap-8 grid lg:grid-cols-2 grid-cols-1">
-            <div class="w-full flex-col justify-start lg:items-start items-center gap-10 inline-flex">
-                <div class="w-full flex-col justify-start lg:items-start items-center gap-4 flex">
-                    <h2 class="text-gray-900 text-4xl font-bold font-manrope leading-normal lg:text-start text-center">ABOUT US ...</h2>
-                    <p class="text-gray-500 text-base font-normal leading-relaxed lg:text-start text-center">Code Journey is a dedicated platform for anyone aspiring to become a web developer. We provide a clear, structured learning path that takes you from beginner to proficient developer. Covering essential topics like HTML, CSS, JavaScript, and advanced areas such as frameworks and databases, our resources are designed to help you build real-world skills. Whether you're just starting or looking to enhance your knowledge, our goal is to empower you with the tools and guidance needed to succeed in web development.</p>
-                </div>
-                <a href="index.jsp">
-                    <button class="sm:w-fit w-full px-3.5 py-2 bg-white hover:bg-blue-400 transition-all duration-300 ease-in-out rounded-lg shadow-[0px_1px_2px_0px_rgba(16,_24,_40,_0.05)] justify-center items-center flex border-2 ">
-                        <span class="px-1.5 text-black text-sm font-medium leading-6">Get Started</span>
-                    </button>
-                </a>
-            </div>
-            <img class="lg:mx-20 mx-auto h-full rounded-2xl object-cover " src="./Images/about-us.jpg" alt="" />
+<!-- Hero Section -->
+<section class="bg-white">
+    <div class="grid max-w-screen-xl px-4 py-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12">
+        <div class="mr-auto place-self-center lg:col-span-7">
+            <h1 class="max-w-2xl mb-4 text-3xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl ">Start Your Web Development Journey</h1>
+            <p class="max-w-2xl mb-6 font-medium text-gray-500 lg:mb-8 md:text-lg lg:text-xl dark:text-gray-400">Whether you're starting with the basics of HTML or aiming to build complex, data-driven applications, this roadmap will help you gain the skills needed to become a confident web developer.</p>
+            <a href="#roadmap" class="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-3xl hover:bg-blue-400 transition-all duration-300 ease-in-out focus:ring-4 focus:ring-gray-100 ">
+                Know your track
+                <svg class="w-5 h-5 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+            </a> 
         </div>
+        <div class="hidden lg:mt-0 lg:col-span-5 lg:flex">
+            <img src="./Images/roadmap.png" class="rounded-lg " alt="mockup">
+        </div>                
     </div>
 </section>
-<!-- About section end-->
+<!-- Hero Section end-->
 
-<!-- Our Team -->
-<div class="font-[sans-serif] mb-10">
-    <div class="h-60 w-full bg-gradient-to-r from-slate-500 to-slate-600"></div>
+<!-- Roadmap -->
+<section id="roadmap">
+    <div class="bg-white text-black font-semibold py-8 bg-gradient-to-r from-purple-300 to-pink-200">
+    <div class="container mx-auto flex flex-col items-start md:flex-row my-12 md:my-14">
+    <div class="flex flex-col w-full sticky md:top-36 lg:w-1/3 mt-2 md:mt-2 px-8">
+        <p class="ml-2 text-blue-700 uppercase tracking-loose text-lg">Working Process</p>
+        <p class="text-3xl md:text-3xl leading-normal md:leading-relaxed mb-2">Your Web Dev Journey</p>
+        <p class="text-sm md:text-base text-black mb-4">
+        Here's your guide to explore the essential steps in becoming a web developer. <br/> <br/>
+        From learning foundational skills like HTML and CSS to mastering advanced concepts like JavaScript and databases, this roadmap will help you navigate every stage of the process.
+        </p>
+        <button
+        class="bg-transparent mr-auto hover:bg-blue-400 text-black hover:text-white rounded shadow hover:shadow-lg py-2 px-4 border border-black hover:border-transparent transition-all duration-300 ease-in-out">
+        Explore Now</button>
+    </div>
+    <div class="ml-0 md:ml-12 lg:w-2/3 sticky">
+        <div class="container mx-auto w-full h-full">
+        <div class="relative wrap overflow-hidden p-10 h-full">
+            <div class="border-2-2 border-yellow-555 absolute h-full border"
+            style="right: 50%; border: 2px solid #FFC100; border-radius: 1%;"></div>
+            <div class="border-2-2 border-yellow-555 absolute h-full border"
+            style="left: 50%; border: 2px solid #FFC100; border-radius: 1%;"></div>
 
-    <div class="max-w-5xl max-md:max-w-xl max-sm:max-w-sm mx-auto -mt-48 px-6">
-        <h2 class="text-4xl max-md:text-5xl text-center font-bold text-white mb-12">Meet Our Professional Team</h2>
-
-        <div class="grid md:grid-cols-3 sm:grid-cols-2 gap-8 max-sm:justify-center text-center">
-            <div class="bg-white rounded-lg p-6 shadow-md hover:scale-105 transition-all duration-500">
-                <div class="lg:min-h-[250px]">
-                    <img src="./Images/AM.jpg" class="w-full rounded-lg inline-block" />
-                </div>
-
-                <div class="mt-6">
-                    <h4 class="text-gray-800 text-lg font-bold">Akshat Mahajan</h4>
-                    <p class="text-sm text-gray-600 mt-1">UI/UX & Front-End Designer</p>
-
-                    <div class="space-x-4 mt-6">
-                        <a href="https://github.com/akshatmhjj">
-                            <button type="button"
-                                class="w-7 h-7 inline-flex items-center justify-center rounded-full border-none outline-none  bg-gray-100 hover:bg-blue-300">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-github" viewBox="0 0 16 16">
-                                    <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
-                                </svg>
-                            </button>
-                        </a>
-                        <a href="https://www.linkedin.com/in/akshat-mahajan-601a5a223/">
-                            <button type="button"
-                                class="w-7 h-7 inline-flex items-center justify-center rounded-full border-none outline-none  bg-gray-100 hover:bg-blue-300">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14px" fill="#333" viewBox="0 0 24 24">
-                                    <path
-                                        d="M23.994 24v-.001H24v-8.802c0-4.306-.927-7.623-5.961-7.623-2.42 0-4.044 1.328-4.707 2.587h-.07V7.976H8.489v16.023h4.97v-7.934c0-2.089.396-4.109 2.983-4.109 2.549 0 2.587 2.384 2.587 4.243V24zM.396 7.977h4.976V24H.396zM2.882 0C1.291 0 0 1.291 0 2.882s1.291 2.909 2.882 2.909 2.882-1.318 2.882-2.909A2.884 2.884 0 0 0 2.882 0z"
-                                        data-original="#0077b5" />
-                                </svg>
-                            </button>
-                        </a>
-                    </div>
+            <div class="mb-8 flex justify-between items-center w-full right-timeline">
+                <div class="order-1 w-5/12"></div>
+                <div class="order-1  w-5/12 px-1 py-4 text-left">
+                    <p class="mb-3 text-base text-blue-700">ET: 1-2 Weeks</p>
+                    <h4 class="mb-3 font-bold text-lg md:text-2xl">1. HTML 
+                        <a href="#" class="text-sm py-1 px-2 bg-transparent hover:bg-blue-400 text-black hover:text-white rounded shadow hover:shadow-lg border border-blue-400 hover:border-transparent transition-all duration-300 ease-in-out ml-3 my-3">
+                        Explore Now</a>
+                    </h4>
+                    
+                    <p class="text-sm md:text-base leading-snug text-black text-opacity-100">
+                        For HTML, start by understanding the basic structure of a webpage and practice using core tags like headings, paragraphs, links, and images. Experiment by building simple web pages and gradually incorporate forms and tables. Finally, explore semantic HTML for better accessibility.
+                    </p>
                 </div>
             </div>
-            <div class="bg-white rounded-lg p-6 shadow-md hover:scale-105 transition-all duration-500">
-                <div class="lg:min-h-[250px]">
-                    <img src="./Images/NG.jpg" class="w-full rounded-lg inline-block" />
-                </div>
-                <div class="mt-6">
-                    <h4 class="text-gray-800 text-lg font-bold">Nipun Gujarati</h4>
-                    <p class="text-sm text-gray-600 mt-1">Backend Developer</p>
 
-                    <div class="space-x-4 mt-6">
-                        <a href="#">
-                            <button type="button"
-                                class="w-7 h-7 inline-flex items-center justify-center rounded-full border-none outline-none  bg-gray-100 hover:bg-blue-300">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-github" viewBox="0 0 16 16">
-                                    <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
-                                </svg>
-                            </button>
-                        </a>
-                        <a href="https://www.linkedin.com/in/nipun-gujarati-34a7a2211/">
-                            <button type="button"
-                                class="w-7 h-7 inline-flex items-center justify-center rounded-full border-none outline-none  bg-gray-100 hover:bg-blue-300">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14px" fill="#333" viewBox="0 0 24 24">
-                                    <path
-                                        d="M23.994 24v-.001H24v-8.802c0-4.306-.927-7.623-5.961-7.623-2.42 0-4.044 1.328-4.707 2.587h-.07V7.976H8.489v16.023h4.97v-7.934c0-2.089.396-4.109 2.983-4.109 2.549 0 2.587 2.384 2.587 4.243V24zM.396 7.977h4.976V24H.396zM2.882 0C1.291 0 0 1.291 0 2.882s1.291 2.909 2.882 2.909 2.882-1.318 2.882-2.909A2.884 2.884 0 0 0 2.882 0z"
-                                        data-original="#0077b5" />
-                                </svg>
-                            </button>
-                        </a>
-                    </div>
+            <div class="mb-8 flex justify-between flex-row-reverse items-center w-full left-timeline">
+                <div class="order-1 w-5/12"></div>
+                <div class="order-1 w-5/12 px-1 py-4 text-right">
+                    <p class="mb-3 text-base text-blue-700">ET: 2-4 Weeks</p>
+                    <h4 class="mb-3 font-bold text-lg md:text-2xl">2. CSS
+                        <a href="#" class="text-sm py-1 px-2 bg-transparent hover:bg-blue-400 text-black hover:text-white rounded shadow hover:shadow-lg border border-blue-400 hover:border-transparent transition-all duration-300 ease-in-out ml-3 my-3">
+                            Explore Now</a>
+                    </h4>
+                    <p class="text-sm md:text-base leading-snug text-black text-opacity-100">
+                        Start by learning basic styling properties like colors, fonts, and layouts, then move on to responsive design techniques like Flexbox and Grid. Practice by creating visually appealing, responsive web pages.
+                    </p>
                 </div>
             </div>
-            <div class="bg-white rounded-lg p-6 shadow-md hover:scale-105 transition-all duration-500">
-                <div class="lg:min-h-[250px]">
-                    <img src="./Images/YN.jpg" class="w-full rounded-lg inline-block" />
-                </div>
 
-                <div class="mt-6">
-                    <h4 class="text-gray-800 text-lg font-bold">Yashwardhan Nigam</h4>
-                    <p class="text-sm text-gray-600 mt-1">UI/UX & Front-End Designer</p>
-
-                    <div class="space-x-4 mt-6">
-                        <a href="https://github.com/yashwardhan174">
-                            <button type="button"
-                                class="w-7 h-7 inline-flex items-center justify-center rounded-full border-none outline-none  bg-gray-100 hover:bg-blue-300">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-github" viewBox="0 0 16 16">
-                                    <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
-                                </svg>
-                            </button>
-                        </a>
-                        <a href="https://www.linkedin.com/in/yashwardhan-nigam-286a81248/">
-                            <button type="button"
-                                class="w-7 h-7 inline-flex items-center justify-center rounded-full border-none outline-none  bg-gray-100 hover:bg-blue-300">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14px" fill="#333" viewBox="0 0 24 24">
-                                    <path
-                                        d="M23.994 24v-.001H24v-8.802c0-4.306-.927-7.623-5.961-7.623-2.42 0-4.044 1.328-4.707 2.587h-.07V7.976H8.489v16.023h4.97v-7.934c0-2.089.396-4.109 2.983-4.109 2.549 0 2.587 2.384 2.587 4.243V24zM.396 7.977h4.976V24H.396zM2.882 0C1.291 0 0 1.291 0 2.882s1.291 2.909 2.882 2.909 2.882-1.318 2.882-2.909A2.884 2.884 0 0 0 2.882 0z"
-                                        data-original="#0077b5" />
-                                </svg>
-                            </button>
-                        </a>
-                    </div>
+            <div class="mb-8 flex justify-between items-center w-full right-timeline">
+                <div class="order-1 w-5/12"></div>
+                <div class="order-1  w-5/12 px-1 py-4 text-left">
+                    <p class="mb-3 text-base text-blue-700">ET: 8-12 Weeks</p>
+                    <h4 class="mb-3 font-bold text-lg md:text-2xl">3. Frontend JS 
+                        <a href="#" class="text-sm py-1 px-2 bg-transparent hover:bg-blue-400 text-black hover:text-white rounded shadow hover:shadow-lg border border-blue-400 hover:border-transparent transition-all duration-300 ease-in-out ml-3 my-3">
+                            Explore Now</a>
+                    </h4>
+                    <p class="text-sm md:text-base leading-snug text-black text-opacity-100">
+                        Start by mastering the basics of JavaScript (variables, functions, events), then learn how to manipulate the DOM to create interactive user interfaces. Dive into modern frontend frameworks like React, Vue, or Angular to build dynamic web applications.
+                    </p>
                 </div>
+            </div>
+
+            <div class="mb-8 flex justify-between flex-row-reverse items-center w-full left-timeline">
+                <div class="order-1 w-5/12"></div>
+                <div class="order-1 w-5/12 px-1 py-4 text-right">
+                    <p class="mb-3 text-base text-blue-700">ET: 8-12 Weeks</p>
+                    <h4 class="mb-3 font-bold text-lg md:text-2xl">4. Backend JS
+                        <a href="#" class="text-sm py-1 px-2 bg-transparent hover:bg-blue-400 text-black hover:text-white rounded shadow hover:shadow-lg border border-blue-400 hover:border-transparent transition-all duration-300 ease-in-out ml-3 my-3">
+                            Explore Now</a>
+                    </h4>
+                    <p class="text-sm md:text-base leading-snug text-black text-opacity-100">
+                        Begin with Node.js, learning how to create servers, handle requests, and work with APIs. Use Express.js for routing and middleware, and practice connecting your back-end code to databases (SQL or NoSQL) for full-stack applications.
+                    </p>
+                </div>
+            </div>
+
+            <div class="mb-8 flex justify-between items-center w-full right-timeline">
+            <div class="order-1 w-5/12"></div>
+
+            <div class="order-1  w-5/12 px-1 py-4">
+                <p class="mb-3 text-base text-blue-700">ET: 8-9 Weeks</p>
+                <h4 class="mb-3 font-bold  text-lg md:text-2xl text-left">5. Databases
+                    <a href="#" class="text-sm py-1 px-2 bg-transparent hover:bg-blue-400 text-black hover:text-white rounded shadow hover:shadow-lg border border-blue-400 hover:border-transparent transition-all duration-300 ease-in-out ml-3 my-3">
+                    Explore Now</a>
+                </h4>
+                <p class="text-sm md:text-base leading-snug text-black text-opacity-100">
+                    To learn databases, start by understanding SQL for relational databases like MySQL or PostgreSQL. Focus on writing basic queries (SELECT, INSERT, UPDATE, DELETE) and learn how to manage data relationships using joins and foreign keys. <br/><br/>
+                    For MongoDB, dive into NoSQL concepts by exploring document-based storage, querying data with MongoDB's query language, and understanding how to structure flexible, scalable data models.
+                </p>
+            </div>
             </div>
         </div>
+        <img class="mx-auto -mt-36 md:-mt-36" src="https://user-images.githubusercontent.com/54521023/116968861-ef21a000-acd2-11eb-95ac-a34b5b490265.png" />
+        </div>
+        <div>
+            <p class="mt-20 p-3">
+                <strong>Total Approximate Time: 9-10 months</strong> <br/><br/>
+                This timeline assumes part-time learning (10-20 hours per week). If you're learning full-time, you could potentially shorten it to 5-7 months. <br/><br/>
+                <strong>NOTE: </strong>This is just a rough estimate. The timeline can vary depending on your pace, learning style, and available resources. Additionally, practical projects and hands-on practice can help reinforce these skills faster.</p>
+        </div>
+    </div>
     </div>
 </div>
-<!-- Our Team end-->
+</section>
+<!-- Roadmap end-->
 
 <!-- Footer -->
 <footer class="w-full bg-gradient-to-r from-slate-500 to-slate-800 px-4 text-white pt-8 flex flex-col md:flex-row flex-wrap justify-between md:px-12 py-10">
@@ -332,16 +355,16 @@
         <div class="w-[120px] h-1 border-b-2 border-yellow-400 rounded-2xl mb-4"></div>
         <ul>
             <li class="my-1 transition-all duration-300 text-white font-semibold hover:text-blue-400 hover:transform hover:translate-x-2">
-                <a href="html.jsp">HTML</a>
+                <a href="html.html">HTML</a>
             </li>
             <li class="my-1 transition-all duration-300 text-white font-semibold hover:text-blue-400 hover:transform hover:translate-x-2">
-                <a href="css.jsp">CSS</a>
+                <a href="css.html">CSS</a>
             </li>
             <li class="my-1 transition-all duration-300 text-white font-semibold hover:text-blue-400 hover:transform hover:translate-x-2">
-                <a href="js.jsp">JavaScript</a>
+                <a href="js.html">JavaScript</a>
             </li>
             <li class="my-1 transition-all duration-300 text-white font-semibold hover:text-blue-400 hover:transform hover:translate-x-2">
-                <a href="db.jsp">Databases</a>
+                <a href="db.html">Databases</a>
             </li>
             
         </ul>
@@ -351,10 +374,10 @@
         <div class="w-[125px] h-1 border-b-2 border-yellow-400 rounded-2xl mb-4"></div>
         <ul>
             <li class="my-1 transition-all duration-300 text-white font-semibold hover:text-blue-400 hover:transform hover:translate-x-2 ">
-                <a href="marketplace.jsp">Marketplace</a>
+                <a href="marketplace.html">Marketplace</a>
             </li>
             <li class="my-1 transition-all duration-300 text-white font-semibold hover:text-blue-400 hover:transform hover:translate-x-2">
-                <a href="company.jsp">Company</a>
+                <a href="company.html">Company</a>
             </li>
             <!-- <li class="my-1 transition-all duration-300 text-black font-semibold hover:text-white hover:pl-2">
                 <a href="#">Careers</a>
