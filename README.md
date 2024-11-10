@@ -1,4 +1,4 @@
-```markdown
+markdown
 # Code Journey - Registration System
 
 ## Description
