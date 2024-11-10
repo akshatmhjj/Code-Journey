@@ -17,7 +17,6 @@ public class registerServlet extends HttpServlet {
         String email = request.getParameter("email");
         String phone = request.getParameter("phone");
         String password = request.getParameter("password");
-        String accept = request.getParameter("accept");
 
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
