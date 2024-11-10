@@ -124,7 +124,7 @@
 <header class="bg-slate-900 shadow-lg bg-gradient-to-r from-slate-500 to-slate-800">
     <nav class="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
     <div class="flex lg:flex-1">
-        <a href="index.jsp" class="-m-1.5 p-1.5">
+        <a href="dashboard.jsp" class="-m-1.5 p-1.5">
         <img class="h-12 w-auto transition-all hover:scale-125 rounded-2xl" src="./Images/CJ.jpg" alt="Your Company">
         </a>
     </div>
