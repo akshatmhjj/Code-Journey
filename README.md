@@ -5,9 +5,8 @@ markdown
 This platform aims to serve as a comprehensive platform for anyone aspiring to become a web developer. It provides detailed guidance on web development, from foundational knowledge to advanced skills, helping users transition from beginners to proficient developers. The website features learning paths, study materials, and various resources on topics like HTML, CSS, JavaScript, frameworks, databases, and more.
 
 ## Features
-- User Registration with username, email, phone, and password.
-- Form validation on the frontend.
-- Backend processing for storing user data (currently basic functionality, can be extended).
+- User Registration 
+- Backend processing 
 - Responsive and modern UI using TailwindCSS.
 - Learning Resources
 - Structured Learning Paths
