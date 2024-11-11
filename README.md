@@ -1,14 +1,18 @@
 markdown
-# Code Journey - Registration System
+# Code Journey 
 
 ## Description
-The "Code Journey" project is a web application designed for user registration. It allows users to create an account by providing their username, email, phone number, password, and agreeing to the terms and privacy policy.
+This platform aims to serve as a comprehensive platform for anyone aspiring to become a web developer. It provides detailed guidance on web development, from foundational knowledge to advanced skills, helping users transition from beginners to proficient developers. The website features learning paths, study materials, and various resources on topics like HTML, CSS, JavaScript, frameworks, databases, and more.
 
 ## Features
 - User Registration with username, email, phone, and password.
 - Form validation on the frontend.
 - Backend processing for storing user data (currently basic functionality, can be extended).
 - Responsive and modern UI using TailwindCSS.
+- Learning Resources
+- Structured Learning Paths
+- Community and Collaboration
+- Certifications and Rewards
 
 ## Project Setup
 
@@ -101,13 +105,6 @@ We would like to thank the following contributors for their contributions to thi
 - **Yashwardhan Nigam** - UI / UX & Front End Developer
 - **Akshat Mahajan** - Lead Front End Developer
 - **Nipun Gujrati** - Backend Developer
-
-Feel free to fork and contribute to this project. To contribute, follow these steps:
-1. Fork the repository.
-2. Create a new branch (`git checkout -b feature-name`).
-3. Make changes and commit (`git commit -am 'Add feature'`).
-4. Push the branch (`git push origin feature-name`).
-5. Open a Pull Request.
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
