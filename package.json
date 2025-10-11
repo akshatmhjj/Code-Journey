@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@heroui/input-otp": "^2.1.27",
+    "@heroui/react": "^2.8.5",
     "@react-three/fiber": "^8.15.10",
     "@tabler/icons-react": "^3.35.0",
     "@tailwindcss/vite": "^4.1.13",

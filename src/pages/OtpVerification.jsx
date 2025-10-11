@@ -1,59 +1,91 @@
-import { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import Orb from "../components/Orb";
+import { useAuth } from "../context/AuthContext";
 
 export default function VerifyOtp() {
-  const [otp, setOtp] = useState("");
+  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
+  const inputRefs = useRef([]);
   const location = useLocation();
   const navigate = useNavigate();
+  const { verifyOtp } = useAuth();
 
-  // get email from register page
   const email = location.state?.email;
+
+  const handleChange = (value, index) => {
+    if (/^[0-9]?$/.test(value)) {
+      const newOtp = [...otp];
+      newOtp[index] = value;
+      setOtp(newOtp);
+
+      if (value && index < otp.length - 1) {
+        inputRefs.current[index + 1].focus();
+      }
+    }
+  };
+
+  const handleKeyDown = (e, index) => {
+    if (e.key === "Backspace" && !otp[index] && index > 0) {
+      inputRefs.current[index - 1].focus();
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const otpValue = otp.join("");
 
     try {
-      const res = await fetch("http://localhost:5000/api/auth/verify-otp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, otp }),
-      });
-
-      const data = await res.json();
-
-      if (res.ok) {
-        alert("OTP verified successfully!");
-        navigate("/login");
-      } else {
-        alert(data.message || "Invalid OTP");
-      }
+      const res = await verifyOtp({ email, otp: otpValue });
+      alert("OTP verified successfully!");
+      navigate("/login");
     } catch (err) {
-      console.error(err);
-      alert("Error verifying OTP");
+      alert(err.response?.data?.message || "Invalid OTP");
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-950 text-white px-4">
-      <div className="w-full max-w-md bg-gray-900 p-8 rounded-2xl shadow-lg">
-        <h1 className="text-3xl font-semibold text-center mb-6">Verify OTP</h1>
-        <p className="text-gray-400 text-center mb-4">
-          We sent an OTP to <span className="text-blue-400">{email}</span>
+    <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
+      <div className="absolute inset-0 z-0">
+        <Orb
+          hoverIntensity={0.2}
+          rotateOnHover={true}
+          hue={0}
+          forceHoverState={false}
+        />
+      </div>
+
+      <div className="relative z-10 w-full max-w-md backdrop-blur-2xl bg-white/10 border border-white/20 shadow-2xl rounded-3xl p-8 text-white">
+        <h1 className="text-4xl font-semibold text-center mb-6 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+          Verify OTP
+        </h1>
+
+        <p className="text-gray-300 text-center mb-8">
+          Enter the 6-digit code sent to{" "}
+          <span className="text-blue-400 font-medium">{email}</span>
         </p>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            type="text"
-            name="otp"
-            placeholder="Enter OTP"
-            value={otp}
-            onChange={(e) => setOtp(e.target.value)}
-            className="w-full p-3 rounded-lg bg-gray-800 border border-gray-700 focus:ring-2 focus:ring-blue-500"
-          />
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col items-center gap-8"
+        >
+          <div className="flex gap-4 justify-center">
+            {otp.map((digit, index) => (
+              <input
+                key={index}
+                type="text"
+                maxLength="1"
+                value={digit}
+                ref={(el) => (inputRefs.current[index] = el)}
+                onChange={(e) => handleChange(e.target.value, index)}
+                onKeyDown={(e) => handleKeyDown(e, index)}
+                className="w-14 h-14 text-center text-2xl font-semibold rounded-xl bg-white/10 border border-white/20 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-white transition-all hover:scale-105"
+              />
+            ))}
+          </div>
 
           <button
             type="submit"
-            className="w-full bg-blue-600 hover:bg-blue-700 transition p-3 rounded-lg font-semibold"
+            className="w-full py-3 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 font-semibold text-white transition-all cursor-pointer"
           >
             Verify
           </button>

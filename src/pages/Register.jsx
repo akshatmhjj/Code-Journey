@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
+import { useAuth } from "../context/AuthContext"; 
 import SocialIcons from "../components/SocialIcons";
+import Orb from "../components/Orb";
 
 export default function Register() {
   const [form, setForm] = useState({
@@ -14,6 +16,7 @@ export default function Register() {
   });
 
   const [showPassword, setShowPassword] = useState(false);
+  const { register } = useAuth(); 
   const navigate = useNavigate();
 
   const handleChange = (e) =>
@@ -22,116 +25,148 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      const res = await fetch("http://localhost:5000/api/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
-
-      const data = await res.json();
-
-      if (res.ok) {
-        alert("OTP sent to your email!");
-        navigate("/verify-otp", { state: { email: form.email } });
-      } else {
-        alert(data.message || "Registration failed");
-      }
-    } catch (err) {
-      console.error(err);
-      alert("Error registering user");
+    const success = await register(form); 
+    if (success) {
+      alert("OTP sent to your email!");
+      navigate("/verify-otp", { state: { email: form.email } });
+    } else {
+      alert("Registration failed. Please check your details.");
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-950 text-white px-4">
-      <div className="w-full max-w-2xl bg-gray-900 p-8 rounded-2xl shadow-lg">
-        <h1 className="text-3xl font-semibold text-center mb-6">
-          Create Account
+    <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
+      <div className="absolute inset-0 z-0">
+        <Orb hoverIntensity={0.2} rotateOnHover={true} hue={0} forceHoverState={false} />
+      </div>
+
+      <div className="relative z-10 w-full max-w-2xl backdrop-blur-2xl bg-white/10 border border-white/20 shadow-2xl rounded-3xl p-8 text-white">
+        <h1 className="text-4xl font-semibold text-center mb-8 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+          Create Your Account
         </h1>
 
-        <form className="space-y-4" onSubmit={handleSubmit}>
-          {/* Row 1 */}
-          <div className="grid grid-cols-2 gap-4">
-            <input
-              type="text"
-              name="name"
-              placeholder="Full Name"
-              value={form.name}
-              onChange={handleChange}
-              className="p-3 rounded-lg bg-gray-800 border border-gray-700 focus:ring-2 focus:ring-blue-500"
-            />
-            <input
-              type="text"
-              name="username"
-              placeholder="Username"
-              value={form.username}
-              onChange={handleChange}
-              className="p-3 rounded-lg bg-gray-800 border border-gray-700 focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
+        <form className="space-y-6" onSubmit={handleSubmit}>
 
-          {/* Row 2 */}
           <div className="grid grid-cols-2 gap-4">
-            <input
-              type="email"
-              name="email"
-              placeholder="Email"
-              value={form.email}
-              onChange={handleChange}
-              className="p-3 rounded-lg bg-gray-800 border border-gray-700 focus:ring-2 focus:ring-blue-500"
-            />
-            <div className="relative">
+            <div>
+              <label className="block mb-2 text-sm font-medium text-gray-300">
+                Full Name
+              </label>
               <input
-                type={showPassword ? "text" : "password"}
-                name="password"
-                placeholder="Password"
-                value={form.password}
+                type="text"
+                name="name"
+                placeholder="Enter your full name"
+                value={form.name}
                 onChange={handleChange}
-                className="p-3 w-full rounded-lg bg-gray-800 border border-gray-700 focus:ring-2 focus:ring-blue-500"
+                className="w-full p-3 rounded-lg bg-white/10 border border-white/20 focus:ring-2 focus:ring-blue-500 placeholder-gray-400 text-white"
+                required
               />
-              <span
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-3 cursor-pointer text-gray-400"
-              >
-                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-              </span>
+            </div>
+
+            <div>
+              <label className="block mb-2 text-sm font-medium text-gray-300">
+                Username
+              </label>
+              <input
+                type="text"
+                name="username"
+                placeholder="Choose a username"
+                value={form.username}
+                onChange={handleChange}
+                className="w-full p-3 rounded-lg bg-white/10 border border-white/20 focus:ring-2 focus:ring-blue-500 placeholder-gray-400 text-white"
+                required
+              />
             </div>
           </div>
 
-          {/* Row 3 */}
           <div className="grid grid-cols-2 gap-4">
-            <input
-              type="text"
-              name="location"
-              placeholder="Location"
-              value={form.location}
-              onChange={handleChange}
-              className="p-3 rounded-lg bg-gray-800 border border-gray-700 focus:ring-2 focus:ring-blue-500"
-            />
-            <input
-              type="text"
-              name="contact"
-              placeholder="Contact"
-              value={form.contact}
-              onChange={handleChange}
-              className="p-3 rounded-lg bg-gray-800 border border-gray-700 focus:ring-2 focus:ring-blue-500"
-            />
+            <div>
+              <label className="block mb-2 text-sm font-medium text-gray-300">
+                Email Address
+              </label>
+              <input
+                type="email"
+                name="email"
+                placeholder="you@example.com"
+                value={form.email}
+                onChange={handleChange}
+                className="w-full p-3 rounded-lg bg-white/10 border border-white/20 focus:ring-2 focus:ring-blue-500 placeholder-gray-400 text-white"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block mb-2 text-sm font-medium text-gray-300">
+                Password
+              </label>
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  placeholder="Create a password"
+                  value={form.password}
+                  onChange={handleChange}
+                  className="w-full p-3 rounded-lg bg-white/10 border border-white/20 focus:ring-2 focus:ring-blue-500 placeholder-gray-400 text-white"
+                  required
+                />
+                <span
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-4 cursor-pointer text-gray-400 hover:text-gray-200"
+                >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block mb-2 text-sm font-medium text-gray-300">
+                Location
+              </label>
+              <input
+                type="text"
+                name="location"
+                placeholder="Indore, India"
+                value={form.location}
+                onChange={handleChange}
+                className="w-full p-3 rounded-lg bg-white/10 border border-white/20 focus:ring-2 focus:ring-blue-500 placeholder-gray-400 text-white"
+              />
+            </div>
+
+            <div>
+              <label className="block mb-2 text-sm font-medium text-gray-300">
+                Contact Number
+              </label>
+              <input
+                type="text"
+                name="contact"
+                placeholder="9171xxxxxxx"
+                value={form.contact}
+                onChange={handleChange}
+                className="w-full p-3 rounded-lg bg-white/10 border border-white/20 focus:ring-2 focus:ring-blue-500 placeholder-gray-400 text-white"
+              />
+            </div>
           </div>
 
           <button
             type="submit"
-            className="w-full bg-blue-600 hover:bg-blue-700 transition p-3 rounded-lg font-semibold"
+            className="w-full py-3 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 font-semibold transition-all cursor-pointer"
           >
             Register
           </button>
         </form>
 
-        <SocialIcons />
+        <div className="mt-6">
+          <SocialIcons />
+        </div>
 
-        <p className="text-center mt-4 text-gray-400">
+        <p className="text-center mt-6 text-gray-300">
           Already have an account?{" "}
-          <a href="/login" className="text-blue-500 hover:underline">
+          <a
+            href="/login"
+            className="text-blue-400 hover:text-blue-300 underline transition"
+          >
             Sign in
           </a>
         </p>
