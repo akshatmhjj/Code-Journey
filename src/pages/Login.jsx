@@ -3,14 +3,14 @@ import { Eye, EyeOff } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import SocialIcons from "../components/SocialIcons";
 import Orb from "../components/Orb";
-import { useAuth } from "../context/AuthContext"; // ✅ added
+import { useAuth } from "../context/AuthContext";
 
 export default function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-  const { login } = useAuth(); // ✅ using login from context
+  const { login } = useAuth(); 
 
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -18,7 +18,7 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await login({ username: form.email, password: form.password }); // ✅ uses backend via API instance
+      await login({ username: form.email, password: form.password }); 
       alert("Login successful!");
       navigate("/");
     } catch (err) {
@@ -29,7 +29,7 @@ export default function Login() {
 
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
-      {/* Background orb animation */}
+
       <div className="absolute inset-0 z-0">
         <Orb
           hoverIntensity={0.2}
@@ -39,10 +39,10 @@ export default function Login() {
         />
       </div>
 
-      {/* Login Card */}
+
       <div className="relative z-10 w-full max-w-md backdrop-blur-2xl bg-white/10 border border-white/20 shadow-2xl rounded-3xl p-8 text-white">
         <h1 className="text-4xl font-semibold text-center mb-6 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
-          Welcome Back
+          Welcome 
         </h1>
 
         <form className="space-y-5" onSubmit={handleSubmit}>
@@ -78,7 +78,7 @@ export default function Login() {
 
           <button
             type="submit"
-            className="w-full py-3 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 font-semibold transition-transform transform hover:scale-[1.02]"
+            className="w-full py-3 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 font-semibold transition-transform transform cursor-pointer "
           >
             Sign In
           </button>

@@ -8,7 +8,7 @@ export default function VerifyOtp() {
   const inputRefs = useRef([]);
   const location = useLocation();
   const navigate = useNavigate();
-  const { verifyOtp } = useAuth(); // ✅ from context
+  const { verifyOtp } = useAuth();
 
   const email = location.state?.email;
 
@@ -35,7 +35,7 @@ export default function VerifyOtp() {
     const otpValue = otp.join("");
 
     try {
-      const res = await verifyOtp({ email, otp: otpValue }); // ✅ use context method
+      const res = await verifyOtp({ email, otp: otpValue });
       alert("OTP verified successfully!");
       navigate("/login");
     } catch (err) {
@@ -45,7 +45,6 @@ export default function VerifyOtp() {
 
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
-      {/* Background Orb */}
       <div className="absolute inset-0 z-0">
         <Orb
           hoverIntensity={0.2}
@@ -55,7 +54,6 @@ export default function VerifyOtp() {
         />
       </div>
 
-      {/* OTP Card */}
       <div className="relative z-10 w-full max-w-md backdrop-blur-2xl bg-white/10 border border-white/20 shadow-2xl rounded-3xl p-8 text-white">
         <h1 className="text-4xl font-semibold text-center mb-6 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
           Verify OTP

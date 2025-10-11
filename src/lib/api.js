@@ -40,4 +40,11 @@ export const logoutUser = async () => {
   return res.data;
 };
 
+// Delete user account
+export const deleteAccount = async () => {
+  const res = await API.delete("/auth/delete-account"); // or "/auth/delete" (match backend)
+  return res.data;
+};
+
+
 export default API;

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
-import { useAuth } from "../context/AuthContext"; // ✅ Import AuthContext
+import { useAuth } from "../context/AuthContext"; 
 import SocialIcons from "../components/SocialIcons";
 import Orb from "../components/Orb";
 
@@ -16,7 +16,7 @@ export default function Register() {
   });
 
   const [showPassword, setShowPassword] = useState(false);
-  const { register } = useAuth(); // ✅ Using global auth context
+  const { register } = useAuth(); 
   const navigate = useNavigate();
 
   const handleChange = (e) =>
@@ -25,7 +25,7 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const success = await register(form); // ✅ Call register from AuthContext
+    const success = await register(form); 
     if (success) {
       alert("OTP sent to your email!");
       navigate("/verify-otp", { state: { email: form.email } });
@@ -46,7 +46,7 @@ export default function Register() {
         </h1>
 
         <form className="space-y-6" onSubmit={handleSubmit}>
-          {/* Name & Username */}
+
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block mb-2 text-sm font-medium text-gray-300">
@@ -79,7 +79,6 @@ export default function Register() {
             </div>
           </div>
 
-          {/* Email & Password */}
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block mb-2 text-sm font-medium text-gray-300">
@@ -120,7 +119,6 @@ export default function Register() {
             </div>
           </div>
 
-          {/* Location & Contact */}
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block mb-2 text-sm font-medium text-gray-300">
@@ -151,7 +149,6 @@ export default function Register() {
             </div>
           </div>
 
-          {/* Submit */}
           <button
             type="submit"
             className="w-full py-3 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 font-semibold transition-all cursor-pointer"
