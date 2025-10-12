@@ -192,16 +192,12 @@ const Header = () => {
             style={{ color: "#fff" }}
           >
             <div
-              className={`hamburger-line w-[30px] h-[2px] bg-current transition-[transform,opacity,margin] duration-300 ease-linear [transform-origin:50%_50%] ${isHamburgerOpen
-                  ? "translate-y-[4px] rotate-45"
-                  : ""
-                } group-hover:opacity-75`}
+              className={`w-[30px] h-[2px] bg-current transition-all duration-300 ease-linear ${isHamburgerOpen ? "translate-y-[4px] rotate-45" : ""
+                }`}
             />
             <div
-              className={`hamburger-line w-[30px] h-[2px] bg-current transition-[transform,opacity,margin] duration-300 ease-linear [transform-origin:50%_50%] ${isHamburgerOpen
-                  ? "-translate-y-[4px] -rotate-45"
-                  : ""
-                } group-hover:opacity-75`}
+              className={`w-[30px] h-[2px] bg-current transition-all duration-300 ease-linear ${isHamburgerOpen ? "-translate-y-[4px] -rotate-45" : ""
+                }`}
             />
           </div>
 
@@ -214,30 +210,32 @@ const Header = () => {
             </Link>
           </div>
 
-          {/* 👇 Dynamic Auth Button */}
-          {!loading && (
-            <button
-              type="button"
-              onClick={() => {
-                if (user) navigate("/profile");
-                else navigate("/login");
-              }}
-              className="card-nav-cta-button hidden md:inline-flex border-0 rounded-[calc(0.75rem-0.2rem)] px-4 py-2 h-full font-medium cursor-pointer transition-colors duration-300"
-              style={{
-                backgroundColor: user ? "#0e27b6ff" : "#0e27b6ff",
-                color: "#fff",
-              }}
-            >
-              {user ? "Profile" : "Get Started"}
-            </button>
-          )}
+          <div className="order-2 md:order-none">
+            {!loading && (
+              <button
+                type="button"
+                onClick={() => {
+                  if (user) navigate("/profile");
+                  else navigate("/login");
+                }}
+                className="card-nav-cta-button inline-flex border-0 rounded-[calc(0.75rem-0.2rem)] px-4 py-2 font-medium cursor-pointer transition-colors duration-300"
+                style={{
+                  backgroundColor: "#0e27b6ff",
+                  color: "#fff",
+                }}
+              >
+                {user ? "Profile" : "Get Started"}
+              </button>
+            )}
+          </div>
+
 
         </div>
 
         <div
           className={`card-nav-content absolute left-0 right-0 top-[60px] bottom-0 p-2 flex flex-col items-stretch gap-2 justify-start z-[1] ${isExpanded
-              ? "visible pointer-events-auto"
-              : "invisible pointer-events-none"
+            ? "visible pointer-events-auto"
+            : "invisible pointer-events-none"
             } md:flex-row md:items-end md:gap-[12px]`}
           aria-hidden={!isExpanded}
         >
