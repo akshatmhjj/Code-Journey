@@ -4,13 +4,14 @@ import { useNavigate } from "react-router-dom";
 import SocialIcons from "../components/SocialIcons";
 import Orb from "../components/Orb";
 import { useAuth } from "../context/AuthContext";
+import { useAlert } from "../context/AlertContext";
 
 export default function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-
-  const { login } = useAuth(); 
+  const { login } = useAuth();
+  const { showAlert } = useAlert();
 
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -18,31 +19,23 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await login({ username: form.email, password: form.password }); 
-      alert("Login successful!");
+      await login({ username: form.email, password: form.password });
+      showAlert("Login successful!", "success");
       navigate("/");
     } catch (err) {
-      alert(err.response?.data?.message || "Login failed");
-      console.error(err);
+      showAlert(err.response?.data?.message || "Login failed", "error");
     }
   };
 
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
-
       <div className="absolute inset-0 z-0">
-        <Orb
-          hoverIntensity={0.2}
-          rotateOnHover={true}
-          hue={0}
-          forceHoverState={false}
-        />
+        <Orb hoverIntensity={0.2} rotateOnHover={true} hue={0} forceHoverState={false} />
       </div>
-
 
       <div className="relative z-10 w-full max-w-md backdrop-blur-2xl bg-white/10 border border-white/20 shadow-2xl rounded-3xl p-8 text-white">
         <h1 className="text-4xl font-semibold text-center mb-6 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
-          Welcome 
+          Welcome
         </h1>
 
         <form className="space-y-5" onSubmit={handleSubmit}>

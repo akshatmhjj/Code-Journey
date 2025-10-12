@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Orb from "../components/Orb";
 import { useAuth } from "../context/AuthContext";
+import { useAlert } from "../context/AlertContext";
 
 export default function VerifyOtp() {
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
@@ -9,6 +10,7 @@ export default function VerifyOtp() {
   const location = useLocation();
   const navigate = useNavigate();
   const { verifyOtp } = useAuth();
+  const { showAlert } = useAlert();
 
   const email = location.state?.email;
 
@@ -35,23 +37,18 @@ export default function VerifyOtp() {
     const otpValue = otp.join("");
 
     try {
-      const res = await verifyOtp({ email, otp: otpValue });
-      alert("OTP verified successfully!");
+      await verifyOtp({ email, otp: otpValue });
+      showAlert("OTP verified successfully!", "success");
       navigate("/login");
     } catch (err) {
-      alert(err.response?.data?.message || "Invalid OTP");
+      showAlert(err.response?.data?.message || "Invalid OTP", "error");
     }
   };
 
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
       <div className="absolute inset-0 z-0">
-        <Orb
-          hoverIntensity={0.2}
-          rotateOnHover={true}
-          hue={0}
-          forceHoverState={false}
-        />
+        <Orb hoverIntensity={0.2} rotateOnHover={true} hue={0} forceHoverState={false} />
       </div>
 
       <div className="relative z-10 w-full max-w-md backdrop-blur-2xl bg-white/10 border border-white/20 shadow-2xl rounded-3xl p-8 text-white">
@@ -64,10 +61,7 @@ export default function VerifyOtp() {
           <span className="text-blue-400 font-medium">{email}</span>
         </p>
 
-        <form
-          onSubmit={handleSubmit}
-          className="flex flex-col items-center gap-8"
-        >
+        <form onSubmit={handleSubmit} className="flex flex-col items-center gap-8">
           <div className="flex gap-4 justify-center">
             {otp.map((digit, index) => (
               <input

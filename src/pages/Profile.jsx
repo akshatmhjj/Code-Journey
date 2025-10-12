@@ -1,13 +1,27 @@
 import { useEffect, useState } from "react";
+import React from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import api from "../lib/api";
 import { LogOut, User, Mail, Phone, MapPin, Trash2 } from "lucide-react";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
+import Slide from "@mui/material/Slide";
+import { useAlert } from "../context/AlertContext";
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 export default function Profile() {
   const { user, logout } = useAuth();
   const [profile, setProfile] = useState(user);
   const [loading, setLoading] = useState(true);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const { showAlert } = useAlert();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -27,23 +41,22 @@ export default function Profile() {
 
   const handleLogout = async () => {
     await logout();
+    showAlert("Logged out successfully.", "info");
     navigate("/");
   };
 
-  const handleDelete = async () => {
-    const confirmed = window.confirm(
-      "⚠️ Are you sure you want to permanently delete your account? This cannot be undone!"
-    );
-    if (!confirmed) return;
-
+  const handleDeleteConfirm = async () => {
+    setConfirmOpen(false);
     try {
       await api.delete("/auth/delete-account");
-      alert("Your account has been deleted successfully.");
-      await logout();
-      navigate("/");
+      showAlert("Your account has been deleted successfully.", "success");
+      setTimeout(async () => {
+        await logout();
+        navigate("/");
+      }, 2000);
     } catch (err) {
       console.error("Error deleting account:", err);
-      alert(err.response?.data?.message || "Failed to delete account");
+      showAlert(err.response?.data?.message || "Failed to delete account", "error");
     }
   };
 
@@ -106,7 +119,7 @@ export default function Profile() {
           </button>
 
           <button
-            onClick={handleDelete}
+            onClick={() => setConfirmOpen(true)}
             className="w-full py-3 rounded-lg bg-gradient-to-r from-gray-800 to-red-800 hover:from-red-900 hover:to-black text-white font-semibold transition-transform transform hover:scale-105 flex items-center justify-center gap-2 border border-red-500/30"
           >
             <Trash2 size={18} className="text-red-400" />
@@ -114,6 +127,24 @@ export default function Profile() {
           </button>
         </div>
       </div>
+
+      <Dialog
+        open={confirmOpen}
+        TransitionComponent={Transition}
+        keepMounted
+        onClose={() => setConfirmOpen(false)}
+      >
+        <DialogTitle>{"Delete Account"}</DialogTitle>
+        <DialogContent>
+          ⚠️ Are you sure you want to permanently delete your account? This cannot be undone!
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setConfirmOpen(false)}>Cancel</Button>
+          <Button color="error" onClick={handleDeleteConfirm}>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }
