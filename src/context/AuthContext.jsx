@@ -7,20 +7,27 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // On mount, ask backend who I am
   useEffect(() => {
     const fetchMe = async () => {
       try {
-        const res = await api.get("/auth/me"); // -> /api/auth/me
+        if (sessionStorage.getItem("userFetched") === "true") {
+          setLoading(false);
+          return;
+        }
+
+        const res = await api.get("/auth/me");
         setUser(res.data.user || null);
+        sessionStorage.setItem("userFetched", "true");
       } catch (err) {
         setUser(null);
       } finally {
         setLoading(false);
       }
     };
+
     fetchMe();
   }, []);
+
 
   const login = async ({ username, password }) => {
     const res = await api.post("/auth/login", { username, password });

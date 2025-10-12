@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
-import { useAuth } from "../context/AuthContext"; 
+import { useAuth } from "../context/AuthContext";
+import { useAlert } from "../context/AlertContext"; 
 import SocialIcons from "../components/SocialIcons";
 import Orb from "../components/Orb";
 
@@ -16,7 +17,8 @@ export default function Register() {
   });
 
   const [showPassword, setShowPassword] = useState(false);
-  const { register } = useAuth(); 
+  const { register } = useAuth();
+  const { showAlert } = useAlert(); 
   const navigate = useNavigate();
 
   const handleChange = (e) =>
@@ -25,19 +27,28 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const success = await register(form); 
+    const success = await register(form);
     if (success) {
-      alert("OTP sent to your email!");
-      navigate("/verify-otp", { state: { email: form.email } });
+      showAlert("OTP sent to your email!", "success");
+
+      setTimeout(() => {
+        navigate("/verify-otp", { state: { email: form.email } });
+      }, 1200);
     } else {
-      alert("Registration failed. Please check your details.");
+      showAlert("Registration failed. Please check your details.", "error");
     }
   };
+
 
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
       <div className="absolute inset-0 z-0">
-        <Orb hoverIntensity={0.2} rotateOnHover={true} hue={0} forceHoverState={false} />
+        <Orb
+          hoverIntensity={0.2}
+          rotateOnHover={true}
+          hue={0}
+          forceHoverState={false}
+        />
       </div>
 
       <div className="relative z-10 w-full max-w-2xl backdrop-blur-2xl bg-white/10 border border-white/20 shadow-2xl rounded-3xl p-8 text-white">
@@ -46,7 +57,6 @@ export default function Register() {
         </h1>
 
         <form className="space-y-6" onSubmit={handleSubmit}>
-
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block mb-2 text-sm font-medium text-gray-300">
