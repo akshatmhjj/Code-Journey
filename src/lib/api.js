@@ -8,6 +8,25 @@ const API = axios.create({
   },
 });
 
+API.interceptors.response.use(
+  (res) => res,
+  (error) => {
+    const status = error?.response?.status;
+    if (status === 401) {
+      // auth invalid — clear session flag so app will re-check next visit
+      try {
+        sessionStorage.removeItem("userFetched");
+      } catch { }
+      // optionally broadcast logout across tabs
+      localStorage.setItem("logout", Date.now());
+    } else if (status === 429) {
+      // Do nothing special here but bubble the error so UI can show a message
+      console.warn("Rate limited:", error?.response?.data);
+    }
+    return Promise.reject(error);
+  }
+);
+
 // ===== AUTH ROUTES =====
 
 // Register a new user
