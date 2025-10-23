@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react"; // ⬅️ Loader2 icon added
 import { useAuth } from "../context/AuthContext";
 import { useAlert } from "../context/AlertContext"; 
 import SocialIcons from "../components/SocialIcons";
@@ -17,6 +17,8 @@ export default function Register() {
   });
 
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false); // ⬅️ loading state
+
   const { register } = useAuth();
   const { showAlert } = useAlert(); 
   const navigate = useNavigate();
@@ -26,19 +28,25 @@ export default function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true); // start loader
 
-    const success = await register(form);
-    if (success) {
-      showAlert("OTP sent to your email!", "success");
+    try {
+      const success = await register(form);
+      if (success) {
+        showAlert("OTP sent to your email!", "success");
 
-      setTimeout(() => {
-        navigate("/verify-otp", { state: { email: form.email } });
-      }, 1200);
-    } else {
-      showAlert("Registration failed. Please check your details.", "error");
+        setTimeout(() => {
+          navigate("/verify-otp", { state: { email: form.email } });
+        }, 1200);
+      } else {
+        showAlert("Registration failed. Please check your details.", "error");
+      }
+    } catch (err) {
+      showAlert("Something went wrong. Try again later.", "error");
+    } finally {
+      setLoading(false); // stop loader
     }
   };
-
 
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
@@ -161,9 +169,21 @@ export default function Register() {
 
           <button
             type="submit"
-            className="w-full py-3 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 font-semibold transition-all cursor-pointer"
+            disabled={loading}
+            className={`w-full py-3 rounded-lg font-semibold transition-all cursor-pointer ${
+              loading
+                ? "bg-gray-600 cursor-not-allowed"
+                : "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+            }`}
           >
-            Register
+            {loading ? (
+              <div className="flex items-center justify-center space-x-2">
+                <Loader2 className="animate-spin" size={20} />
+                <span>Sending OTP...</span>
+              </div>
+            ) : (
+              "Register"
+            )}
           </button>
         </form>
 

@@ -3,23 +3,20 @@ import React from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import api from "../lib/api";
-import { LogOut, User, Mail, Phone, MapPin, Trash2 } from "lucide-react";
+import { LogOut, User, Mail, Phone, MapPin, Trash2, Loader2 } from "lucide-react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
-import Slide from "@mui/material/Slide";
+import Fade from "@mui/material/Fade";
 import { useAlert } from "../context/AlertContext";
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
 
 export default function Profile() {
   const { user, logout } = useAuth();
   const [profile, setProfile] = useState(user);
   const [loading, setLoading] = useState(true);
+  const [actionLoading, setActionLoading] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const { showAlert } = useAlert();
   const navigate = useNavigate();
@@ -40,13 +37,21 @@ export default function Profile() {
   }, [navigate]);
 
   const handleLogout = async () => {
-    await logout();
-    showAlert("Logged out successfully.", "info");
-    navigate("/");
+    setActionLoading(true);
+    try {
+      await logout();
+      showAlert("Logged out successfully.", "info");
+      navigate("/");
+    } catch {
+      showAlert("Failed to log out.", "error");
+    } finally {
+      setActionLoading(false);
+    }
   };
 
   const handleDeleteConfirm = async () => {
     setConfirmOpen(false);
+    setActionLoading(true);
     try {
       await api.delete("/auth/delete-account");
       showAlert("Your account has been deleted successfully.", "success");
@@ -57,13 +62,19 @@ export default function Profile() {
     } catch (err) {
       console.error("Error deleting account:", err);
       showAlert(err.response?.data?.message || "Failed to delete account", "error");
+    } finally {
+      setActionLoading(false);
     }
   };
 
-  if (loading) {
+  // 🌀 Full-screen loader (initial or during logout/delete)
+  if (loading || actionLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-black text-white">
-        <p className="animate-pulse text-gray-400">Loading your profile...</p>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-black text-white">
+        <Loader2 className="animate-spin text-purple-400 mb-3" size={40} />
+        <p className="animate-pulse text-gray-400">
+          {loading ? "Loading your profile..." : "Processing..."}
+        </p>
       </div>
     );
   }
@@ -78,6 +89,7 @@ export default function Profile() {
 
   return (
     <div className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-black via-gray-900 to-purple-900 overflow-hidden">
+      {/* glowing background orbs */}
       <div className="absolute w-[500px] h-[500px] bg-gradient-to-r from-purple-700 to-blue-500 rounded-full blur-3xl opacity-20 -top-40 -left-40 animate-pulse"></div>
       <div className="absolute w-[400px] h-[400px] bg-gradient-to-r from-blue-700 to-purple-500 rounded-full blur-3xl opacity-20 bottom-0 right-0 animate-pulse delay-1000"></div>
 
@@ -112,15 +124,23 @@ export default function Profile() {
         <div className="flex flex-col gap-3 mt-8">
           <button
             onClick={handleLogout}
-            className="w-full py-3 rounded-lg bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 font-semibold transition-transform transform hover:scale-105 flex items-center justify-center gap-2"
+            disabled={actionLoading}
+            className="w-full py-3 rounded-lg bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 font-semibold transition-transform transform hover:scale-105 flex items-center justify-center gap-2 disabled:opacity-60"
           >
-            <LogOut size={18} />
-            Logout
+            {actionLoading ? (
+              <Loader2 className="animate-spin" size={18} />
+            ) : (
+              <>
+                <LogOut size={18} />
+                Logout
+              </>
+            )}
           </button>
 
           <button
             onClick={() => setConfirmOpen(true)}
-            className="w-full py-3 rounded-lg bg-gradient-to-r from-gray-800 to-red-800 hover:from-red-900 hover:to-black text-white font-semibold transition-transform transform hover:scale-105 flex items-center justify-center gap-2 border border-red-500/30"
+            disabled={actionLoading}
+            className="w-full py-3 rounded-lg bg-gradient-to-r from-gray-800 to-red-800 hover:from-red-900 hover:to-black text-white font-semibold transition-transform transform hover:scale-105 flex items-center justify-center gap-2 border border-red-500/30 disabled:opacity-60"
           >
             <Trash2 size={18} className="text-red-400" />
             Delete Account
@@ -128,15 +148,16 @@ export default function Profile() {
         </div>
       </div>
 
+      {/* ⚠️ Confirmation Dialog with Fade Transition */}
       <Dialog
         open={confirmOpen}
-        TransitionComponent={Transition}
+        TransitionComponent={Fade}
         keepMounted
         onClose={() => setConfirmOpen(false)}
       >
         <DialogTitle>{"Delete Account"}</DialogTitle>
         <DialogContent>
-          ⚠️ Are you sure you want to permanently delete your account? This cannot be undone!
+          ⚠️ Are you sure you want to permanently delete your account? This action cannot be undone!
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setConfirmOpen(false)}>Cancel</Button>
