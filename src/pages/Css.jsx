@@ -170,8 +170,7 @@ p {
                 />
                 <div className="absolute inset-0 bg-black/60" />
             </div>
-
-            {/* Hero */}
+                             
             <Section className="text-center pt-32 pb-24">
                 <a
                     href="https://developer.mozilla.org/en-US/docs/Web/CSS"

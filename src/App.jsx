@@ -14,6 +14,7 @@ import Profile from './pages/Profile';
 import ScrollToTop from './components/ScrollToTop';
 import HTML from './pages/Html';
 import CSS from './pages/Css';
+import TechStack from './pages/TechStack';
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/html" element={<HTML />} />
           <Route path="/css" element={<CSS />} />
+          <Route path="/tech-stack" element={<TechStack />} />
         </Routes>
       </Layout>
     </Router>
