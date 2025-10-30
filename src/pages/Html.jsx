@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import ColorBends from "../components/ColorBends";
 import {
     ArrowRight,
     Code,
@@ -172,9 +173,22 @@ const HTML = () => {
     ];
 
     return (
-        <div className="min-h-screen w-full bg-gradient-to-b from-gray-950 via-gray-900 to-black text-gray-100 overflow-x-hidden relative">
-
-            <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_30%_20%,rgba(255,0,120,0.2),transparent_40%),radial-gradient(circle_at_70%_80%,rgba(80,0,255,0.2),transparent_40%)]"></div>
+        <div className="relative min-h-screen w-full text-gray-100 overflow-x-hidden">
+            <div className="fixed inset-0 -z-10">
+                <ColorBends
+                    colors={["#ff5c7a", "#8a5cff", "#00ffd1"]}
+                    rotation={30}
+                    speed={0.3}
+                    scale={1.2}
+                    frequency={1.4}
+                    warpStrength={1.2}
+                    mouseInfluence={0.2}
+                    parallax={0.6}
+                    noise={0.08}
+                    transparent={false}
+                />
+                <div className="absolute inset-0 bg-black/60" />
+            </div>
 
 
             <Section className="text-center pt-32 pb-24">
@@ -216,9 +230,9 @@ const HTML = () => {
 
 
             <Section>
-                <div className="grid md:grid-cols-2 gap-10 items-center">
+                <div className="grid md:grid-cols-2 gap-20 items-center">
                     <img
-                        src="https://cdn.dribbble.com/users/1187278/screenshots/15836114/media/e13daed5a0d2c2d9f8373ecb8d52ee7a.png?resize=1600x1200&vertical=center"
+                        src="https://akshatmhjj.github.io/Code-Journey-V1/Images/HTML1.jpg"
                         alt="HTML Illustration"
                         className="rounded-2xl shadow-2xl shadow-orange-800/30"
                     />
@@ -249,6 +263,124 @@ const HTML = () => {
                 </div>
             </Section>
 
+            <Section>
+                <h2 className="text-4xl font-bold text-center mb-16 text-white">
+                    Deep Dive into HTML 🔍
+                </h2>
+                <div className="grid md:grid-cols-3 gap-8">
+                    {[
+                        {
+                            title: "Headings & Text",
+                            desc: (
+                                <ul className="list-disc pl-5 space-y-1">
+                                    <li>Use <code>&lt;h1&gt;</code> to <code>&lt;h6&gt;</code> for headings and subheadings.</li>
+                                    <li>Use <code>&lt;p&gt;</code> for paragraphs to organize content clearly.</li>
+                                    <li>Emphasize text with <code>&lt;strong&gt;</code> or <code>&lt;em&gt;</code> for readability.</li>
+                                </ul>
+                            ),
+                            icon: <Type className="text-orange-400" />,
+                        },
+                        {
+                            title: "Links & Images",
+                            desc: (
+                                <ul className="list-disc pl-5 space-y-1">
+                                    <li>Create links using <code>&lt;a href="..."&gt;</code> to connect pages.</li>
+                                    <li>Display visuals with <code>&lt;img src="..." alt="..."&gt;</code>.</li>
+                                    <li>Always include <code>alt</code> text for accessibility and SEO.</li>
+                                </ul>
+                            ),
+                            icon: <Link className="text-pink-400" />,
+                        },
+                        {
+                            title: "Lists & Tables",
+                            desc: (
+                                <ul className="list-disc pl-5 space-y-1">
+                                    <li>Use <code>&lt;ul&gt;</code> or <code>&lt;ol&gt;</code> for unordered or ordered lists.</li>
+                                    <li>Structure data with <code>&lt;table&gt;</code>, <code>&lt;tr&gt;</code>, <code>&lt;th&gt;</code>, and <code>&lt;td&gt;</code>.</li>
+                                    <li>Keep tables organized and easy to scan for users.</li>
+                                </ul>
+                            ),
+                            icon: <Table className="text-blue-400" />,
+                        },
+                        {
+                            title: "Forms & Inputs",
+                            desc: (
+                                <ul className="list-disc pl-5 space-y-1">
+                                    <li>Collect user data with <code>&lt;form&gt;</code>, <code>&lt;input&gt;</code>, and <code>&lt;textarea&gt;</code>.</li>
+                                    <li>Use <code>&lt;select&gt;</code> for dropdowns and choices.</li>
+                                    <li>Use proper input types like <code>"email"</code> or <code>"password"</code> for validation.</li>
+                                </ul>
+                            ),
+                            icon: <FormInput className="text-green-400" />,
+                        },
+                        {
+                            title: "Semantic Elements",
+                            desc: (
+                                <ul className="list-disc pl-5 space-y-1">
+                                    <li>Use <code>&lt;header&gt;</code>, <code>&lt;nav&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;section&gt;</code>, and <code>&lt;footer&gt;</code> for structure.</li>
+                                    <li>Improves readability, SEO, and accessibility.</li>
+                                    <li>Adds clear meaning to your page layout.</li>
+                                </ul>
+                            ),
+                            icon: <Globe className="text-purple-400" />,
+                        },
+                        {
+                            title: "Media & Graphics",
+                            desc: (
+                                <ul className="list-disc pl-5 space-y-1">
+                                    <li>Embed sound with <code>&lt;audio&gt;</code> and videos with <code>&lt;video&gt;</code>.</li>
+                                    <li>Use <code>&lt;canvas&gt;</code> or <code>&lt;svg&gt;</code> for custom graphics and animations.</li>
+                                    <li>Enhance user engagement with multimedia content.</li>
+                                </ul>
+                            ),
+                            icon: <ImageIcon className="text-yellow-400" />,
+                        },
+                        {
+                            title: "Metadata & SEO",
+                            desc: (
+                                <ul className="list-disc pl-5 space-y-1">
+                                    <li>Define page info in <code>&lt;head&gt;</code> using <code>&lt;meta&gt;</code> tags.</li>
+                                    <li>Include description, keywords, and viewport settings.</li>
+                                    <li>Helps search engines understand your webpage better.</li>
+                                </ul>
+                            ),
+                            icon: <BookOpen className="text-cyan-400" />,
+                        },
+                        {
+                            title: "Document Structure",
+                            desc: (
+                                <ul className="list-disc pl-5 space-y-1">
+                                    <li>Start with <code>&lt;!DOCTYPE html&gt;</code> to define HTML5.</li>
+                                    <li>Include <code>&lt;html&gt;</code>, <code>&lt;head&gt;</code>, and <code>&lt;body&gt;</code> sections.</li>
+                                    <li>These form the skeleton every browser uses to render content.</li>
+                                </ul>
+                            ),
+                            icon: <FileText className="text-red-400" />,
+                        },
+                        {
+                            title: "Accessibility",
+                            desc: (
+                                <ul className="list-disc pl-5 space-y-1">
+                                    <li>Provide <code>alt</code> text for images for screen readers.</li>
+                                    <li>Use proper heading levels (<code>&lt;h1&gt;</code> → <code>&lt;h6&gt;</code>).</li>
+                                    <li>Apply ARIA attributes for better assistive technology support.</li>
+                                </ul>
+                            ),
+                            icon: <Eye className="text-teal-400" />,
+                        },
+                    ].map((item, i) => (
+                        <motion.div
+                            key={i}
+                            whileHover={{ scale: 1.05 }}
+                            className="bg-white/5 border border-white/10 p-6 rounded-2xl shadow-xl backdrop-blur-xl"
+                        >
+                            <div className="mb-3">{item.icon}</div>
+                            <h3 className="text-xl font-semibold text-white mb-2">{item.title}</h3>
+                            <p className="text-gray-400">{item.desc}</p>
+                        </motion.div>
+                    ))}
+                </div>
+            </Section>
 
             <Section className="text-center">
                 <h2 className="text-4xl font-bold mb-10 text-white">Sample Codes 💻</h2>
@@ -259,7 +391,7 @@ const HTML = () => {
                             key={idx}
                             onClick={() => setExample(idx)}
                             className={`px-5 py-2 rounded-lg text-sm border transition-all ${example === idx
-                                ? "bg-gradient-to-r from-orange-600 to-pink-600 text-white border-transparent"
+                                ? "bg-gradient-to-r from-orange-300 to-pink-300 text-black border-transparent"
                                 : "bg-white/5 border-white/10 hover:bg-white/10"
                                 }`}
                         >
@@ -272,7 +404,7 @@ const HTML = () => {
                     <button
                         onClick={() => setActiveTab("code")}
                         className={`px-6 py-2 rounded-lg border transition-all ${activeTab === "code"
-                            ? "bg-gradient-to-r from-orange-600 to-pink-600 border-transparent"
+                            ? "bg-gradient-to-r from-orange-300 to-pink-300 border-transparent text-black"
                             : "bg-white/5 border-white/10 hover:bg-white/10"
                             }`}
                     >
@@ -281,7 +413,7 @@ const HTML = () => {
                     <button
                         onClick={() => setActiveTab("preview")}
                         className={`px-6 py-2 rounded-lg border transition-all ${activeTab === "preview"
-                            ? "bg-gradient-to-r from-orange-600 to-pink-600 border-transparent"
+                            ? "bg-gradient-to-r from-orange-300 to-pink-300 border-transparent text-black"
                             : "bg-white/5 border-white/10 hover:bg-white/10"
                             }`}
                     >
@@ -301,37 +433,6 @@ const HTML = () => {
                     )}
                 </div>
             </Section>
-
-
-            <Section>
-                <h2 className="text-4xl font-bold text-center mb-16 text-white">
-                    Deep Dive into HTML 🔍
-                </h2>
-                <div className="grid md:grid-cols-3 gap-8">
-                    {[
-                        { title: "Headings & Text", desc: "HTML offers <h1> to <h6> for headings and <p> for paragraphs to structure readable content.", icon: <Type className="text-orange-400" /> },
-                        { title: "Links & Images", desc: "Use <a> to link pages and <img> to embed images from URLs or your local files.", icon: <Link className="text-pink-400" /> },
-                        { title: "Lists & Tables", desc: "<ul>, <ol>, and <table> organize data into readable formats.", icon: <Table className="text-blue-400" /> },
-                        { title: "Forms & Inputs", desc: "Collect data using <form>, <input>, <select>, and <textarea> elements.", icon: <FormInput className="text-green-400" /> },
-                        { title: "Semantic Elements", desc: "<header>, <footer>, and <article> give meaning to your layout, improving SEO.", icon: <Globe className="text-purple-400" /> },
-                        { title: "Media & Graphics", desc: "Add multimedia easily using <audio>, <video>, and <canvas>.", icon: <ImageIcon className="text-yellow-400" /> },
-                        { title: "Metadata & SEO", desc: "<meta> tags define keywords, descriptions, and responsive settings to help search engines understand your page.", icon: <BookOpen className="text-cyan-400" /> },
-                        { title: "Document Structure", desc: "The <!DOCTYPE html> declaration and <html>, <head>, and <body> tags form the skeleton of every HTML document.", icon: <FileText className="text-red-400" /> },
-                        { title: "Accessibility", desc: "Use alt attributes and semantic tags to make content accessible for screen readers and assistive tech.", icon: <Eye className="text-teal-400" /> },
-                    ].map((item, i) => (
-                        <motion.div
-                            key={i}
-                            whileHover={{ scale: 1.05 }}
-                            className="bg-white/5 border border-white/10 p-6 rounded-2xl shadow-xl backdrop-blur-xl"
-                        >
-                            <div className="mb-3">{item.icon}</div>
-                            <h3 className="text-xl font-semibold text-white mb-2">{item.title}</h3>
-                            <p className="text-gray-400">{item.desc}</p>
-                        </motion.div>
-                    ))}
-                </div>
-            </Section>
-
 
             <Section className="text-center">
                 <h2 className="text-4xl font-bold mb-16 text-white">

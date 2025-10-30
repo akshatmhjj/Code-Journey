@@ -13,6 +13,7 @@ import VerifyOtp from './pages/OtpVerification';
 import Profile from './pages/Profile';
 import ScrollToTop from './components/ScrollToTop';
 import HTML from './pages/Html';
+import CSS from './pages/Css';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           <Route path="/verify-otp" element={<VerifyOtp />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/html" element={<HTML />} />
+          <Route path="/css" element={<CSS />} />
         </Routes>
       </Layout>
     </Router>
