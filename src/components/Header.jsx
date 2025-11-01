@@ -17,7 +17,7 @@ const Header = () => {
       links: [
         { label: "HTML", ariaLabel: "", href: "/html" },
         { label: "CSS", ariaLabel: "", href: "/css" },
-        { label: "JavaScript", ariaLabel: "" },
+        { label: "JavaScript", ariaLabel: "", href: "/javascript" },
         { label: "Database", ariaLabel: "" },
       ],
     },
