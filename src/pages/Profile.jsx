@@ -1,16 +1,31 @@
-import { useEffect, useState } from "react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import api from "../lib/api";
-import { LogOut, User, Mail, Phone, MapPin, Trash2, Loader2 } from "lucide-react";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import DialogActions from "@mui/material/DialogActions";
-import Fade from "@mui/material/Fade";
+import {
+  User,
+  Mail,
+  LogOut,
+  FileText,
+  LayoutDashboard,
+  StickyNote,
+  Settings,
+  Trash2,
+  Loader2,
+  ClipboardList,
+  Menu,
+  X,
+  Home,
+} from "lucide-react";
 import { useAlert } from "../context/AlertContext";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  Fade,
+} from "@mui/material";
 
 export default function Profile() {
   const { user, logout } = useAuth();
@@ -18,9 +33,25 @@ export default function Profile() {
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("dashboard");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const { showAlert } = useAlert();
   const navigate = useNavigate();
 
+  // 🧭 Hide Header & Footer
+  useEffect(() => {
+    const header = document.querySelector("header");
+    const footer = document.querySelector("footer");
+    if (header) header.style.display = "none";
+    if (footer) footer.style.display = "none";
+
+    return () => {
+      if (header) header.style.display = "";
+      if (footer) footer.style.display = "";
+    };
+  }, []);
+
+  // 🧾 Fetch Profile Data
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -58,21 +89,23 @@ export default function Profile() {
       setTimeout(async () => {
         await logout();
         navigate("/");
-      }, 2000);
+      }, 1500);
     } catch (err) {
       console.error("Error deleting account:", err);
-      showAlert(err.response?.data?.message || "Failed to delete account", "error");
+      showAlert(
+        err.response?.data?.message || "Failed to delete account",
+        "error"
+      );
     } finally {
       setActionLoading(false);
     }
   };
 
-  // 🌀 Full-screen loader (initial or during logout/delete)
   if (loading || actionLoading) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-black text-white">
-        <Loader2 className="animate-spin text-purple-400 mb-3" size={40} />
-        <p className="animate-pulse text-gray-400">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 text-gray-700">
+        <Loader2 className="animate-spin text-blue-500 mb-3" size={40} />
+        <p className="animate-pulse text-gray-500">
           {loading ? "Loading your profile..." : "Processing..."}
         </p>
       </div>
@@ -81,74 +114,170 @@ export default function Profile() {
 
   if (!profile) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-black text-white">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 text-gray-700">
         <p>No profile found. Please log in again.</p>
       </div>
     );
   }
 
+  // 🧠 Render section content dynamically
+  const renderContent = () => {
+    switch (activeSection) {
+      case "dashboard":
+        return (
+          <div className="p-6">
+            <h2 className="text-xl font-semibold mb-4">Profile Overview</h2>
+            <div className="space-y-3 text-gray-700">
+              <div className="flex items-center gap-3">
+                <Mail size={18} className="text-blue-500" />
+                <span>{profile.email}</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <User size={18} className="text-purple-500" />
+                <span>{profile.username}</span>
+              </div>
+            </div>
+          </div>
+        );
+
+      case "notes":
+        return (
+          <div className="p-6">
+            <h2 className="text-xl font-semibold mb-4">My Notes</h2>
+            <p className="text-gray-600 text-sm">
+              Your personal notes will appear here. You can add, edit, or delete
+              them later.
+            </p>
+          </div>
+        );
+
+      case "tasks":
+        return (
+          <div className="p-6">
+            <h2 className="text-xl font-semibold mb-4">My Tasks</h2>
+            <p className="text-gray-600 text-sm">
+              Manage your projects and goals here (feature coming soon).
+            </p>
+          </div>
+        );
+
+      case "settings":
+        return (
+          <div className="p-6">
+            <h2 className="text-xl font-semibold mb-4">Settings</h2>
+            <p className="text-gray-600 text-sm">
+              Account configuration and preferences will be added here.
+            </p>
+          </div>
+        );
+
+      default:
+        return null;
+    }
+  };
+
   return (
-    <div className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-black via-gray-900 to-purple-900 overflow-hidden">
-      {/* glowing background orbs */}
-      <div className="absolute w-[500px] h-[500px] bg-gradient-to-r from-purple-700 to-blue-500 rounded-full blur-3xl opacity-20 -top-40 -left-40 animate-pulse"></div>
-      <div className="absolute w-[400px] h-[400px] bg-gradient-to-r from-blue-700 to-purple-500 rounded-full blur-3xl opacity-20 bottom-0 right-0 animate-pulse delay-1000"></div>
-
-      <div className="relative z-10 max-w-md w-full bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-8 shadow-[0_0_40px_rgba(168,85,247,0.2)]">
-        <div className="flex flex-col items-center mb-6">
-          <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center shadow-[0_0_20px_rgba(147,51,234,0.5)]">
-            <User size={48} className="text-white" />
+    <div className="min-h-screen flex bg-[url('https://tailframes.com/images/squares-bg.webp')] bg-contain bg-fixed bg-center bg-repeat text-gray-800">
+      {/* Sidebar */}
+      <aside
+        className={`fixed md:static top-0 left-0 h-full w-64 bg-white border-r border-gray-200 p-5 flex flex-col justify-between transform transition-transform duration-300 z-40 ${
+          sidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
+        }`}
+      >
+        <div>
+          {/* Profile Header */}
+          <div className="flex items-center justify-between mb-8 md:justify-start md:gap-3">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 flex items-center justify-center rounded-full bg-blue-100">
+                <User className="text-blue-600" />
+              </div>
+              <div>
+                <h2 className="font-semibold text-gray-800">
+                  {profile.name || "User"}
+                </h2>
+                <p className="text-sm text-gray-500">@{profile.username}</p>
+              </div>
+            </div>
+            {/* Close Icon (mobile only) */}
+            <button
+              onClick={() => setSidebarOpen(false)}
+              className="md:hidden text-gray-600 hover:text-gray-900"
+            >
+              <X size={22} />
+            </button>
           </div>
-          <h1 className="mt-4 text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-            {profile.name || "Anonymous Coder"}
-          </h1>
-          <p className="text-gray-400">@{profile.username}</p>
+
+          {/* Navigation */}
+          <nav className="space-y-2">
+            {[
+              { id: "home", label: "Home", icon: Home },
+              { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
+              { id: "notes", label: "Notes", icon: StickyNote },
+              { id: "tasks", label: "Tasks", icon: ClipboardList },
+              { id: "settings", label: "Settings", icon: Settings },
+            ].map(({ id, label, icon: Icon }) => (
+              <button
+                key={id}
+                onClick={() => {
+                  if (id === "home") navigate("/");
+                  else setActiveSection(id);
+                  setSidebarOpen(false);
+                }}
+                className={`w-full flex items-center gap-3 px-4 py-2 rounded-lg text-left transition ${
+                  activeSection === id
+                    ? "bg-blue-100 text-blue-700 font-medium"
+                    : "hover:bg-gray-100 text-gray-700"
+                }`}
+              >
+                <Icon size={18} />
+                {label}
+              </button>
+            ))}
+          </nav>
         </div>
 
-        <div className="space-y-4 text-gray-200">
-          <div className="flex items-center gap-3 border-b border-white/10 pb-2">
-            <Mail className="text-blue-400" size={20} />
-            <span>{profile.email || "Not provided"}</span>
-          </div>
-
-          <div className="flex items-center gap-3 border-b border-white/10 pb-2">
-            <Phone className="text-purple-400" size={20} />
-            <span>{profile.contact || "Not provided"}</span>
-          </div>
-
-          <div className="flex items-center gap-3 border-b border-white/10 pb-2">
-            <MapPin className="text-pink-400" size={20} />
-            <span>{profile.location || "Unknown"}</span>
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-3 mt-8">
+        {/* Bottom Actions */}
+        <div className="border-t border-gray-200 pt-4">
           <button
             onClick={handleLogout}
-            disabled={actionLoading}
-            className="w-full py-3 rounded-lg bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 font-semibold transition-transform transform hover:scale-105 flex items-center justify-center gap-2 disabled:opacity-60"
+            className="w-full flex items-center gap-3 px-4 py-2 rounded-lg text-red-600 hover:bg-red-50 transition"
           >
-            {actionLoading ? (
-              <Loader2 className="animate-spin" size={18} />
-            ) : (
-              <>
-                <LogOut size={18} />
-                Logout
-              </>
-            )}
+            <LogOut size={18} /> Logout
           </button>
-
           <button
             onClick={() => setConfirmOpen(true)}
-            disabled={actionLoading}
-            className="w-full py-3 rounded-lg bg-gradient-to-r from-gray-800 to-red-800 hover:from-red-900 hover:to-black text-white font-semibold transition-transform transform hover:scale-105 flex items-center justify-center gap-2 border border-red-500/30 disabled:opacity-60"
+            className="w-full flex items-center gap-3 px-4 py-2 mt-2 rounded-lg text-gray-500 hover:bg-gray-100 transition"
           >
-            <Trash2 size={18} className="text-red-400" />
-            Delete Account
+            <Trash2 size={18} /> Delete Account
           </button>
         </div>
-      </div>
+      </aside>
 
-      {/* ⚠️ Confirmation Dialog with Fade Transition */}
+      {/* Overlay for mobile */}
+      {sidebarOpen && (
+        <div
+          onClick={() => setSidebarOpen(false)}
+          className="fixed inset-0 bg-black/40 md:hidden z-30"
+        ></div>
+      )}
+
+      {/* Main Content */}
+      <main className="flex-1 min-h-screen">
+        {/* Mobile Top Bar */}
+        <div className="flex items-center justify-between bg-white border-b border-gray-200 px-4 py-3 md:hidden">
+          <h1 className="font-semibold text-lg">{profile.name || "Profile"}</h1>
+          <button
+            onClick={() => setSidebarOpen(true)}
+            className="text-gray-700 hover:text-gray-900"
+          >
+            <Menu size={22} />
+          </button>
+        </div>
+
+        {renderContent()}
+      </main>
+
+      {/* Delete Confirm Dialog */}
       <Dialog
         open={confirmOpen}
         TransitionComponent={Fade}
@@ -157,7 +286,8 @@ export default function Profile() {
       >
         <DialogTitle>{"Delete Account"}</DialogTitle>
         <DialogContent>
-          ⚠️ Are you sure you want to permanently delete your account? This action cannot be undone!
+          ⚠️ Are you sure you want to permanently delete your account? This
+          action cannot be undone!
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setConfirmOpen(false)}>Cancel</Button>

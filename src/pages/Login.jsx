@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Eye, EyeOff, Loader2 } from "lucide-react"; // ⬅️ Added Loader2
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import SocialIcons from "../components/SocialIcons";
 import Orb from "../components/Orb";
@@ -9,7 +9,7 @@ import { useAlert } from "../context/AlertContext";
 export default function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false); // ⬅️ Added loading state
+  const [loading, setLoading] = useState(false); 
   const navigate = useNavigate();
   const { login } = useAuth();
   const { showAlert } = useAlert();
@@ -19,7 +19,7 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true); // start loader
+    setLoading(true); 
 
     try {
       await login({ username: form.email, password: form.password });
@@ -28,7 +28,7 @@ export default function Login() {
     } catch (err) {
       showAlert(err.response?.data?.message || "Login failed", "error");
     } finally {
-      setLoading(false); // stop loader
+      setLoading(false); 
     }
   };
 
@@ -57,7 +57,7 @@ export default function Login() {
               placeholder="you@example.com"
               value={form.email}
               onChange={handleChange}
-              disabled={loading} // ⬅️ disable during loading
+              disabled={loading} 
               className={`w-full p-3 rounded-lg bg-white/10 border border-white/20 focus:ring-2 focus:ring-blue-500 placeholder-gray-400 text-white ${
                 loading ? "opacity-50 cursor-not-allowed" : ""
               }`}
