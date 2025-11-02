@@ -262,7 +262,7 @@ console.log("Parsed Object:", parsed);`,
 
 
     return (
-        <div className="relative min-h-screen w-full text-gray-100 overflow-x-hidden">
+        <div className="relative w-full text-gray-100 overflow-x-hidden overflow-y-auto min-h-screen">
             <div className="fixed inset-0 -z-10">
                 <ColorBends
                     colors={["#ff5c7a", "#8a5cff", "#00ffd1"]}
@@ -278,6 +278,7 @@ console.log("Parsed Object:", parsed);`,
                 />
                 <div className="absolute inset-0 bg-black/60" />
             </div>
+
 
             {/* Hero Section */}
             <Section className="text-center pt-32 pb-24">
