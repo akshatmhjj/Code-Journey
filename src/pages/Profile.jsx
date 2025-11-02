@@ -26,19 +26,21 @@ import {
   Button,
   Fade,
 } from "@mui/material";
+import { getNotes, createNote, updateNote, deleteNote } from "../lib/api";
 
-const getAccountAge = (createdAt) => {
-  if (!createdAt) return "Unknown";
-  const created = new Date(createdAt);
-  const now = new Date();
-  const diffMs = now - created;
-  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-  const years = Math.floor(diffDays / 365);
-  const months = Math.floor((diffDays % 365) / 30);
-  if (years > 0) return `${years} year${years > 1 ? "s" : ""} ${months} month${months > 1 ? "s" : ""}`;
-  if (months > 0) return `${months} month${months > 1 ? "s" : ""}`;
-  return `${diffDays} day${diffDays > 1 ? "s" : ""}`;
-};
+
+// const getAccountAge = (createdAt) => {
+//   if (!createdAt) return "Unknown";
+//   const created = new Date(createdAt);
+//   const now = new Date();
+//   const diffMs = now - created;
+//   const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+//   const years = Math.floor(diffDays / 365);
+//   const months = Math.floor((diffDays % 365) / 30);
+//   if (years > 0) return `${years} year${years > 1 ? "s" : ""} ${months} month${months > 1 ? "s" : ""}`;
+//   if (months > 0) return `${months} month${months > 1 ? "s" : ""}`;
+//   return `${diffDays} day${diffDays > 1 ? "s" : ""}`;
+// };
 
 
 export default function Profile() {
@@ -51,6 +53,60 @@ export default function Profile() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { showAlert } = useAlert();
   const navigate = useNavigate();
+
+  const [notes, setNotes] = useState([]);
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [editingNote, setEditingNote] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [loadingNotes, setLoadingNotes] = useState(true);
+  const [noteToDelete, setNoteToDelete] = useState(null);
+  const [confirmNoteOpen, setConfirmNoteOpen] = useState(false);
+
+
+  const fetchNotes = async () => {
+    setLoadingNotes(true);
+    try {
+      const res = await getNotes();
+      setNotes(res.notes || []);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoadingNotes(false);
+    }
+  };
+
+  const handleEdit = (note) => {
+    setEditingNote(note);
+    setTitle(note.title);
+    setContent(note.content);
+  };
+
+  const handleDelete = (note) => {
+    setNoteToDelete(note);
+    setConfirmNoteOpen(true);
+  };
+
+  const confirmDeleteNote = async () => {
+    if (!noteToDelete) return;
+    try {
+      await deleteNote(noteToDelete._id);
+      showAlert("Note deleted successfully.", "success");
+      await fetchNotes();
+    } catch (err) {
+      console.error(err);
+      showAlert("Failed to delete note.", "error");
+    } finally {
+      setConfirmNoteOpen(false);
+      setNoteToDelete(null);
+    }
+  };
+
+
+  useEffect(() => {
+    fetchNotes();
+  }, []);
 
   // 🧭 Hide Header & Footer
   useEffect(() => {
@@ -165,10 +221,11 @@ export default function Profile() {
               {[
                 {
                   title: "Notes Created",
-                  value: "12",
+                  value: loading ? "..." : notes.length.toString(),
                   icon: StickyNote,
                   color: "text-blue-500 bg-blue-50",
-                },
+                }
+                ,
                 {
                   title: "Tasks Completed",
                   value: "8",
@@ -229,30 +286,149 @@ export default function Profile() {
               My Notes
             </h2>
 
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {/* Example Note Cards */}
-              {[1, 2, 3].map((note) => (
-                <div
-                  key={note}
-                  className="bg-white rounded-2xl shadow-md hover:shadow-lg p-5 transition-all hover:-translate-y-1"
-                >
-                  <h3 className="font-semibold text-gray-800 mb-2">
-                    Sample Note {note}
-                  </h3>
-                  <p className="text-sm text-gray-600 line-clamp-3">
-                    This is a preview of your note’s content. Soon you’ll be able to
-                    create, edit, and delete your own notes here!
-                  </p>
-                  <div className="mt-4 flex justify-end">
-                    <button className="px-3 py-1.5 text-sm rounded-lg bg-yellow-100 text-yellow-700 font-medium hover:bg-yellow-200 transition">
-                      Coming Soon
+            {/* Add Note Button */}
+            <div className="mb-6 flex justify-end">
+              <button
+                onClick={() => setShowModal(true)}
+                className="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition-all shadow-md"
+              >
+                + Add Note
+              </button>
+            </div>
+
+            {/* Add/Edit Note Modal */}
+            {showModal && (
+              <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 backdrop-blur-sm">
+                <div className="bg-white w-[90%] sm:w-full max-w-md rounded-2xl shadow-xl p-6 relative mx-4 sm:mx-0 max-h-[90vh] overflow-y-auto">
+                  <h3 className="text-lg font-semibold mb-4 text-gray-800 flex items-center justify-between">
+                    {editingNote ? "Edit Note" : "Add a New Note"}
+                    <button
+                      onClick={() => {
+                        setShowModal(false);
+                        setEditingNote(null);
+                        setTitle("");
+                        setContent("");
+                      }}
+                      className="text-gray-500 hover:text-gray-700"
+                    >
+                      ✕
                     </button>
-                  </div>
+                  </h3>
+
+                  <form
+                    onSubmit={async (e) => {
+                      e.preventDefault();
+                      setIsLoading(true);
+                      try {
+                        if (editingNote) {
+                          await updateNote(editingNote._id, { title, content });
+                          showAlert("Note updated successfully.", "success");
+                        } else {
+                          await createNote({ title, content });
+                          showAlert("Note saved successfully.", "success");
+                        }
+                        setTitle("");
+                        setContent("");
+                        setShowModal(false);
+                        await fetchNotes();
+                      } catch (err) {
+                        console.error(err);
+                        showAlert("Failed to save note.", "error");
+                      } finally {
+                        setIsLoading(false);
+                      }
+
+                    }}
+                  >
+                    <input
+                      type="text"
+                      placeholder="Title"
+                      className="w-full border rounded-lg p-2 mb-3"
+                      value={title}
+                      onChange={(e) => setTitle(e.target.value)}
+                      required
+                    />
+                    <textarea
+                      placeholder="Write your note..."
+                      className="w-full border rounded-lg p-2 mb-3"
+                      value={content}
+                      onChange={(e) => setContent(e.target.value)}
+                      required
+                    />
+
+                    <button
+                      type="submit"
+                      disabled={isLoading}
+                      className={`w-full py-2 rounded-lg text-white transition-all ${isLoading
+                        ? "bg-gray-400 cursor-not-allowed"
+                        : editingNote
+                          ? "bg-blue-500 hover:bg-blue-600"
+                          : "bg-yellow-500 hover:bg-yellow-600"
+                        }`}
+                    >
+                      {isLoading
+                        ? editingNote
+                          ? "Updating..."
+                          : "Saving..."
+                        : editingNote
+                          ? "Update Note"
+                          : "Add Note"}
+                    </button>
+                  </form>
                 </div>
-              ))}
+              </div>
+            )}
+
+            {/* Notes Grid */}
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {loadingNotes ? (
+                <div className="col-span-full text-center py-20 text-gray-500">
+                  <div className="animate-spin inline-block w-8 h-8 border-4 border-yellow-400 border-t-transparent rounded-full mb-3"></div>
+                  <p>Loading notes...</p>
+                </div>
+              ) : notes.length === 0 ? (
+                <div className="col-span-full text-center text-gray-500 py-20">
+                  <StickyNote size={40} className="mx-auto mb-2 text-yellow-400" />
+                  <p>No notes yet. Create your first one!</p>
+                </div>
+              ) : (
+                notes.map((note) => (
+                  <div
+                    key={note._id}
+                    className="bg-white rounded-2xl shadow-md hover:shadow-lg p-5 transition-all hover:-translate-y-1"
+                  >
+                    <h3 className="font-semibold text-gray-800 mb-2">{note.title}</h3>
+                    <p className="text-sm text-gray-600 line-clamp-3">
+                      {note.content}
+                    </p>
+
+                    <div className="mt-4 flex justify-between">
+                      <button
+                        className="px-3 py-1 text-sm rounded-lg bg-yellow-100 text-yellow-700 font-medium hover:bg-yellow-200"
+                        onClick={() => {
+                          setEditingNote(note);
+                          setTitle(note.title);
+                          setContent(note.content);
+                          setShowModal(true);
+                        }}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="px-3 py-1 text-sm rounded-lg bg-red-100 text-red-700 font-medium hover:bg-red-200"
+                        onClick={() => handleDelete(note)}
+                      >
+                        Delete
+                      </button>
+
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
           </div>
         );
+
 
       case "tasks":
         return (
@@ -448,6 +624,27 @@ export default function Profile() {
 
         {renderContent()}
       </main>
+
+      {/* Note Delete Confirm Dialog */}
+      <Dialog
+        open={confirmNoteOpen}
+        TransitionComponent={Fade}
+        keepMounted
+        onClose={() => setConfirmNoteOpen(false)}
+      >
+        <DialogTitle>{"Delete Note"}</DialogTitle>
+        <DialogContent>
+          ⚠️ Are you sure you want to delete this note titled "
+          <strong>{noteToDelete?.title}</strong>"?
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setConfirmNoteOpen(false)}>Cancel</Button>
+          <Button color="error" onClick={confirmDeleteNote}>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
+
 
       {/* Delete Confirm Dialog */}
       <Dialog

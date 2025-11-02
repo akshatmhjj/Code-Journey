@@ -50,7 +50,7 @@ const TechStack = () => {
         <div className="relative min-h-screen w-full text-gray-100 overflow-x-hidden">
             <div className="fixed inset-0 -z-10">
                 <ColorBends
-                    colors={["#ff5c7a", "#8a5cff", "#00ffd1"]}
+                    colors={["#ffd500", "#00ffcc", "#ff4b91"]}
                     rotation={30}
                     speed={0.3}
                     scale={1.2}
