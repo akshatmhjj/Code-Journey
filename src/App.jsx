@@ -16,6 +16,7 @@ import HTML from './pages/Html';
 import CSS from './pages/Css';
 import TechStack from './pages/TechStack';
 import JavaScript from './pages/JavaScript';
+import DatabasePage from './pages/Database';
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
           <Route path="/css" element={<CSS />} />
           <Route path="/tech-stack" element={<TechStack />} />
           <Route path="/javascript" element={<JavaScript />} />
+          <Route path="/database" element={<DatabasePage />} />
         </Routes>
       </Layout>
     </Router>
