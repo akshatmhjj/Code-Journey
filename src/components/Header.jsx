@@ -15,9 +15,9 @@ const Header = () => {
       bgColor: "#0D0716",
       textColor: "#fff",
       links: [
-        { label: "HTML", ariaLabel: "" },
-        { label: "CSS", ariaLabel: "" },
-        { label: "JavaScript", ariaLabel: "" },
+        { label: "HTML", ariaLabel: "", href: "/html" },
+        { label: "CSS", ariaLabel: "", href: "/css" },
+        { label: "JavaScript", ariaLabel: "", href: "/javascript" },
         { label: "Database", ariaLabel: "" },
       ],
     },

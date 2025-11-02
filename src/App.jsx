@@ -12,6 +12,10 @@ import Register from './pages/Register';
 import VerifyOtp from './pages/OtpVerification';
 import Profile from './pages/Profile';
 import ScrollToTop from './components/ScrollToTop';
+import HTML from './pages/Html';
+import CSS from './pages/Css';
+import TechStack from './pages/TechStack';
+import JavaScript from './pages/JavaScript';
 
 function App() {
   return (
@@ -29,6 +33,10 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/verify-otp" element={<VerifyOtp />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/html" element={<HTML />} />
+          <Route path="/css" element={<CSS />} />
+          <Route path="/tech-stack" element={<TechStack />} />
+          <Route path="/javascript" element={<JavaScript />} />
         </Routes>
       </Layout>
     </Router>

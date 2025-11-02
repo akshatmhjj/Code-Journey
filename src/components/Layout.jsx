@@ -7,7 +7,7 @@ const Layout = ({ children }) => {
   const location = useLocation();
 
   // Paths where Header and Footer should be hidden
-  const noHeaderFooterRoutes = ["/login", "/register", "/verify-otp"];
+  const noHeaderFooterRoutes = ["/login", "/register", "/verify-otp", "/profile"];
 
   const hideHeaderFooter = noHeaderFooterRoutes.includes(location.pathname);
 
