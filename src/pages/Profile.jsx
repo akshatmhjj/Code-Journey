@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import api from "../lib/api";
 import {
   User,
@@ -298,10 +299,23 @@ export default function Profile() {
 
             {/* Add/Edit Note Modal */}
             {showModal && (
-              <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 backdrop-blur-sm">
-                <div className="bg-white w-[90%] sm:w-full max-w-md rounded-2xl shadow-xl p-6 relative mx-4 sm:mx-0 max-h-[90vh] overflow-y-auto">
-                  <h3 className="text-lg font-semibold mb-4 text-gray-800 flex items-center justify-between">
-                    {editingNote ? "Edit Note" : "Add a New Note"}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
+              >
+                <motion.div
+                  initial={{ scale: 0.9, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0.9, opacity: 0 }}
+                  transition={{ duration: 0.25, ease: "easeOut" }}
+                  className="bg-gradient-to-br from-white to-gray-50 w-[90%] sm:w-full max-w-md rounded-2xl shadow-2xl border border-gray-100 p-6 relative mx-4 sm:mx-0 max-h-[90vh] overflow-y-auto"
+                >
+                  <div className="flex items-center justify-between mb-5">
+                    <h3 className="text-xl font-semibold text-gray-800 tracking-tight">
+                      {editingNote ? "✏️ Edit Note" : "📝 Add New Note"}
+                    </h3>
                     <button
                       onClick={() => {
                         setShowModal(false);
@@ -309,11 +323,11 @@ export default function Profile() {
                         setTitle("");
                         setContent("");
                       }}
-                      className="text-gray-500 hover:text-gray-700"
+                      className="p-1.5 rounded-full hover:bg-gray-100 transition-colors"
                     >
-                      ✕
+                      <span className="text-gray-500 text-xl leading-none">×</span>
                     </button>
-                  </h3>
+                  </div>
 
                   <form
                     onSubmit={async (e) => {
@@ -337,20 +351,21 @@ export default function Profile() {
                       } finally {
                         setIsLoading(false);
                       }
-
                     }}
+                    className="space-y-4"
                   >
                     <input
                       type="text"
-                      placeholder="Title"
-                      className="w-full border rounded-lg p-2 mb-3"
+                      placeholder="Enter title..."
+                      className="w-full border border-gray-200 focus:border-gray-400 focus:ring-2 focus:ring-yellow-200 rounded-xl p-3 text-gray-800 placeholder-gray-400 transition-all outline-none"
                       value={title}
                       onChange={(e) => setTitle(e.target.value)}
                       required
                     />
+
                     <textarea
-                      placeholder="Write your note..."
-                      className="w-full border rounded-lg p-2 mb-3"
+                      placeholder="Write your note here..."
+                      className="w-full border border-gray-200 focus:border-gray-400 focus:ring-2 focus:ring-yellow-200 rounded-xl p-3 h-32 text-gray-800 placeholder-gray-400 transition-all resize-none outline-none"
                       value={content}
                       onChange={(e) => setContent(e.target.value)}
                       required
@@ -359,11 +374,11 @@ export default function Profile() {
                     <button
                       type="submit"
                       disabled={isLoading}
-                      className={`w-full py-2 rounded-lg text-white transition-all ${isLoading
-                        ? "bg-gray-400 cursor-not-allowed"
-                        : editingNote
-                          ? "bg-blue-500 hover:bg-blue-600"
-                          : "bg-yellow-500 hover:bg-yellow-600"
+                      className={`w-full py-2.5 rounded-xl font-medium text-white transition-all shadow-md ${isLoading
+                          ? "bg-gray-400 cursor-not-allowed"
+                          : editingNote
+                            ? "bg-blue-500 hover:bg-blue-600 active:bg-blue-700"
+                            : "bg-yellow-500 hover:bg-yellow-600 active:bg-yellow-700"
                         }`}
                     >
                       {isLoading
@@ -375,9 +390,10 @@ export default function Profile() {
                           : "Add Note"}
                     </button>
                   </form>
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
             )}
+
 
             {/* Notes Grid */}
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">

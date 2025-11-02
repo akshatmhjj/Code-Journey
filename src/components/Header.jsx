@@ -18,7 +18,7 @@ const Header = () => {
         { label: "HTML", ariaLabel: "", href: "/html" },
         { label: "CSS", ariaLabel: "", href: "/css" },
         { label: "JavaScript", ariaLabel: "", href: "/javascript" },
-        { label: "Database", ariaLabel: "" },
+        { label: "Database", ariaLabel: "", href: "/database" },
       ],
     },
     {

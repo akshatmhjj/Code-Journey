@@ -40,7 +40,7 @@ const Modal = ({ title, onClose, children }) => (
             exit={{ opacity: 0 }}
         >
             <motion.div
-                className="bg-gray-900 p-8 rounded-2xl max-w-lg w-full border border-white/10 shadow-xl text-left"
+                className="bg-gray-900 p-6 sm:p-8 rounded-2xl max-w-lg w-[90%] sm:w-full mx-auto border border-white/10 shadow-xl text-left"
                 initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.9, opacity: 0 }}
@@ -262,22 +262,23 @@ console.log("Parsed Object:", parsed);`,
 
 
     return (
-        <div className="relative min-h-screen w-full text-gray-100 overflow-x-hidden">
+        <div className="relative w-full text-gray-100 overflow-x-hidden overflow-y-auto min-h-screen">
             <div className="fixed inset-0 -z-10">
                 <ColorBends
                     colors={["#ff5c7a", "#8a5cff", "#00ffd1"]}
                     rotation={30}
                     speed={0.3}
                     scale={1.2}
-                    frequency={1.4}
-                    warpStrength={1.2}
+                    frequency={1.5}
+                    warpStrength={1.18}
                     mouseInfluence={0.2}
-                    parallax={0.6}
-                    noise={0.08}
+                    parallax={1}
+                    noise={0.1}
                     transparent={false}
                 />
                 <div className="absolute inset-0 bg-black/60" />
             </div>
+
 
             {/* Hero Section */}
             <Section className="text-center pt-32 pb-24">
