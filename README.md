@@ -54,20 +54,6 @@ So Code Journey:
 
 ---
 
-## 📜 Why These Pages Exist
-
-| Page | Purpose |
-|------|----------|
-| **Home** | Serves as an entry point. Includes a banner about the live MERN version and an overview of Code Journey’s mission. |
-| **Tech Stack** | Educates what a “Tech Stack” is and breaks it into four sections — HTML, CSS, JS, and DB — each with intro and navigation links. This gives learners structure. |
-| **HTML Page** | Covers elements, structure, tags — the building blocks of the web. Includes visuals and examples. |
-| **CSS Page** | Teaches styling, selectors, properties, and box model — all shown visually. |
-| **JavaScript Page** | Features **interactive code previews** and **real DOM manipulation demos** so users see code in action, not just output. |
-| **Database Page** | Introduces what databases are, why we use them, and previews backend connection concepts. |
-| **Profile Page** | Placeholder for user data, notes, and task management — designed for future expansion once backend is added. |
-
----
-
 ## ⚙️ Features and Their Purpose
 
 | Feature | Why It’s Added |
