@@ -30,18 +30,18 @@ import {
 import { getNotes, createNote, updateNote, deleteNote } from "../lib/api";
 
 
-// const getAccountAge = (createdAt) => {
-//   if (!createdAt) return "Unknown";
-//   const created = new Date(createdAt);
-//   const now = new Date();
-//   const diffMs = now - created;
-//   const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-//   const years = Math.floor(diffDays / 365);
-//   const months = Math.floor((diffDays % 365) / 30);
-//   if (years > 0) return `${years} year${years > 1 ? "s" : ""} ${months} month${months > 1 ? "s" : ""}`;
-//   if (months > 0) return `${months} month${months > 1 ? "s" : ""}`;
-//   return `${diffDays} day${diffDays > 1 ? "s" : ""}`;
-// };
+const getAccountAge = (createdAt) => {
+  if (!createdAt) return "Unknown";
+  const created = new Date(createdAt);
+  const now = new Date();
+  const diffMs = now - created;
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  const years = Math.floor(diffDays / 365);
+  const months = Math.floor((diffDays % 365) / 30);
+  if (years > 0) return `${years} year${years > 1 ? "s" : ""} ${months} month${months > 1 ? "s" : ""}`;
+  if (months > 0) return `${months} month${months > 1 ? "s" : ""}`;
+  return `${diffDays} day${diffDays > 1 ? "s" : ""}`;
+};
 
 
 export default function Profile() {
@@ -194,86 +194,134 @@ export default function Profile() {
   // 🧠 Render section content dynamically
   const renderContent = () => {
     switch (activeSection) {
+
       case "dashboard":
         return (
-          <div className="p-6 md:p-10">
-            {/* Header */}
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-6 flex items-center gap-3">
-              <LayoutDashboard className="text-blue-600" size={26} />
-              Dashboard Overview
-            </h2>
+          <div className="relative min-h-screen bg-gradient-to-br from-slate-50 via-white to-indigo-50 p-6 md:p-10 overflow-hidden">
+            {/* Background visuals */}
+            <div className="absolute top-[-10%] right-[-10%] w-[400px] h-[400px] bg-purple-300 rounded-full blur-3xl opacity-25"></div>
+            <div className="absolute bottom-[-20%] left-[-10%] w-[500px] h-[500px] bg-blue-200 rounded-full blur-3xl opacity-20"></div>
 
-            {/* Profile Card */}
-            <div className="bg-white rounded-2xl shadow-md border border-gray-100 p-6 mb-8 hover:shadow-lg transition-all">
-              <div className="flex items-center gap-5">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-blue-300 to-purple-300 flex items-center justify-center text-black text-2xl font-semibold shadow-md">
+            {/* Hero Section */}
+            <div className="relative z-10 bg-gradient-to-r from-indigo-200 via-purple-200 to-pink-100 text-white rounded-3xl p-8 md:p-12 shadow-2xl mb-10 flex flex-col md:flex-row items-center md:items-end justify-between">
+              <div>
+                <h2 className="text-3xl md:text-4xl font-extrabold text-gray-700">Welcome back, {profile.name || "User"} 👋</h2>
+                <p className="text-sm text-black mt-2">
+                  Here’s a quick overview of your productivity and recent activity.
+                </p>
+              </div>
+              <div className="mt-6 md:mt-0 flex items-center gap-5 bg-white/50 backdrop-blur-xl px-5 py-3 rounded-full shadow-lg">
+                <div className="w-12 h-12 rounded-full bg-black/70 flex items-center justify-center pb-1 text-xl font-semibold text-white">
                   {profile.name?.charAt(0).toUpperCase() || "U"}
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-gray-800">{profile.name || "User"}</h3>
-                  <p className="text-gray-500">@{profile.username}</p>
-                  <p className="text-sm text-gray-400 mt-1">{profile.email}</p>
+                  <p className="text-sm font-semibold text-black">@{profile.username}</p>
+                  <p className="text-xs text-gray-700">{profile.email}</p>
                 </div>
               </div>
             </div>
 
-            {/* Stats Section */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Stats Bar */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-12">
               {[
                 {
                   title: "Notes Created",
                   value: loading ? "..." : notes.length.toString(),
+                  color: "from-blue-500 to-indigo-500",
                   icon: StickyNote,
-                  color: "text-blue-500 bg-blue-50",
-                }
-                ,
+                },
                 {
                   title: "Tasks Completed",
                   value: "8",
+                  color: "from-emerald-500 to-teal-500",
                   icon: ClipboardList,
-                  color: "text-green-500 bg-green-50",
                 },
                 {
                   title: "Account Age",
-                  value: "3 Months",
+                  value: getAccountAge(profile.createdAt),
+                  color: "from-purple-500 to-pink-500",
                   icon: FileText,
-                  color: "text-purple-500 bg-purple-50",
                 },
-              ].map(({ title, value, icon: Icon, color }) => (
+              ].map(({ title, value, color, icon: Icon }) => (
                 <div
                   key={title}
-                  className="flex items-center justify-between p-5 rounded-xl bg-white border border-gray-100 shadow-sm hover:shadow-md transition-all"
+                  className="relative overflow-hidden bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 p-6"
                 >
-                  <div>
-                    <h4 className="text-sm text-gray-500">{title}</h4>
-                    <p className="text-xl font-semibold text-gray-800 mt-1">{value}</p>
-                  </div>
-                  <div
-                    className={`w-10 h-10 flex items-center justify-center rounded-full ${color}`}
-                  >
-                    <Icon size={20} />
+                  <div className={`absolute inset-0 bg-gradient-to-br ${color} opacity-10`}></div>
+                  <div className="relative z-10 flex items-center justify-between">
+                    <div>
+                      <h4 className="text-gray-500 text-sm font-medium">{title}</h4>
+                      <p className="text-2xl font-bold text-gray-800 mt-1">{value}</p>
+                    </div>
+                    <div
+                      className={`w-12 h-12 flex items-center justify-center rounded-xl bg-gradient-to-br ${color} text-white shadow-md`}
+                    >
+                      <Icon size={22} />
+                    </div>
                   </div>
                 </div>
               ))}
             </div>
 
-            {/* Recent Activity */}
-            <div className="mt-10">
-              <h3 className="text-lg font-semibold text-gray-800 mb-3">Recent Activity</h3>
-              <ul className="space-y-3 text-gray-600 text-sm">
-                <li className="flex items-center gap-3">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                  Updated profile information.
-                </li>
-                <li className="flex items-center gap-3">
-                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                  Added 3 new notes.
-                </li>
-                <li className="flex items-center gap-3">
-                  <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                  Completed 2 tasks.
-                </li>
-              </ul>
+            {/* Split Panels */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              {/* Recent Activity Feed */}
+              <div className="lg:col-span-2 bg-white rounded-3xl shadow-md border border-gray-100 p-8 hover:shadow-xl transition-all duration-300">
+                <h3 className="text-xl font-semibold text-gray-800 mb-6 flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 bg-blue-500 rounded-full animate-pulse"></span>
+                  Recent Activity (Beta)
+                </h3>
+                <ul className="space-y-4 text-gray-700 text-sm">
+                  {[
+                    { text: "Updated profile information.", color: "bg-blue-500" },
+                    { text: "Added 3 new notes.", color: "bg-green-500" },
+                    { text: "Completed 2 tasks.", color: "bg-purple-500" },
+                    { text: "Exported your weekly report.", color: "bg-orange-500" },
+                  ].map(({ text, color }, i) => (
+                    <li
+                      key={i}
+                      className="flex items-center justify-between p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-all duration-200"
+                    >
+                      <div className="flex items-center gap-3">
+                        <span className={`w-2.5 h-2.5 ${color} rounded-full`}></span>
+                        {text}
+                      </div>
+                      <span className="text-xs text-gray-400">
+                        {i === 0 ? "Just now" : `${i * 2 + 1}h ago`}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Insights Panel */}
+              <div className="bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-600 text-white rounded-3xl shadow-xl p-8 relative overflow-hidden">
+                <div className="absolute inset-0 opacity-10"></div>
+                <h3 className="text-xl font-semibold mb-6">Performance Insights (Beta)</h3>
+                <div className="space-y-6">
+                  <div>
+                    <p className="text-sm text-indigo-100">Weekly Progress</p>
+                    <div className="w-full h-2 bg-white/30 rounded-full mt-2">
+                      <div className="w-3/4 h-full bg-white rounded-full"></div>
+                    </div>
+                    <p className="text-xs text-indigo-100 mt-1">75% completed</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-indigo-100">Tasks vs Notes</p>
+                    <div className="flex items-center gap-3 mt-3">
+                      <div className="w-3 h-3 bg-green-400 rounded-full"></div>
+                      <span className="text-xs">8 Tasks Completed</span>
+                    </div>
+                    <div className="flex items-center gap-3 mt-2">
+                      <div className="w-3 h-3 bg-blue-400 rounded-full"></div>
+                      <span className="text-xs">{notes.length} Notes Created</span>
+                    </div>
+                  </div>
+                  <button className="mt-6 w-full bg-white text-indigo-700 font-semibold py-2 rounded-full hover:bg-indigo-100 transition-all">
+                    View Full Report
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         );
@@ -375,10 +423,10 @@ export default function Profile() {
                       type="submit"
                       disabled={isLoading}
                       className={`w-full py-2.5 rounded-xl font-medium text-white transition-all shadow-md ${isLoading
-                          ? "bg-gray-400 cursor-not-allowed"
-                          : editingNote
-                            ? "bg-blue-500 hover:bg-blue-600 active:bg-blue-700"
-                            : "bg-yellow-500 hover:bg-yellow-600 active:bg-yellow-700"
+                        ? "bg-gray-400 cursor-not-allowed"
+                        : editingNote
+                          ? "bg-blue-500 hover:bg-blue-600 active:bg-blue-700"
+                          : "bg-yellow-500 hover:bg-yellow-600 active:bg-yellow-700"
                         }`}
                     >
                       {isLoading
@@ -451,7 +499,7 @@ export default function Profile() {
           <div className="p-8 min-h-screen bg-gradient-to-br from-green-50 to-emerald-100">
             <h2 className="text-2xl md:text-3xl font-bold mb-6 text-gray-800 flex items-center gap-2">
               <ClipboardList className="text-green-600" size={22} />
-              My Tasks
+              My Tasks (Beta)
             </h2>
 
             <div className="bg-white rounded-2xl shadow-md p-6 max-w-2xl mx-auto">
@@ -492,7 +540,7 @@ export default function Profile() {
           <div className="p-8 min-h-screen bg-gradient-to-br from-indigo-50 to-purple-100">
             <h2 className="text-2xl md:text-3xl font-bold mb-6 text-gray-800 flex items-center gap-2">
               <Settings className="text-indigo-600" size={22} />
-              Settings
+              Settings (Beta)
             </h2>
 
             <div className="grid gap-6 md:grid-cols-2">
