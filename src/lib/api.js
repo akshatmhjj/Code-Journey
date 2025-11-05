@@ -16,11 +16,10 @@ API.interceptors.response.use(
       // auth invalid — clear session flag so app will re-check next visit
       try {
         sessionStorage.removeItem("userFetched");
-      } catch { }
+      } catch {}
       // optionally broadcast logout across tabs
       localStorage.setItem("logout", Date.now());
     } else if (status === 429) {
-      // Do nothing special here but bubble the error so UI can show a message
       console.warn("Rate limited:", error?.response?.data);
     }
     return Promise.reject(error);
@@ -61,15 +60,9 @@ export const logoutUser = async () => {
 
 // Delete user account
 export const deleteAccount = async () => {
-  const res = await API.delete("/auth/delete-account"); // or "/auth/delete" (match backend)
+  const res = await API.delete("/auth/delete-account");
   return res.data;
 };
-
-
-
-
-
-
 
 // ===== NOTES ROUTES =====
 
@@ -97,6 +90,22 @@ export const deleteNote = async (id) => {
   return res.data;
 };
 
+// ===== CODE FILES ROUTES =====
+// 💾 Manage user-created code files (HTML, CSS, JS projects)
 
+export const getUserFiles = async () => {
+  const res = await API.get("/files");
+  return res.data;
+};
+
+export const saveFile = async (fileData) => {
+  const res = await API.post("/files", fileData);
+  return res.data;
+};
+
+export const deleteFile = async (fileName) => {
+  const res = await API.delete(`/files/${encodeURIComponent(fileName)}`);
+  return res.data;
+};
 
 export default API;

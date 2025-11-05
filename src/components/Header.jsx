@@ -27,8 +27,8 @@ const Header = () => {
       textColor: "#fff",
       links: [
         { label: "Roadmap", ariaLabel: "" },
+        { label: "Code Editor", ariaLabel: "", href: "/cjeditor" },
         { label: "Company", ariaLabel: "" },
-        { label: "Marketplace", ariaLabel: "" },
       ],
     },
     {
