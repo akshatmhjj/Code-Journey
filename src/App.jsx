@@ -18,6 +18,7 @@ import TechStack from './pages/TechStack';
 import JavaScript from './pages/JavaScript';
 import DatabasePage from './pages/Database';
 import CJEditor from './pages/CJEditor';
+import CJEditorLanding from './pages/CJEditorLanding';
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
           <Route path="/javascript" element={<JavaScript />} />
           <Route path="/database" element={<DatabasePage />} />
           <Route path="/cjeditor" element={<CJEditor />} />
+          <Route path="/cjeditor-landing" element={<CJEditorLanding />} />
         </Routes>
       </Layout>
     </Router>
