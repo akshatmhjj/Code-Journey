@@ -31,7 +31,6 @@ const ChatPage = () => {
 
   const sendMessage = async () => {
     if (!input.trim() || isStreaming) return;
-
     const userMsg = { role: "user", content: input };
     setMessages((prev) => [...prev, userMsg]);
     setInput("");
@@ -51,7 +50,6 @@ const ChatPage = () => {
         setIsStreaming(false);
         return;
       }
-
       assistantMsg.content += e.data;
       setMessages((prev) => {
         const updated = [...prev];
@@ -67,9 +65,9 @@ const ChatPage = () => {
   };
 
   return (
-    <div className="flex min-h-[100svh] bg-[#0a0c10] text-white overflow-hidden relative">
-      {/* === SIDEBAR (Fixed on Desktop) === */}
-      <aside className="hidden md:flex flex-col bg-[#111827]/95 border-r border-white/10 w-64 fixed left-0 top-0 bottom-0">
+    <div className="flex min-h-screen bg-[#0a0c10] text-white overflow-hidden">
+      {/* === SIDEBAR === */}
+      <aside className="hidden md:flex flex-col bg-[#111827]/95 border-r border-white/10 w-64 flex-shrink-0 z-30">
         <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
           <h2 className="font-semibold text-gray-200 flex items-center gap-2 text-sm">
             <MessageSquare className="w-4 h-4 text-blue-400" /> My Chats
@@ -89,10 +87,10 @@ const ChatPage = () => {
         </div>
       </aside>
 
-      {/* === MAIN AREA === */}
-      <div className="flex flex-col flex-1 md:ml-64 relative">
-        {/* === HEADER (Fixed) === */}
-        <header className="fixed top-0 left-0 md:left-64 right-0 z-40 flex items-center justify-between px-5 py-3 bg-[#0d1117]/20 backdrop-blur-md border-b border-white/10">
+      {/* === MAIN CHAT AREA === */}
+      <div className="flex flex-col flex-1 md:ml-0 relative">
+        {/* HEADER */}
+        <header className="fixed top-0 left-0 md:left-64 right-0 z-40 flex items-center justify-between px-5 py-3 bg-[#0d1117]/90 backdrop-blur-md border-b border-white/10">
           <div className="flex items-center gap-3">
             <button
               className="p-2 hover:bg-white/10 rounded-lg transition md:hidden"
@@ -109,56 +107,44 @@ const ChatPage = () => {
           </button>
         </header>
 
-        {/* === CHAT WINDOW (Scrolls) === */}
-        <main className="flex-1 overflow-y-auto px-4 md:px-6 py-20 md:py-24 bg-gradient-to-b from-[#0b0f19] to-[#121620] space-y-5 scrollbar-thin scrollbar-thumb-gray-700">
-          {messages.map((msg, i) => {
-            const formattedText = formatAIResponse(msg.content);
-            return (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.2 }}
-                className={`flex items-end gap-3 break-words ${msg.role === "user" ? "justify-end" : "justify-start"
-                  }`}
-              >
-                {msg.role === "assistant" && (
-                  <div className="p-2 bg-blue-600/20 rounded-full border border-blue-500/30 flex-shrink-0">
-                    <Bot className="w-5 h-5 text-blue-400" />
-                  </div>
-                )}
-                <div
-                  className={`max-w-full sm:max-w-[90%] md:max-w-[70%] p-3 md:p-4 text-sm md:text-base leading-relaxed rounded-2xl 
-    ${msg.role === "user"
-                      ? "bg-blue-600 text-white rounded-br-none"
-                      : "bg-[#1a1f27] text-gray-100 border border-blue-500/20 rounded-bl-none"
-                    }`}
-                  style={{
-                    wordBreak: "break-word",
-                    overflowWrap: "break-word",
-                    whiteSpace: "pre-wrap",
-                  }}
-                >
-                  <div
-                    className="prose prose-invert max-w-none text-gray-100 break-words"
-                    style={{
-                      overflowX: "auto",
-                      wordBreak: "break-word",
-                      whiteSpace: "pre-wrap",
-                    }}
-                  >
-                    <MarkdownRenderer text={formattedText} />
-                  </div>
+        {/* CHAT MESSAGES */}
+        <main className="flex-1 overflow-y-auto px-4 md:px-6 pt-20 pb-24 bg-gradient-to-b from-[#0b0f19] to-[#121620] space-y-5 scrollbar-thin scrollbar-thumb-gray-700">
+          {messages.map((msg, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.2 }}
+              className={`flex items-start gap-3 ${
+                msg.role === "user" ? "justify-end" : "justify-start"
+              }`}
+            >
+              {msg.role === "assistant" && (
+                <div className="p-2 bg-blue-600/20 rounded-full border border-blue-500/30 flex-shrink-0">
+                  <Bot className="w-5 h-5 text-blue-400" />
                 </div>
-
-                {msg.role === "user" && (
-                  <div className="p-2 bg-blue-500/80 rounded-full border border-blue-300/30 flex-shrink-0">
-                    <User className="w-5 h-5 text-white" />
-                  </div>
-                )}
-              </motion.div>
-            );
-          })}
+              )}
+              <div
+                className={`max-w-[90%] sm:max-w-[80%] md:max-w-[70%] rounded-2xl overflow-hidden ${
+                  msg.role === "user"
+                    ? "bg-blue-600 text-white rounded-br-none px-4 py-2"
+                    : "bg-[#1a1f27] text-gray-100 border border-blue-500/10 rounded-bl-none px-4 py-3"
+                }`}
+                style={{
+                  wordBreak: "break-word",
+                  overflowWrap: "break-word",
+                  whiteSpace: "pre-wrap",
+                }}
+              >
+                <MarkdownRenderer text={formatAIResponse(msg.content)} />
+              </div>
+              {msg.role === "user" && (
+                <div className="p-2 bg-blue-500/80 rounded-full border border-blue-300/30 flex-shrink-0">
+                  <User className="w-5 h-5 text-white" />
+                </div>
+              )}
+            </motion.div>
+          ))}
 
           {isStreaming && (
             <div className="flex items-center gap-2 text-gray-400 text-sm">
@@ -168,8 +154,8 @@ const ChatPage = () => {
           <div ref={chatEndRef} />
         </main>
 
-        {/* === INPUT (Fixed) === */}
-        <footer className="fixed bottom-0 left-0 md:left-64 right-0 p-3 md:p-4 border-t border-white/10 bg-[#10141b]/80 backdrop-blur-md z-40">
+        {/* FOOTER */}
+        <footer className="fixed bottom-0 left-0 md:left-64 right-0 p-3 md:p-4 border-t border-white/10 bg-[#10141b]/90 backdrop-blur-md z-40">
           <div className="flex items-center gap-3 w-full max-w-5xl mx-auto px-2 md:px-6">
             <input
               type="text"

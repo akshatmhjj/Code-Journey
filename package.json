@@ -29,6 +29,7 @@
     "gasp": "^0.0.2",
     "gsap": "^3.13.0",
     "highlight.js": "^11.11.1",
+    "js-beautify": "^1.15.4",
     "ldrs": "^1.1.7",
     "lucide-react": "^0.545.0",
     "markdown-it": "^14.1.0",
