@@ -71,7 +71,14 @@ const ChatPage = () => {
   };
 
   return (
-    <div className="flex h-dvh bg-[#0a0c10] text-white overflow-hidden relative">
+    <div
+      className="flex min-h-[100svh] bg-[#0a0c10] text-white overflow-hidden relative"
+      style={{
+        minHeight: "100svh",
+        overscrollBehavior: "none",
+      }}
+    >
+
       {/* === SIDEBAR === */}
       {/* Permanent on Desktop */}
       <aside className="hidden md:flex flex-col bg-[#111827]/95 border-r border-white/10 w-64 flex-shrink-0">
@@ -172,8 +179,8 @@ const ChatPage = () => {
                 )}
                 <div
                   className={`max-w-[80%] md:max-w-[70%] p-3 md:p-4 text-sm md:text-base leading-relaxed rounded-2xl ${msg.role === "user"
-                      ? "bg-blue-600 text-white rounded-br-none"
-                      : "bg-[#1a1f27] text-gray-100 border border-blue-500/20 rounded-bl-none"
+                    ? "bg-blue-600 text-white rounded-br-none"
+                    : "bg-[#1a1f27] text-gray-100 border border-blue-500/20 rounded-bl-none"
                     }`}
                 >
                   <div className="prose prose-invert max-w-none leading-relaxed text-gray-100">
