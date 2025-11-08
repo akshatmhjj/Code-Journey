@@ -38,11 +38,13 @@ const ChatPage = () => {
     setInput("");
     setIsStreaming(true);
 
+    const API_BASE =
+      import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
+
     const eventSource = new EventSource(
-      `http://localhost:5000/api/chat/stream?message=${encodeURIComponent(
-        input
-      )}`
+      `${API_BASE}/api/chat/stream?message=${encodeURIComponent(input)}`
     );
+
 
     let assistantMsg = { role: "assistant", content: "" };
     setMessages((prev) => [...prev, assistantMsg]);
@@ -160,9 +162,8 @@ const ChatPage = () => {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.2 }}
-                className={`flex items-end gap-3 ${
-                  msg.role === "user" ? "justify-end" : "justify-start"
-                }`}
+                className={`flex items-end gap-3 ${msg.role === "user" ? "justify-end" : "justify-start"
+                  }`}
               >
                 {msg.role === "assistant" && (
                   <div className="p-2 bg-blue-600/20 rounded-full border border-blue-500/30">
@@ -170,11 +171,10 @@ const ChatPage = () => {
                   </div>
                 )}
                 <div
-                  className={`max-w-[80%] md:max-w-[70%] p-3 md:p-4 text-sm md:text-base leading-relaxed rounded-2xl ${
-                    msg.role === "user"
+                  className={`max-w-[80%] md:max-w-[70%] p-3 md:p-4 text-sm md:text-base leading-relaxed rounded-2xl ${msg.role === "user"
                       ? "bg-blue-600 text-white rounded-br-none"
                       : "bg-[#1a1f27] text-gray-100 border border-blue-500/20 rounded-bl-none"
-                  }`}
+                    }`}
                 >
                   <div className="prose prose-invert max-w-none leading-relaxed text-gray-100">
                     <MarkdownRenderer text={formattedText} />
