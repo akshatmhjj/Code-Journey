@@ -9,3 +9,17 @@ html, body {
   width: 0px;
   background: transparent;
 }
+
+.markdown-body {
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+.markdown-body p + p {
+  margin-top: 0.75rem;
+}
+
+.markdown-body pre {
+  scrollbar-width: thin;
+  scrollbar-color: #475569 transparent;
+}

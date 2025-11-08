@@ -225,7 +225,7 @@ ${j}
     // --------------------------
     return (
         <div className="min-h-screen bg-[#071226] text-[#e6eef8] p-4 lg:p-8">
-            <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-4 pt-24">
+            <div className="max-w-[1700px] mx-auto grid grid-cols-1 lg:grid-cols-[240px_1fr] gap-6 pt-24 md:mt-20">
                 {/* Sidebar */}
                 <aside className="bg-[#061827] p-4 rounded-2xl border border-[#0f2736] shadow-md">
                     <div className="flex items-center justify-between mb-4">
@@ -313,7 +313,7 @@ ${j}
                     <header className="flex items-center justify-between flex-wrap gap-3">
                         <div className="flex items-center gap-3">
                             <div className="bg-[#062532] px-3 py-2 rounded-lg text-sm font-medium">
-                                Editor
+                                CJ Editor
                             </div>
                             <div className="flex items-center gap-1 bg-[#031821] p-1 rounded-md">
                                 {["html", "css", "js"].map((tab) => (
@@ -348,7 +348,7 @@ ${j}
 
                     <div className="grid grid-cols-1 lg:grid-cols-[1fr_420px] gap-4">
                         <section className="bg-[#041827] rounded-2xl p-2 border border-[#0f2736] relative">
-                            <div className="h-[420px] rounded overflow-hidden">
+                            <div className="h-[440px] rounded overflow-hidden">
                                 <Editor
                                     height="100%"
                                     theme={theme}
@@ -369,7 +369,7 @@ ${j}
                             </div>
 
                             {/* Console */}
-                            <div className="mt-3 bg-[#02161f] p-3 rounded text-xs max-h-[140px] overflow-auto border border-[#08303f]">
+                            <div className="mt-3 bg-[#02161f] p-3 rounded text-xs max-h-[150px] overflow-auto border border-[#08303f]">
                                 <div className="flex items-center justify-between mb-2">
                                     <div className="text-xs text-[#89a6b6]">Console</div>
                                     <div className="text-xs text-[#89a6b6]">{consoleLogs.length} messages</div>
@@ -399,7 +399,7 @@ ${j}
 
                         {/* Preview */}
                         <aside className="space-y-3">
-                            <div className="bg-[#041827] p-3 rounded-2xl border border-[#0f2736] h-[420px] flex flex-col">
+                            <div className="bg-[#041827] p-3 rounded-2xl border border-[#0f2736] h-[450px] flex flex-col">
                                 <div className="text-sm font-medium mb-2">Preview</div>
                                 <iframe
                                     ref={iframeRef}

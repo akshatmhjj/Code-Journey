@@ -19,6 +19,7 @@ import JavaScript from './pages/JavaScript';
 import DatabasePage from './pages/Database';
 import CJEditor from './pages/CJEditor';
 import CJEditorLanding from './pages/CJEditorLanding';
+import ChatPage from './pages/ChatPage';
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
           <Route path="/database" element={<DatabasePage />} />
           <Route path="/cjeditor" element={<CJEditor />} />
           <Route path="/cjeditor-landing" element={<CJEditorLanding />} />
+          <Route path="/chat" element={<ChatPage />} />
         </Routes>
       </Layout>
     </Router>
