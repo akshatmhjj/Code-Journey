@@ -27,7 +27,7 @@ const Header = () => {
       textColor: "#fff",
       links: [
         { label: "Roadmap", ariaLabel: "" },
-        { label: "CJ Editor", ariaLabel: "", href: "/cjeditor-landing" },
+        { label: "CJ Editor", ariaLabel: "", href: "/cj-editor-landing" },
         { label: "Code Journey AI", ariaLabel: "", href: "/code-journey-ai" },
       ],
     },

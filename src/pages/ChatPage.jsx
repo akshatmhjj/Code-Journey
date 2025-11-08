@@ -102,12 +102,16 @@ const ChatPage = () => {
               <Menu className="w-5 h-5 text-gray-300" />
             </button>
             <h1 className="text-base md:text-lg font-semibold tracking-wide flex items-center gap-1">
-              <span className="text-blue-400">⚡</span> CODE JOURNEY
+              <span className="text-blue-400">⚡</span> CODE JOURNEY AI
             </h1>
           </div>
-          <button className="bg-blue-600 hover:bg-blue-700 text-sm px-4 py-1.5 rounded-lg font-medium transition">
-            Profile
+          <button
+            onClick={() => (window.location.href = "/")}
+            className="bg-purple-600 hover:opacity-90 text-sm px-4 py-1.5 rounded-lg font-medium transition flex items-center gap-2"
+          >
+            Home
           </button>
+
         </header>
 
         {/* CHAT MESSAGES (SCROLLABLE AREA) */}
@@ -128,8 +132,8 @@ const ChatPage = () => {
               )}
               <div
                 className={`max-w-[90%] sm:max-w-[80%] md:max-w-[70%] rounded-2xl overflow-hidden ${msg.role === "user"
-                    ? "bg-blue-600 text-white rounded-br-none px-4 py-2"
-                    : "bg-[#1a1f27] text-gray-100 border border-blue-500/10 rounded-bl-none px-4 py-3"
+                  ? "bg-blue-600 text-white rounded-br-none px-4 py-2"
+                  : "bg-[#1a1f27] text-gray-100 border border-blue-500/10 rounded-bl-none px-4 py-3"
                   }`}
                 style={{
                   wordBreak: "break-word",

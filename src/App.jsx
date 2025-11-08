@@ -21,11 +21,12 @@ import CJEditor from './pages/CJEditor';
 import CJEditorLanding from './pages/CJEditorLanding';
 import ChatPage from './pages/ChatPage';
 import CJAILanding from './pages/CJAILanding';
+import ProtectedRoute from "./route/ProtectedRoute";
 
 function App() {
   return (
     <Router>
-      <ScrollToTop/>
+      <ScrollToTop />
       <Layout>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -44,8 +45,15 @@ function App() {
           <Route path="/javascript" element={<JavaScript />} />
           <Route path="/database" element={<DatabasePage />} />
           <Route path="/cjeditor" element={<CJEditor />} />
-          <Route path="/cjeditor-landing" element={<CJEditorLanding />} />
-          <Route path="/chat" element={<ChatPage />} />
+          <Route path="/cj-editor-landing" element={<CJEditorLanding />} />
+          <Route
+            path="/cj-ai"
+            element={
+              <ProtectedRoute>
+                <ChatPage />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/code-journey-ai" element={<CJAILanding />} />
         </Routes>
       </Layout>
