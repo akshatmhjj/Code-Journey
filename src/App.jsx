@@ -20,6 +20,7 @@ import DatabasePage from './pages/Database';
 import CJEditor from './pages/CJEditor';
 import CJEditorLanding from './pages/CJEditorLanding';
 import ChatPage from './pages/ChatPage';
+import CJAILanding from './pages/CJAILanding';
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
           <Route path="/cjeditor" element={<CJEditor />} />
           <Route path="/cjeditor-landing" element={<CJEditorLanding />} />
           <Route path="/chat" element={<ChatPage />} />
+          <Route path="/code-journey-ai" element={<CJAILanding />} />
         </Routes>
       </Layout>
     </Router>

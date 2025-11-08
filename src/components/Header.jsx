@@ -2,7 +2,7 @@ import { useLayoutEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { GoArrowUpRight } from "react-icons/go";
 import logo from "../assets/react.svg";
-import { Link, useNavigate } from "react-router-dom";
+import { href, Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 const Header = () => {
@@ -28,7 +28,7 @@ const Header = () => {
       links: [
         { label: "Roadmap", ariaLabel: "" },
         { label: "CJ Editor", ariaLabel: "", href: "/cjeditor-landing" },
-        { label: "Company", ariaLabel: "" },
+        { label: "Code Journey AI", ariaLabel: "", href: "/code-journey-ai" },
       ],
     },
     {
