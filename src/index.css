@@ -23,3 +23,15 @@ html, body {
   scrollbar-width: thin;
   scrollbar-color: #475569 transparent;
 }
+
+.prose pre {
+  white-space: pre-wrap !important;
+  word-break: break-word !important;
+  overflow-x: auto !important;
+}
+
+.prose code {
+  white-space: pre-wrap !important;
+  word-break: break-word !important;
+}
+

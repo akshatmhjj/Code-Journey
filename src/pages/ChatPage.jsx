@@ -119,9 +119,8 @@ const ChatPage = () => {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.2 }}
-                className={`flex items-end gap-3 break-words ${
-                  msg.role === "user" ? "justify-end" : "justify-start"
-                }`}
+                className={`flex items-end gap-3 break-words ${msg.role === "user" ? "justify-end" : "justify-start"
+                  }`}
               >
                 {msg.role === "assistant" && (
                   <div className="p-2 bg-blue-600/20 rounded-full border border-blue-500/30 flex-shrink-0">
@@ -129,16 +128,29 @@ const ChatPage = () => {
                   </div>
                 )}
                 <div
-                  className={`max-w-[85%] sm:max-w-[80%] md:max-w-[70%] p-3 md:p-4 text-sm md:text-base leading-relaxed rounded-2xl word-break break-words overflow-hidden ${
-                    msg.role === "user"
+                  className={`max-w-full sm:max-w-[90%] md:max-w-[70%] p-3 md:p-4 text-sm md:text-base leading-relaxed rounded-2xl 
+    ${msg.role === "user"
                       ? "bg-blue-600 text-white rounded-br-none"
                       : "bg-[#1a1f27] text-gray-100 border border-blue-500/20 rounded-bl-none"
-                  }`}
+                    }`}
+                  style={{
+                    wordBreak: "break-word",
+                    overflowWrap: "break-word",
+                    whiteSpace: "pre-wrap",
+                  }}
                 >
-                  <div className="prose prose-invert max-w-none text-gray-100 whitespace-pre-wrap break-words">
+                  <div
+                    className="prose prose-invert max-w-none text-gray-100 break-words"
+                    style={{
+                      overflowX: "auto",
+                      wordBreak: "break-word",
+                      whiteSpace: "pre-wrap",
+                    }}
+                  >
                     <MarkdownRenderer text={formattedText} />
                   </div>
                 </div>
+
                 {msg.role === "user" && (
                   <div className="p-2 bg-blue-500/80 rounded-full border border-blue-300/30 flex-shrink-0">
                     <User className="w-5 h-5 text-white" />
