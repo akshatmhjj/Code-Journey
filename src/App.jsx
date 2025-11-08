@@ -44,7 +44,14 @@ function App() {
           <Route path="/tech-stack" element={<TechStack />} />
           <Route path="/javascript" element={<JavaScript />} />
           <Route path="/database" element={<DatabasePage />} />
-          <Route path="/cjeditor" element={<CJEditor />} />
+          <Route
+            path="/cjeditor"
+            element={
+              <ProtectedRoute>
+                <CJEditor />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/cj-editor-landing" element={<CJEditorLanding />} />
           <Route
             path="/cj-ai"

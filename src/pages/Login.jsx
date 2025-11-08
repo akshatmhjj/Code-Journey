@@ -1,34 +1,40 @@
 import { useState } from "react";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import SocialIcons from "../components/SocialIcons";
 import Orb from "../components/Orb";
 import { useAuth } from "../context/AuthContext";
 import { useAlert } from "../context/AlertContext";
 
+
 export default function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false); 
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { login } = useAuth();
   const { showAlert } = useAlert();
+  const location = useLocation();
+  const from = location.state?.from || "/";
+
+
 
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true); 
+    setLoading(true);
 
     try {
       await login({ username: form.email, password: form.password });
       showAlert("Login successful!", "success");
-      navigate("/");
+      setTimeout(() => navigate(from, { replace: true }), 500);
+      navigate(from, { replace: true });
     } catch (err) {
       showAlert(err.response?.data?.message || "Login failed", "error");
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
 
@@ -57,10 +63,9 @@ export default function Login() {
               placeholder="you@example.com"
               value={form.email}
               onChange={handleChange}
-              disabled={loading} 
-              className={`w-full p-3 rounded-lg bg-white/10 border border-white/20 focus:ring-2 focus:ring-blue-500 placeholder-gray-400 text-white ${
-                loading ? "opacity-50 cursor-not-allowed" : ""
-              }`}
+              disabled={loading}
+              className={`w-full p-3 rounded-lg bg-white/10 border border-white/20 focus:ring-2 focus:ring-blue-500 placeholder-gray-400 text-white ${loading ? "opacity-50 cursor-not-allowed" : ""
+                }`}
             />
           </div>
 
@@ -73,17 +78,15 @@ export default function Login() {
               value={form.password}
               onChange={handleChange}
               disabled={loading}
-              className={`w-full p-3 rounded-lg bg-white/10 border border-white/20 focus:ring-2 focus:ring-blue-500 placeholder-gray-400 text-white ${
-                loading ? "opacity-50 cursor-not-allowed" : ""
-              }`}
+              className={`w-full p-3 rounded-lg bg-white/10 border border-white/20 focus:ring-2 focus:ring-blue-500 placeholder-gray-400 text-white ${loading ? "opacity-50 cursor-not-allowed" : ""
+                }`}
             />
             <span
               onClick={() => !loading && setShowPassword(!showPassword)} // prevent toggle while loading
-              className={`absolute right-4 top-10 cursor-pointer ${
-                loading
+              className={`absolute right-4 top-10 cursor-pointer ${loading
                   ? "text-gray-500 cursor-not-allowed"
                   : "text-gray-400 hover:text-gray-200"
-              }`}
+                }`}
             >
               {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
             </span>
@@ -92,11 +95,10 @@ export default function Login() {
           <button
             type="submit"
             disabled={loading}
-            className={`w-full py-3 rounded-lg font-semibold transition-all cursor-pointer ${
-              loading
+            className={`w-full py-3 rounded-lg font-semibold transition-all cursor-pointer ${loading
                 ? "bg-gray-600 cursor-not-allowed"
                 : "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
-            }`}
+              }`}
           >
             {loading ? (
               <div className="flex items-center justify-center space-x-2">
