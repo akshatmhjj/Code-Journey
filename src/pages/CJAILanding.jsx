@@ -215,7 +215,7 @@ const CJAILanding = () => {
           {/* Centered button */}
           <div className="flex justify-center">
             <Button
-              onClick={() => (window.location.href = "/cjeditor")}
+              onClick={() => (window.location.href = "")}
               className="flex items-center gap-2 px-6 py-3 text-lg rounded-xl shadow-lg"
             >
               <ArrowRight className="w-5 h-5" /> Launch the Assistant
