@@ -38,7 +38,7 @@ const ChatPage = () => {
 
     const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
     const eventSource = new EventSource(
-      `${API_BASE}/api/chat/stream?message=${encodeURIComponent(input)}`
+      `${API_BASE}/chat/stream?message=${encodeURIComponent(input)}`
     );
 
     let assistantMsg = { role: "assistant", content: "" };
