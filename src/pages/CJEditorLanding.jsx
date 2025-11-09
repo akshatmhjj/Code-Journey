@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import { Code, Zap, Cloud, Eye, Layers, ArrowRight, Terminal, Cpu } from "lucide-react";
+import { Code, Zap, Cloud, Eye, Layers, ArrowRight, Terminal, Cpu, Sparkles } from "lucide-react";
 
 const Button = ({ children, className = "", onClick, variant = "primary" }) => {
     const base =
@@ -214,6 +214,32 @@ const CJEditorLanding = () => {
                         </motion.div>
                     ))}
                 </div>
+            </section>
+
+            {/* --- CTA Section --- */}
+            <section className="relative z-10 py-24 text-center">
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    className="max-w-3xl mx-auto"
+                >
+                    <Sparkles className="w-10 h-10 text-blue-400 mx-auto mb-4" />
+                    <h2 className="text-3xl font-bold mb-4">Start Your Journey Today</h2>
+                    <p className="text-gray-400 mb-8">
+                        Learn, build, and explore - with a editor that helps you convert imagination to reality.
+                    </p>
+
+                    {/* Centered button */}
+                    <div className="flex justify-center">
+                        <Button
+                            onClick={() => (window.location.href = "")}
+                            className="flex items-center gap-2 px-6 py-3 text-lg rounded-xl shadow-lg"
+                        >
+                            <ArrowRight className="w-5 h-5" /> Launch the Editor
+                        </Button>
+                    </div>
+                </motion.div>
             </section>
 
         </div>
