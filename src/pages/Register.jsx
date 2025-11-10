@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff, Loader2 } from "lucide-react"; // ⬅️ Loader2 icon added
 import { useAuth } from "../context/AuthContext";
-import { useAlert } from "../context/AlertContext"; 
+import { useAlert } from "../context/AlertContext";
 import SocialIcons from "../components/SocialIcons";
 import Orb from "../components/Orb";
 
@@ -20,7 +20,7 @@ export default function Register() {
   const [loading, setLoading] = useState(false); // ⬅️ loading state
 
   const { register } = useAuth();
-  const { showAlert } = useAlert(); 
+  const { showAlert } = useAlert();
   const navigate = useNavigate();
 
   const handleChange = (e) =>
@@ -49,7 +49,7 @@ export default function Register() {
   };
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
+    <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black px-3 sm:px-6">
       <div className="absolute inset-0 z-0">
         <Orb
           hoverIntensity={0.2}
@@ -68,7 +68,7 @@ export default function Register() {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block mb-2 text-sm font-medium text-gray-300">
-                Full Name
+                Full Name <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
@@ -76,14 +76,14 @@ export default function Register() {
                 placeholder="Enter your full name"
                 value={form.name}
                 onChange={handleChange}
-                className="w-full p-3 rounded-lg bg-white/10 border border-white/20 focus:ring-2 focus:ring-blue-500 placeholder-gray-400 text-white"
+                className="w-full p-3 rounded-lg bg-white/10 border border-white/20 focus:ring-2 focus:ring-blue-500 text-white placeholder:text-sm placeholder:text-gray-400"
                 required
               />
             </div>
 
             <div>
               <label className="block mb-2 text-sm font-medium text-gray-300">
-                Username
+                Username <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
@@ -91,7 +91,7 @@ export default function Register() {
                 placeholder="Choose a username"
                 value={form.username}
                 onChange={handleChange}
-                className="w-full p-3 rounded-lg bg-white/10 border border-white/20 focus:ring-2 focus:ring-blue-500 placeholder-gray-400 text-white"
+                className="w-full p-3 rounded-lg bg-white/10 border border-white/20 focus:ring-2 focus:ring-blue-500 text-white placeholder:text-sm placeholder:text-gray-400"
                 required
               />
             </div>
@@ -100,7 +100,7 @@ export default function Register() {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block mb-2 text-sm font-medium text-gray-300">
-                Email Address
+                Email Address <span className="text-red-500">*</span>
               </label>
               <input
                 type="email"
@@ -108,14 +108,14 @@ export default function Register() {
                 placeholder="you@example.com"
                 value={form.email}
                 onChange={handleChange}
-                className="w-full p-3 rounded-lg bg-white/10 border border-white/20 focus:ring-2 focus:ring-blue-500 placeholder-gray-400 text-white"
+                className="w-full p-3 rounded-lg bg-white/10 border border-white/20 focus:ring-2 focus:ring-blue-500 text-white placeholder:text-sm placeholder:text-gray-400"
                 required
               />
             </div>
 
             <div>
               <label className="block mb-2 text-sm font-medium text-gray-300">
-                Password
+                Password <span className="text-red-500">*</span>
               </label>
               <div className="relative">
                 <input
@@ -124,7 +124,7 @@ export default function Register() {
                   placeholder="Create a password"
                   value={form.password}
                   onChange={handleChange}
-                  className="w-full p-3 rounded-lg bg-white/10 border border-white/20 focus:ring-2 focus:ring-blue-500 placeholder-gray-400 text-white"
+                  className="w-full p-3 rounded-lg bg-white/10 border border-white/20 focus:ring-2 focus:ring-blue-500 text-white placeholder:text-sm placeholder:text-gray-400"
                   required
                 />
                 <span
@@ -148,7 +148,7 @@ export default function Register() {
                 placeholder="Indore, India"
                 value={form.location}
                 onChange={handleChange}
-                className="w-full p-3 rounded-lg bg-white/10 border border-white/20 focus:ring-2 focus:ring-blue-500 placeholder-gray-400 text-white"
+                className="w-full p-3 rounded-lg bg-white/10 border border-white/20 focus:ring-2 focus:ring-blue-500 text-white placeholder:text-sm placeholder:text-gray-400"
               />
             </div>
 
@@ -162,7 +162,7 @@ export default function Register() {
                 placeholder="9171xxxxxxx"
                 value={form.contact}
                 onChange={handleChange}
-                className="w-full p-3 rounded-lg bg-white/10 border border-white/20 focus:ring-2 focus:ring-blue-500 placeholder-gray-400 text-white"
+                className="w-full p-3 rounded-lg bg-white/10 border border-white/20 focus:ring-2 focus:ring-blue-500 text-white placeholder:text-sm placeholder:text-gray-400"
               />
             </div>
           </div>
@@ -170,11 +170,10 @@ export default function Register() {
           <button
             type="submit"
             disabled={loading}
-            className={`w-full py-3 rounded-lg font-semibold transition-all cursor-pointer ${
-              loading
+            className={`w-full py-3 rounded-lg font-semibold transition-all cursor-pointer ${loading
                 ? "bg-gray-600 cursor-not-allowed"
                 : "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
-            }`}
+              }`}
           >
             {loading ? (
               <div className="flex items-center justify-center space-x-2">

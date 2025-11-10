@@ -212,7 +212,6 @@ const CJAILanding = () => {
             Learn, build, and explore - with a mentor that understands code like you do.
           </p>
 
-          {/* Centered button */}
           <div className="flex justify-center">
             <Button
               onClick={() => (window.location.href = "/cjeditor")}

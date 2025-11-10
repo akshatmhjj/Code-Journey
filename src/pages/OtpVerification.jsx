@@ -56,7 +56,7 @@ export default function VerifyOtp() {
   };
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
+    <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black px-3 sm:px-6">
       <div className="absolute inset-0 z-0">
         <Orb
           hoverIntensity={0.2}

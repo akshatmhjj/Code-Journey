@@ -151,26 +151,26 @@ export default function Profile() {
     }
   };
 
-  const handleDeleteConfirm = async () => {
-    setConfirmOpen(false);
-    setActionLoading(true);
-    try {
-      await api.delete("/auth/delete-account");
-      showAlert("Your account has been deleted successfully.", "success");
-      setTimeout(async () => {
-        await logout();
-        navigate("/");
-      }, 1500);
-    } catch (err) {
-      console.error("Error deleting account:", err);
-      showAlert(
-        err.response?.data?.message || "Failed to delete account",
-        "error"
-      );
-    } finally {
-      setActionLoading(false);
-    }
-  };
+  // const handleDeleteConfirm = async () => {
+  //   setConfirmOpen(false);
+  //   setActionLoading(true);
+  //   try {
+  //     await api.delete("/auth/delete-account");
+  //     showAlert("Your account has been deleted successfully.", "success");
+  //     setTimeout(async () => {
+  //       await logout();
+  //       navigate("/");
+  //     }, 1500);
+  //   } catch (err) {
+  //     console.error("Error deleting account:", err);
+  //     showAlert(
+  //       err.response?.data?.message || "Failed to delete account",
+  //       "error"
+  //     );
+  //   } finally {
+  //     setActionLoading(false);
+  //   }
+  // };
 
   if (loading || actionLoading) {
     return (
@@ -656,12 +656,12 @@ export default function Profile() {
           >
             <LogOut size={18} /> Logout
           </button>
-          <button
+          {/* <button
             onClick={() => setConfirmOpen(true)}
             className="w-full flex items-center gap-3 px-4 py-2 mt-2 rounded-lg text-gray-500 hover:bg-gray-100 transition"
           >
             <Trash2 size={18} /> Delete Account
-          </button>
+          </button> */}
         </div>
       </aside>
 
@@ -711,7 +711,7 @@ export default function Profile() {
 
 
       {/* Delete Confirm Dialog */}
-      <Dialog
+      {/* <Dialog
         open={confirmOpen}
         TransitionComponent={Fade}
         keepMounted
@@ -728,7 +728,7 @@ export default function Profile() {
             Delete
           </Button>
         </DialogActions>
-      </Dialog>
+      </Dialog> */}
     </div>
   );
 }
