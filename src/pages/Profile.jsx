@@ -18,6 +18,8 @@ import {
   Menu,
   X,
   Home,
+  Edit3,
+  PencilLine,
 } from "lucide-react";
 import { useAlert } from "../context/AlertContext";
 import {
@@ -287,7 +289,6 @@ export default function Profile() {
             </div>
 
             {/* Stats Bar */}
-            {/* Stats Bar */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-12">
               {[
                 {
@@ -528,9 +529,8 @@ export default function Profile() {
               </motion.div>
             )}
 
-
             {/* Notes Grid */}
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 items-start auto-rows-auto">
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 items-start auto-rows-auto">
               {loadingNotes ? (
                 <div className="col-span-full text-center py-20 text-gray-500">
                   <div className="animate-spin inline-block w-8 h-8 border-4 border-yellow-400 border-t-transparent rounded-full mb-3"></div>
@@ -543,39 +543,53 @@ export default function Profile() {
                 </div>
               ) : (
                 notes.map((note) => (
-                  <div
+                  <motion.div
                     key={note._id}
-                    className="bg-white rounded-2xl shadow-md hover:shadow-lg p-5 transition-all hover:-translate-y-1 h-auto"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.4, ease: "easeOut" }}
+                    className="relative bg-white/60 border border-yellow-100 backdrop-blur-md rounded-2xl shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 p-5"
                   >
+                    {/* Note Header */}
+                    <div className="flex items-start justify-between mb-3">
+                      <h3 className="font-semibold text-lg text-gray-800 leading-tight pr-8">
+                        {note.title}
+                      </h3>
 
-                    <h3 className="font-semibold text-gray-800 mb-2">{note.title}</h3>
+                      {/* Edit/Delete Icons */}
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => {
+                            setEditingNote(note);
+                            setTitle(note.title);
+                            setContent(note.content);
+                            setShowModal(true);
+                          }}
+                          className="p-2 rounded-full bg-yellow-100 text-yellow-700 hover:bg-yellow-200 transition hover:rotate-6 hover:scale-105"
+                          title="Edit Note"
+                        >
+                          <PencilLine size={16} strokeWidth={2} />
+                        </button>
+
+                        <button
+                          onClick={() => handleDelete(note)}
+                          className="p-2 rounded-full bg-red-100 text-red-700 hover:bg-red-200 transition hover:rotate-6 hover:scale-105"
+                          title="Delete Note"
+                        >
+                          <Trash2 size={16} strokeWidth={2} />
+                        </button>
+                      </div>
+
+                    </div>
+
+                    {/* Note Content */}
                     <p className="text-sm text-gray-700 whitespace-pre-line leading-relaxed">
                       {note.content}
                     </p>
 
-
-
-                    <div className="mt-4 flex justify-between">
-                      <button
-                        className="px-3 py-1 text-sm rounded-lg bg-yellow-100 text-yellow-700 font-medium hover:bg-yellow-200"
-                        onClick={() => {
-                          setEditingNote(note);
-                          setTitle(note.title);
-                          setContent(note.content);
-                          setShowModal(true);
-                        }}
-                      >
-                        Edit
-                      </button>
-                      <button
-                        className="px-3 py-1 text-sm rounded-lg bg-red-100 text-red-700 font-medium hover:bg-red-200"
-                        onClick={() => handleDelete(note)}
-                      >
-                        Delete
-                      </button>
-
-                    </div>
-                  </div>
+                    {/* Decorative Accent */}
+                    <div className="absolute bottom-3 left-5 w-16 h-1 rounded-full bg-yellow-300/80"></div>
+                  </motion.div>
                 ))
               )}
             </div>
@@ -692,18 +706,6 @@ export default function Profile() {
                       required
                     />
 
-                    {/* Due Date */}
-                    <div>
-                      <label className="block text-sm text-gray-700 mb-1">Due Date</label>
-                      <input
-                        type="date"
-                        className="w-full border border-gray-200 rounded-xl p-3 text-gray-800 focus:ring-2 focus:ring-green-200 focus:border-gray-400 transition-all outline-none"
-                        value={dueDate}
-                        onChange={(e) => setDueDate(e.target.value)}
-                        required
-                      />
-                    </div>
-
                     {/* Status Selector */}
                     <div>
                       <label className="block text-sm text-gray-700 mb-1">Status</label>
@@ -770,94 +772,135 @@ export default function Profile() {
             )}
 
             {/* Tasks Grid */}
-            <div className="space-y-4 max-w-3xl mx-auto">
+            <div className="flex flex-col gap-4 max-w-3xl mx-auto">
               {loadingTasks ? (
-                <div className="text-center py-10 text-gray-500">
+                <div className="col-span-full text-center py-10 text-gray-500">
                   <div className="animate-spin inline-block w-8 h-8 border-4 border-green-400 border-t-transparent rounded-full mb-3"></div>
                   <p>Loading tasks...</p>
                 </div>
               ) : tasks.length === 0 ? (
-                <div className="text-center text-gray-500 py-10">
+                <div className="col-span-full text-center text-gray-500 py-10">
                   <ClipboardList size={40} className="mx-auto mb-2 text-green-400" />
                   <p>No tasks yet. Add one to get started!</p>
                 </div>
               ) : (
                 tasks.map((task) => (
-                  <div
+                  <motion.div
                     key={task._id}
-                    className={`flex items-center justify-between p-4 rounded-xl shadow-md border transition-all ${task.status === "completed"
-                      ? "bg-gray-100 opacity-70"
-                      : "bg-white hover:shadow-lg"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3, ease: "easeOut" }}
+                    className={`relative flex items-center justify-between gap-4 p-4 rounded-xl border transition-all duration-300
+    ${task.status === "completed"
+                        ? "bg-gray-50 border-gray-200 opacity-70"
+                        : "bg-white border-gray-100 hover:shadow-sm hover:border-gray-200"
                       }`}
+                    style={{
+                      borderLeft: `4px solid ${task.priority === "high"
+                        ? "#ef4444"
+                        : task.priority === "medium"
+                          ? "#f59e0b"
+                          : "#22c55e"
+                        }`,
+                    }}
                   >
-                    <div className="flex items-start gap-3">
+                    {/* Left side: checkbox + content */}
+                    <div className="flex items-start gap-3 flex-1">
+                      {/* Circle checkbox */}
                       <button
                         onClick={async () => {
                           try {
-                            await updateTask(task._id, { status: "completed" });
+                            const newStatus =
+                              task.status === "completed" ? "pending" : "completed";
+                            await updateTask(task._id, { status: newStatus });
                             await fetchTasks();
-                            showAlert("Task marked as completed ✅", "success");
-                          } catch (err) {
+                            showAlert(
+                              newStatus === "completed"
+                                ? "Task marked as completed ✅"
+                                : "Task set to pending 🕓",
+                              "success"
+                            );
+                          } catch {
                             showAlert("Failed to update task", "error");
                           }
                         }}
-                        className={`w-5 h-5 mt-1 rounded-full border-2 flex items-center justify-center ${task.status === "completed"
-                          ? "border-green-600 bg-green-500 text-white"
-                          : "border-gray-400 hover:border-green-500"
+                        className={`w-5 h-5 flex items-center justify-center rounded-full border-2 transition-all duration-200
+                          ${task.status === "completed"
+                            ? "border-green-600 bg-green-500 text-white"
+                            : "border-gray-400 hover:border-green-500 hover:scale-105"
                           }`}
                       >
                         {task.status === "completed" && "✓"}
                       </button>
-                      <div>
+
+                      {/* Task text */}
+                      <div className="flex-1 min-w-0">
                         <h3
-                          className={`font-semibold text-gray-800 ${task.status === "completed" ? "line-through text-gray-500" : ""
+                          className={`text-sm font-semibold ${task.status === "completed"
+                            ? "line-through text-gray-500"
+                            : "text-gray-800"
                             }`}
                         >
                           {task.title}
                         </h3>
                         <p
-                          className={`text-sm ${task.status === "completed"
+                          className={`text-xs mt-0.5 ${task.status === "completed"
                             ? "text-gray-400"
                             : "text-gray-600"
                             }`}
                         >
                           {task.description}
                         </p>
-                        <p className="text-xs text-gray-500 mt-1">
-                          Due:{" "}
-                          {task.dueDate
-                            ? new Date(task.dueDate).toLocaleDateString()
-                            : "Not set"}{" "}
-                          •{" "}
+
+                        {/* Tags */}
+                        <div className="flex flex-wrap gap-1 sm:gap-2 mt-2">
+                          {/* Priority tag */}
                           <span
-                            className={`capitalize font-medium ${task.priority === "high"
-                              ? "text-red-600"
-                              : task.priority === "medium"
-                                ? "text-orange-600"
-                                : "text-green-600"
+                            className={`text-[10px] sm:text-[11px] font-medium px-2 sm:px-3 py-[1px] sm:py-0.5 rounded-full border whitespace-nowrap ${task.priority === "high"
+                                ? "bg-red-50 text-red-600 border-red-200"
+                                : task.priority === "medium"
+                                  ? "bg-orange-50 text-orange-600 border-orange-200"
+                                  : "bg-green-50 text-green-600 border-green-200"
                               }`}
                           >
-                            {task.priority}
+                            {task.priority.toUpperCase()}
                           </span>
-                        </p>
+
+                          {/* Status tag */}
+                          <span
+                            className={`text-[10px] sm:text-[11px] font-medium px-2 sm:px-3 py-[1px] sm:py-0.5 rounded-full border whitespace-nowrap ${task.status === "completed"
+                                ? "bg-green-50 text-green-600 border-green-200"
+                                : task.status === "in-progress"
+                                  ? "bg-blue-50 text-blue-600 border-blue-200"
+                                  : "bg-yellow-50 text-yellow-600 border-yellow-200"
+                              }`}
+                          >
+                            {task.status.replace("-", " ").toUpperCase()}
+                          </span>
+                        </div>
+
                       </div>
                     </div>
 
+                    {/* Edit + Delete */}
                     <div className="flex gap-2">
                       <button
                         onClick={() => handleTaskEdit(task)}
-                        className="px-3 py-1 text-sm rounded-lg bg-green-100 text-green-700 font-medium hover:bg-green-200"
+                        className="p-1.5 rounded-md bg-green-50 text-green-600 hover:bg-green-100 transition hover:rotate-6 hover:scale-105"
+                        title="Edit Task"
                       >
-                        Edit
+                        <PencilLine size={16} />
                       </button>
                       <button
                         onClick={() => handleTaskDelete(task)}
-                        className="px-3 py-1 text-sm rounded-lg bg-red-100 text-red-700 font-medium hover:bg-red-200"
+                        className="p-1.5 rounded-md bg-red-50 text-red-600 hover:bg-red-100 transition hover:rotate-6 hover:scale-105"
+                        title="Delete Task"
                       >
-                        Delete
+                        <Trash2 size={16} />
                       </button>
                     </div>
-                  </div>
+                  </motion.div>
+
                 ))
               )}
             </div>
@@ -942,7 +985,7 @@ export default function Profile() {
   };
 
   return (
-    <div className="min-h-screen flex bg-[url('https://tailframes.com/images/squares-bg.webp')] bg-contain bg-fixed bg-center bg-repeat text-gray-800">
+    <div className="h-screen flex overflow-hidden bg-[url('https://tailframes.com/images/squares-bg.webp')] bg-contain bg-fixed bg-center bg-repeat text-gray-800">
       {/* Sidebar */}
       <aside
         className={`fixed md:static top-0 left-0 h-full w-64 bg-white border-r border-gray-200 p-5 flex flex-col justify-between transform transition-transform duration-300 z-40 ${sidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
@@ -1025,7 +1068,7 @@ export default function Profile() {
       )}
 
       {/* Main Content */}
-      <main className="flex-1 min-h-screen">
+      <main className="flex-1 h-full overflow-y-auto scroll-smooth">
         {/* Mobile Top Bar */}
         <div className="flex items-center justify-between bg-white border-b border-gray-200 px-4 py-3 md:hidden">
           <h1 className="font-semibold text-xl">Hello, {profile.name || "Profile"}</h1>
