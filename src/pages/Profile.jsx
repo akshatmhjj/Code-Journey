@@ -3,6 +3,7 @@ import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import api from "../lib/api";
+import { getTasks, createTask, updateTask, deleteTask } from "../lib/api";
 import {
   User,
   Mail,
@@ -65,6 +66,18 @@ export default function Profile() {
   const [noteToDelete, setNoteToDelete] = useState(null);
   const [confirmNoteOpen, setConfirmNoteOpen] = useState(false);
 
+  const [tasks, setTasks] = useState([]);
+  const [loadingTasks, setLoadingTasks] = useState(true);
+  const [taskToDelete, setTaskToDelete] = useState(null);
+  const [confirmTaskOpen, setConfirmTaskOpen] = useState(false);
+  const [editingTask, setEditingTask] = useState(null);
+  const [status, setStatus] = useState("pending");
+  const [priority, setPriority] = useState("medium");
+  const [dueDate, setDueDate] = useState("");
+
+
+
+
 
   const fetchNotes = async () => {
     setLoadingNotes(true);
@@ -103,6 +116,58 @@ export default function Profile() {
       setNoteToDelete(null);
     }
   };
+
+  const fetchTasks = async () => {
+    setLoadingTasks(true);
+    try {
+      const res = await getTasks();
+      setTasks(res.tasks || []);
+    } catch (err) {
+      console.error("Error fetching tasks:", err);
+    } finally {
+      setLoadingTasks(false);
+    }
+  };
+
+  const totalTasks = tasks.length;
+  const completedTasks = tasks.filter(t => t.status === "completed").length;
+
+  const taskProgress =
+    totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+
+
+  const handleTaskEdit = (task) => {
+    setEditingTask(task);
+    setTitle(task.title);
+    setContent(task.description);
+    setShowModal(true);
+  };
+
+  const handleTaskDelete = (task) => {
+    setTaskToDelete(task);
+    setConfirmTaskOpen(true);
+  };
+
+  const confirmDeleteTask = async () => {
+    if (!taskToDelete) return;
+    try {
+      await deleteTask(taskToDelete._id);
+      showAlert("Task deleted successfully.", "success");
+      await fetchTasks();
+    } catch (err) {
+      console.error(err);
+      showAlert("Failed to delete task.", "error");
+    } finally {
+      setConfirmTaskOpen(false);
+      setTaskToDelete(null);
+    }
+  };
+
+  useEffect(() => {
+    fetchTasks();
+  }, []);
+
+
 
 
   useEffect(() => {
@@ -222,6 +287,7 @@ export default function Profile() {
             </div>
 
             {/* Stats Bar */}
+            {/* Stats Bar */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-12">
               {[
                 {
@@ -232,9 +298,12 @@ export default function Profile() {
                 },
                 {
                   title: "Tasks Completed",
-                  value: "8",
+                  value: loadingTasks
+                    ? "..."
+                    : `${completedTasks} / ${totalTasks}`,
                   color: "from-emerald-500 to-teal-500",
                   icon: ClipboardList,
+                  showProgress: true,
                 },
                 {
                   title: "Account Age",
@@ -242,19 +311,35 @@ export default function Profile() {
                   color: "from-purple-500 to-pink-500",
                   icon: FileText,
                 },
-              ].map(({ title, value, color, icon: Icon }) => (
+              ].map(({ title, value, color, icon: Icon, showProgress }) => (
                 <div
                   key={title}
                   className="relative overflow-hidden bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 p-6"
                 >
-                  <div className={`absolute inset-0 bg-gradient-to-br ${color} opacity-10`}></div>
+                  <div
+                    className={`absolute inset-0 bg-gradient-to-br ${color} opacity-10`}
+                  ></div>
                   <div className="relative z-10 flex items-center justify-between">
-                    <div>
+                    <div className="w-full">
                       <h4 className="text-gray-500 text-sm font-medium">{title}</h4>
                       <p className="text-2xl font-bold text-gray-800 mt-1">{value}</p>
+
+                      {showProgress && totalTasks > 0 && (
+                        <div className="mt-3 w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+                          <div
+                            className={`h-full transition-all ${taskProgress < 40
+                              ? "bg-red-400"
+                              : taskProgress < 70
+                                ? "bg-orange-400"
+                                : "bg-green-500"
+                              }`}
+                            style={{ width: `${taskProgress}%` }}
+                          ></div>
+                        </div>
+                      )}
                     </div>
                     <div
-                      className={`w-12 h-12 flex items-center justify-center rounded-xl bg-gradient-to-br ${color} text-white shadow-md`}
+                      className={`w-12 h-12 flex items-center justify-center rounded-xl bg-gradient-to-br ${color} text-white shadow-md ml-4`}
                     >
                       <Icon size={22} />
                     </div>
@@ -262,6 +347,7 @@ export default function Profile() {
                 </div>
               ))}
             </div>
+
 
             {/* Split Panels */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -310,7 +396,7 @@ export default function Profile() {
                     <p className="text-sm text-indigo-100">Tasks vs Notes</p>
                     <div className="flex items-center gap-3 mt-3">
                       <div className="w-3 h-3 bg-green-400 rounded-full"></div>
-                      <span className="text-xs">8 Tasks Completed</span>
+                      <span className="text-xs">{completedTasks} Tasks Completed</span>
                     </div>
                     <div className="flex items-center gap-3 mt-2">
                       <div className="w-3 h-3 bg-blue-400 rounded-full"></div>
@@ -444,7 +530,7 @@ export default function Profile() {
 
 
             {/* Notes Grid */}
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 items-start auto-rows-auto">
               {loadingNotes ? (
                 <div className="col-span-full text-center py-20 text-gray-500">
                   <div className="animate-spin inline-block w-8 h-8 border-4 border-yellow-400 border-t-transparent rounded-full mb-3"></div>
@@ -459,8 +545,9 @@ export default function Profile() {
                 notes.map((note) => (
                   <div
                     key={note._id}
-                    className="bg-white rounded-2xl shadow-md hover:shadow-lg p-5 transition-all hover:-translate-y-1"
+                    className="bg-white rounded-2xl shadow-md hover:shadow-lg p-5 transition-all hover:-translate-y-1 h-auto"
                   >
+
                     <h3 className="font-semibold text-gray-800 mb-2">{note.title}</h3>
                     <p className="text-sm text-gray-700 whitespace-pre-line leading-relaxed">
                       {note.content}
@@ -501,41 +588,303 @@ export default function Profile() {
           <div className="p-8 min-h-screen bg-gradient-to-br from-green-50 to-emerald-100">
             <h2 className="text-2xl md:text-3xl font-bold mb-6 text-gray-800 flex items-center gap-2">
               <ClipboardList className="text-green-600" size={22} />
-              My Tasks (Beta)
+              My Tasks
             </h2>
 
-            <div className="bg-white rounded-2xl shadow-md p-6 max-w-2xl mx-auto">
-              <div className="flex items-center gap-3 mb-4">
-                <input
-                  disabled
-                  placeholder="Add a new task (coming soon)"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 bg-gray-50 text-gray-500 cursor-not-allowed"
-                />
-                <button
-                  disabled
-                  className="bg-green-100 text-green-700 px-4 py-2 rounded-lg font-medium cursor-not-allowed"
-                >
-                  Add
-                </button>
-              </div>
-              <ul className="space-y-3">
-                {[{ text: "Build a cool dashboard UI" }, { text: "Implement notes CRUD" }, { text: "Sync with backend API" }].map(
-                  (task, i) => (
-                    <li
-                      key={i}
-                      className="flex items-center justify-between bg-gray-50 px-4 py-3 rounded-lg border border-gray-200"
-                    >
-                      <span className="text-gray-700">{task.text}</span>
-                      <span className="text-sm text-green-600 font-medium">
-                        Coming Soon
-                      </span>
-                    </li>
-                  )
-                )}
-              </ul>
+            {/* Add Task Button */}
+            <div className="mb-6 flex justify-end">
+              <button
+                onClick={() => {
+                  setShowModal(true);
+                  setEditingTask(null);
+                  setTitle("");
+                  setContent("");
+                }}
+                className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-all shadow-md"
+              >
+                + Add Task
+              </button>
             </div>
+
+            {/* Add/Edit Task Modal */}
+            {showModal && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
+              >
+                <motion.div
+                  initial={{ scale: 0.9, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0.9, opacity: 0 }}
+                  transition={{ duration: 0.25, ease: "easeOut" }}
+                  className="bg-gradient-to-br from-white to-gray-50 w-[90%] sm:w-full max-w-md rounded-2xl shadow-2xl border border-gray-100 p-6 relative mx-4 sm:mx-0 max-h-[90vh] overflow-y-auto"
+                >
+                  <div className="flex items-center justify-between mb-5">
+                    <h3 className="text-xl font-semibold text-gray-800 tracking-tight">
+                      {editingTask ? "✏️ Edit Task" : "🧩 Add New Task"}
+                    </h3>
+                    <button
+                      onClick={() => {
+                        setShowModal(false);
+                        setEditingTask(null);
+                        setTitle("");
+                        setContent("");
+                      }}
+                      className="p-1.5 rounded-full hover:bg-gray-100 transition-colors"
+                    >
+                      <span className="text-gray-500 text-xl leading-none">×</span>
+                    </button>
+                  </div>
+
+                  <form
+                    onSubmit={async (e) => {
+                      e.preventDefault();
+                      setIsLoading(true);
+                      try {
+                        const payload = {
+                          title,
+                          description: content,
+                          status,
+                          priority,
+                          dueDate,
+                        };
+                        if (editingTask) {
+                          await updateTask(editingTask._id, payload);
+                          showAlert("Task updated successfully.", "success");
+                        } else {
+                          await createTask(payload);
+                          showAlert("Task created successfully.", "success");
+                        }
+                        setTitle("");
+                        setContent("");
+                        setStatus("pending");
+                        setPriority("medium");
+                        setDueDate("");
+                        setShowModal(false);
+                        await fetchTasks();
+                      } catch (err) {
+                        console.error(err);
+                        showAlert("Failed to save task.", "error");
+                      } finally {
+                        setIsLoading(false);
+                      }
+                    }}
+                    className="space-y-4"
+                  >
+                    {/* Title */}
+                    <input
+                      type="text"
+                      placeholder="Enter task title..."
+                      className="w-full border border-gray-200 focus:border-gray-400 focus:ring-2 focus:ring-green-200 rounded-xl p-3 text-gray-800 placeholder-gray-400 transition-all outline-none"
+                      value={title}
+                      onChange={(e) => setTitle(e.target.value)}
+                      required
+                    />
+
+                    {/* Description */}
+                    <textarea
+                      placeholder="Describe your task..."
+                      className="w-full border border-gray-200 focus:border-gray-400 focus:ring-2 focus:ring-green-200 rounded-xl p-3 h-32 text-gray-800 placeholder-gray-400 transition-all resize-none outline-none"
+                      value={content}
+                      onChange={(e) => setContent(e.target.value)}
+                      required
+                    />
+
+                    {/* Due Date */}
+                    <div>
+                      <label className="block text-sm text-gray-700 mb-1">Due Date</label>
+                      <input
+                        type="date"
+                        className="w-full border border-gray-200 rounded-xl p-3 text-gray-800 focus:ring-2 focus:ring-green-200 focus:border-gray-400 transition-all outline-none"
+                        value={dueDate}
+                        onChange={(e) => setDueDate(e.target.value)}
+                        required
+                      />
+                    </div>
+
+                    {/* Status Selector */}
+                    <div>
+                      <label className="block text-sm text-gray-700 mb-1">Status</label>
+                      <div className="flex gap-3">
+                        {["pending", "in-progress", "completed"].map((s) => (
+                          <button
+                            type="button"
+                            key={s}
+                            onClick={() => setStatus(s)}
+                            className={`px-3 py-1 rounded-lg text-sm font-medium border transition ${status === s
+                              ? s === "pending"
+                                ? "bg-yellow-100 text-yellow-700 border-yellow-300"
+                                : s === "in-progress"
+                                  ? "bg-blue-100 text-blue-700 border-blue-300"
+                                  : "bg-green-100 text-green-700 border-green-300"
+                              : "bg-gray-50 text-gray-600 border-gray-200 hover:bg-gray-100"
+                              }`}
+                          >
+                            {s.replace("-", " ").toUpperCase()}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Priority Selector */}
+                    <div>
+                      <label className="block text-sm text-gray-700 mb-1">Priority</label>
+                      <div className="flex gap-3">
+                        {["low", "medium", "high"].map((p) => (
+                          <button
+                            type="button"
+                            key={p}
+                            onClick={() => setPriority(p)}
+                            className={`px-3 py-1 rounded-lg text-sm font-medium border transition ${priority === p
+                              ? p === "low"
+                                ? "bg-green-100 text-green-700 border-green-300"
+                                : p === "medium"
+                                  ? "bg-orange-100 text-orange-700 border-orange-300"
+                                  : "bg-red-100 text-red-700 border-red-300"
+                              : "bg-gray-50 text-gray-600 border-gray-200 hover:bg-gray-100"
+                              }`}
+                          >
+                            {p.toUpperCase()}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Submit Button */}
+                    <button
+                      type="submit"
+                      disabled={isLoading}
+                      className={`w-full py-2.5 rounded-xl font-medium text-white transition-all shadow-md ${isLoading
+                        ? "bg-gray-400 cursor-not-allowed"
+                        : "bg-green-500 hover:bg-green-600"
+                        }`}
+                    >
+                      {isLoading ? "Saving..." : editingTask ? "Update Task" : "Add Task"}
+                    </button>
+                  </form>
+
+                </motion.div>
+              </motion.div>
+            )}
+
+            {/* Tasks Grid */}
+            <div className="space-y-4 max-w-3xl mx-auto">
+              {loadingTasks ? (
+                <div className="text-center py-10 text-gray-500">
+                  <div className="animate-spin inline-block w-8 h-8 border-4 border-green-400 border-t-transparent rounded-full mb-3"></div>
+                  <p>Loading tasks...</p>
+                </div>
+              ) : tasks.length === 0 ? (
+                <div className="text-center text-gray-500 py-10">
+                  <ClipboardList size={40} className="mx-auto mb-2 text-green-400" />
+                  <p>No tasks yet. Add one to get started!</p>
+                </div>
+              ) : (
+                tasks.map((task) => (
+                  <div
+                    key={task._id}
+                    className={`flex items-center justify-between p-4 rounded-xl shadow-md border transition-all ${task.status === "completed"
+                      ? "bg-gray-100 opacity-70"
+                      : "bg-white hover:shadow-lg"
+                      }`}
+                  >
+                    <div className="flex items-start gap-3">
+                      <button
+                        onClick={async () => {
+                          try {
+                            await updateTask(task._id, { status: "completed" });
+                            await fetchTasks();
+                            showAlert("Task marked as completed ✅", "success");
+                          } catch (err) {
+                            showAlert("Failed to update task", "error");
+                          }
+                        }}
+                        className={`w-5 h-5 mt-1 rounded-full border-2 flex items-center justify-center ${task.status === "completed"
+                          ? "border-green-600 bg-green-500 text-white"
+                          : "border-gray-400 hover:border-green-500"
+                          }`}
+                      >
+                        {task.status === "completed" && "✓"}
+                      </button>
+                      <div>
+                        <h3
+                          className={`font-semibold text-gray-800 ${task.status === "completed" ? "line-through text-gray-500" : ""
+                            }`}
+                        >
+                          {task.title}
+                        </h3>
+                        <p
+                          className={`text-sm ${task.status === "completed"
+                            ? "text-gray-400"
+                            : "text-gray-600"
+                            }`}
+                        >
+                          {task.description}
+                        </p>
+                        <p className="text-xs text-gray-500 mt-1">
+                          Due:{" "}
+                          {task.dueDate
+                            ? new Date(task.dueDate).toLocaleDateString()
+                            : "Not set"}{" "}
+                          •{" "}
+                          <span
+                            className={`capitalize font-medium ${task.priority === "high"
+                              ? "text-red-600"
+                              : task.priority === "medium"
+                                ? "text-orange-600"
+                                : "text-green-600"
+                              }`}
+                          >
+                            {task.priority}
+                          </span>
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => handleTaskEdit(task)}
+                        className="px-3 py-1 text-sm rounded-lg bg-green-100 text-green-700 font-medium hover:bg-green-200"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleTaskDelete(task)}
+                        className="px-3 py-1 text-sm rounded-lg bg-red-100 text-red-700 font-medium hover:bg-red-200"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+
+
+            {/* Delete Confirm Dialog */}
+            <Dialog
+              open={confirmTaskOpen}
+              TransitionComponent={Fade}
+              keepMounted
+              onClose={() => setConfirmTaskOpen(false)}
+            >
+              <DialogTitle>{"Delete Task"}</DialogTitle>
+              <DialogContent>
+                ⚠️ Are you sure you want to delete this task titled "
+                <strong>{taskToDelete?.title}</strong>"?
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={() => setConfirmTaskOpen(false)}>Cancel</Button>
+                <Button color="error" onClick={confirmDeleteTask}>
+                  Delete
+                </Button>
+              </DialogActions>
+            </Dialog>
           </div>
         );
+
 
       case "settings":
         return (
