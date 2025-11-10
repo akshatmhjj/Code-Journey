@@ -462,9 +462,11 @@ export default function Profile() {
                     className="bg-white rounded-2xl shadow-md hover:shadow-lg p-5 transition-all hover:-translate-y-1"
                   >
                     <h3 className="font-semibold text-gray-800 mb-2">{note.title}</h3>
-                    <p className="text-sm text-gray-600 line-clamp-3">
+                    <p className="text-sm text-gray-700 whitespace-pre-line leading-relaxed">
                       {note.content}
                     </p>
+
+
 
                     <div className="mt-4 flex justify-between">
                       <button
@@ -729,7 +731,7 @@ export default function Profile() {
           </Button>
         </DialogActions>
       </Dialog> */}
-      
+
     </div>
   );
 }

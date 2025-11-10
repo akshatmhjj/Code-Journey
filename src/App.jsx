@@ -52,7 +52,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="/cj-editor-landing" element={<CJEditorLanding />} />
+          <Route path="/code-journey-editor" element={<CJEditorLanding />} />
           <Route
             path="/cj-ai"
             element={
