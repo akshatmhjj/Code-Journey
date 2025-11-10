@@ -66,7 +66,8 @@ const ChatPage = () => {
 
   return (
     <div className="flex h-screen bg-[#0a0c10] text-white overflow-hidden">
-      {/* === SIDEBAR (FIXED) === */}
+      {/* === SIDEBAR (DESKTOP + MOBILE) === */}
+      {/* Desktop Sidebar */}
       <aside className="hidden md:flex flex-col bg-[#111827]/95 border-r border-white/10 w-64 flex-shrink-0 z-30 fixed left-0 top-0 bottom-0">
         <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
           <h2 className="font-semibold text-gray-200 flex items-center gap-2 text-sm">
@@ -89,6 +90,61 @@ const ChatPage = () => {
           </button>
         </div>
       </aside>
+
+      {/* Mobile Sidebar (Overlay Drawer) */}
+      <AnimatePresence>
+        {sidebarOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.4 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/60 z-40"
+              onClick={() => setSidebarOpen(false)}
+            />
+
+            {/* Drawer */}
+            <motion.aside
+              initial={{ x: "-100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "-100%" }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              className="fixed top-0 left-0 bottom-0 w-64 bg-[#111827] border-r border-white/10 flex flex-col z-50"
+            >
+              <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
+                <h2 className="font-semibold text-gray-200 flex items-center gap-2 text-sm">
+                  <MessageSquare className="w-4 h-4 text-blue-400" /> My Chats
+                </h2>
+                <button
+                  onClick={() => setSidebarOpen(false)}
+                  className="text-gray-400 hover:text-gray-200 transition"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <div className="p-3 space-y-2">
+                {["Responsive Navbar Help", "Fix React Hook Error", "JS Debugging"].map((c, i) => (
+                  <div
+                    key={i}
+                    className="p-3 text-sm text-gray-300 bg-white/5 hover:bg-blue-600/30 rounded-lg cursor-pointer transition"
+                  >
+                    {c}
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-auto p-3 border-t border-white/10 bg-[#0f131a]/90">
+                <button className="w-full text-sm text-blue-400 hover:text-blue-300 transition flex items-center justify-center gap-2">
+                  + New Chat
+                </button>
+              </div>
+            </motion.aside>
+          </>
+        )}
+      </AnimatePresence>
+
 
       {/* === MAIN CHAT AREA === */}
       <div className="flex flex-col flex-1 md:ml-64 relative h-screen">
