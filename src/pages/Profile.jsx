@@ -3,7 +3,17 @@ import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import api from "../lib/api";
-import { getTasks, createTask, updateTask, deleteTask } from "../lib/api";
+import {
+  getRecentActivity,
+  getTasks,
+  createTask,
+  updateTask,
+  deleteTask,
+  getNotes,
+  createNote,
+  updateNote,
+  deleteNote
+} from "../lib/api";
 import {
   User,
   Mail,
@@ -30,22 +40,6 @@ import {
   Button,
   Fade,
 } from "@mui/material";
-import { getNotes, createNote, updateNote, deleteNote } from "../lib/api";
-
-
-const getAccountAge = (createdAt) => {
-  if (!createdAt) return "Unknown";
-  const created = new Date(createdAt);
-  const now = new Date();
-  const diffMs = now - created;
-  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-  const years = Math.floor(diffDays / 365);
-  const months = Math.floor((diffDays % 365) / 30);
-  if (years > 0) return `${years} year${years > 1 ? "s" : ""} ${months} month${months > 1 ? "s" : ""}`;
-  if (months > 0) return `${months} month${months > 1 ? "s" : ""}`;
-  return `${diffDays} day${diffDays > 1 ? "s" : ""}`;
-};
-
 
 export default function Profile() {
   const { user, logout } = useAuth();
@@ -77,9 +71,62 @@ export default function Profile() {
   const [priority, setPriority] = useState("medium");
   const [dueDate, setDueDate] = useState("");
 
+  const [activity, setActivity] = useState([]);
+  const { token } = useAuth();
+
+  // For Recent Activity -----
+  const refreshActivity = async () => {
+    try {
+      const res = await getRecentActivity(token);
+      if (res.success) {
+        setActivity(res.activities);
+      }
+    } catch (err) {
+      console.error("Failed to refresh activity:", err);
+    }
+  };
 
 
+  const colorMap = {
+    success: "bg-green-500",
+    danger: "bg-red-500",
+    info: "bg-blue-500",
+    warning: "bg-purple-500",
+    purple: "bg-purple-500",
+  };
 
+  useEffect(() => {
+    refreshActivity();
+  }, []);
+
+
+  function formatTimeAgo(date) {
+    const now = new Date();
+    const past = new Date(date);
+    const diff = Math.floor((now - past) / 1000);
+
+    if (diff < 60) return "Just now";
+    if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+    if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+
+    return `${Math.floor(diff / 86400)}d ago`;
+  }
+
+
+  // ---------
+
+  const getAccountAge = (createdAt) => {
+    if (!createdAt) return "Unknown";
+    const created = new Date(createdAt);
+    const now = new Date();
+    const diffMs = now - created;
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    const years = Math.floor(diffDays / 365);
+    const months = Math.floor((diffDays % 365) / 30);
+    if (years > 0) return `${years} year${years > 1 ? "s" : ""} ${months} month${months > 1 ? "s" : ""}`;
+    if (months > 0) return `${months} month${months > 1 ? "s" : ""}`;
+    return `${diffDays} day${diffDays > 1 ? "s" : ""}`;
+  };
 
   const fetchNotes = async () => {
     setLoadingNotes(true);
@@ -110,6 +157,7 @@ export default function Profile() {
       await deleteNote(noteToDelete._id);
       showAlert("Note deleted successfully.", "success");
       await fetchNotes();
+      await refreshActivity();
     } catch (err) {
       console.error(err);
       showAlert("Failed to delete note.", "error");
@@ -156,6 +204,7 @@ export default function Profile() {
       await deleteTask(taskToDelete._id);
       showAlert("Task deleted successfully.", "success");
       await fetchTasks();
+      await refreshActivity();
     } catch (err) {
       console.error(err);
       showAlert("Failed to delete task.", "error");
@@ -169,14 +218,11 @@ export default function Profile() {
     fetchTasks();
   }, []);
 
-
-
-
   useEffect(() => {
     fetchNotes();
   }, []);
 
-  // 🧭 Hide Header & Footer
+  // Hide Header & Footer
   useEffect(() => {
     const header = document.querySelector("header");
     const footer = document.querySelector("footer");
@@ -189,7 +235,7 @@ export default function Profile() {
     };
   }, []);
 
-  // 🧾 Fetch Profile Data
+  // Fetch Profile Data
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -258,14 +304,13 @@ export default function Profile() {
     );
   }
 
-  // 🧠 Render section content dynamically
   const renderContent = () => {
     switch (activeSection) {
 
       case "dashboard":
         return (
           <div className="relative min-h-screen bg-gradient-to-br from-slate-50 via-white to-indigo-50 p-6 md:p-10 overflow-hidden">
-            {/* Background visuals */}
+
             <div className="absolute top-[-10%] right-[-10%] w-[400px] h-[400px] bg-purple-300 rounded-full blur-3xl opacity-25"></div>
             <div className="absolute bottom-[-20%] left-[-10%] w-[500px] h-[500px] bg-blue-200 rounded-full blur-3xl opacity-20"></div>
 
@@ -274,7 +319,7 @@ export default function Profile() {
               <div>
                 <h2 className="text-3xl md:text-4xl font-extrabold text-gray-700">Welcome back, {profile.name || "User"} 👋</h2>
                 <p className="text-sm text-black mt-2">
-                  Here’s a quick overview of your productivity and recent activity.
+                  Here's a quick overview of your productivity and recent activity.
                 </p>
               </div>
               <div className="mt-6 md:mt-0 flex items-center gap-5 bg-white/50 backdrop-blur-xl px-5 py-3 rounded-full shadow-lg">
@@ -355,31 +400,37 @@ export default function Profile() {
               {/* Recent Activity Feed */}
               <div className="lg:col-span-2 bg-white rounded-3xl shadow-md border border-gray-100 p-8 hover:shadow-xl transition-all duration-300">
                 <h3 className="text-xl font-semibold text-gray-800 mb-6 flex items-center gap-2">
-                  <span className="w-2.5 h-2.5 bg-blue-500 rounded-full animate-pulse"></span>
-                  Recent Activity (Beta)
+                  <span className="w-2.5 h-2.5 bg-blue-600 rounded-full animate-pulse"></span>
+                  Recent Activity
                 </h3>
-                <ul className="space-y-4 text-gray-700 text-sm">
-                  {[
-                    { text: "Updated profile information.", color: "bg-blue-500" },
-                    { text: "Added 3 new notes.", color: "bg-green-500" },
-                    { text: "Completed 2 tasks.", color: "bg-purple-500" },
-                    { text: "Exported your weekly report.", color: "bg-orange-500" },
-                  ].map(({ text, color }, i) => (
-                    <li
-                      key={i}
-                      className="flex items-center justify-between p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-all duration-200"
-                    >
-                      <div className="flex items-center gap-3">
-                        <span className={`w-2.5 h-2.5 ${color} rounded-full`}></span>
-                        {text}
-                      </div>
-                      <span className="text-xs text-gray-400">
-                        {i === 0 ? "Just now" : `${i * 2 + 1}h ago`}
-                      </span>
-                    </li>
-                  ))}
+
+                <ul className="space-y-4 text-gray-700 text-sm max-h-64 overflow-y-auto pr-2">
+                  {activity.length > 0 ? (
+                    activity.slice(0, 10).map((item, i) => (
+                      <li
+                        key={item._id || i}
+                        className="flex items-center justify-between p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-all duration-200"
+                      >
+                        <div className="flex items-center gap-3">
+                          <span
+                            className={`w-2.5 h-2.5 rounded-full ${colorMap[item.type] || "bg-blue-500"
+                              }`}
+                          ></span>
+                          {item.message}
+                        </div>
+
+                        <span className="text-xs text-gray-400">
+                          {formatTimeAgo(item.createdAt)}
+                        </span>
+                      </li>
+                    ))
+                  ) : (
+                    <p className="text-gray-400 text-sm">No recent activity yet</p>
+                  )}
                 </ul>
               </div>
+
+
 
               {/* Insights Panel */}
               <div className="bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-600 text-white rounded-3xl shadow-xl p-8 relative overflow-hidden">
@@ -480,6 +531,7 @@ export default function Profile() {
                         setContent("");
                         setShowModal(false);
                         await fetchNotes();
+                        await refreshActivity();
                       } catch (err) {
                         console.error(err);
                         showAlert("Failed to save note.", "error");
@@ -678,6 +730,7 @@ export default function Profile() {
                         setDueDate("");
                         setShowModal(false);
                         await fetchTasks();
+                        await refreshActivity();
                       } catch (err) {
                         console.error(err);
                         showAlert("Failed to save task.", "error");
@@ -814,6 +867,7 @@ export default function Profile() {
                               task.status === "completed" ? "pending" : "completed";
                             await updateTask(task._id, { status: newStatus });
                             await fetchTasks();
+                            await refreshActivity();
                             showAlert(
                               newStatus === "completed"
                                 ? "Task marked as completed ✅"
@@ -857,10 +911,10 @@ export default function Profile() {
                           {/* Priority tag */}
                           <span
                             className={`text-[10px] sm:text-[11px] font-medium px-2 sm:px-3 py-[1px] sm:py-0.5 rounded-full border whitespace-nowrap ${task.priority === "high"
-                                ? "bg-red-50 text-red-600 border-red-200"
-                                : task.priority === "medium"
-                                  ? "bg-orange-50 text-orange-600 border-orange-200"
-                                  : "bg-green-50 text-green-600 border-green-200"
+                              ? "bg-red-50 text-red-600 border-red-200"
+                              : task.priority === "medium"
+                                ? "bg-orange-50 text-orange-600 border-orange-200"
+                                : "bg-green-50 text-green-600 border-green-200"
                               }`}
                           >
                             {task.priority.toUpperCase()}
@@ -869,10 +923,10 @@ export default function Profile() {
                           {/* Status tag */}
                           <span
                             className={`text-[10px] sm:text-[11px] font-medium px-2 sm:px-3 py-[1px] sm:py-0.5 rounded-full border whitespace-nowrap ${task.status === "completed"
-                                ? "bg-green-50 text-green-600 border-green-200"
-                                : task.status === "in-progress"
-                                  ? "bg-blue-50 text-blue-600 border-blue-200"
-                                  : "bg-yellow-50 text-yellow-600 border-yellow-200"
+                              ? "bg-green-50 text-green-600 border-green-200"
+                              : task.status === "in-progress"
+                                ? "bg-blue-50 text-blue-600 border-blue-200"
+                                : "bg-yellow-50 text-yellow-600 border-yellow-200"
                               }`}
                           >
                             {task.status.replace("-", " ").toUpperCase()}

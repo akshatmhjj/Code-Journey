@@ -16,7 +16,7 @@ API.interceptors.response.use(
     if (status === 401) {
       try {
         sessionStorage.removeItem("userFetched");
-      } catch {}
+      } catch { }
       localStorage.setItem("logout", Date.now());
     } else if (status === 429) {
       console.warn("Rate limited:", error?.response?.data);
@@ -107,8 +107,6 @@ export const sendChatMessage = async (message) => {
   return res.data;
 };
 
-export default API;
-
 // ==============================
 // ===== TASKS ROUTES ===========
 // ==============================
@@ -132,4 +130,21 @@ export const deleteTask = async (id) => {
   const res = await API.delete(`/tasks/${id}`);
   return res.data;
 };
+
+
+// ==============================
+// ===== ACTIVITY ROUTES ========
+// ==============================
+
+export const getRecentActivity = async (token) => {
+  const res = await API.get("/activity/recent", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.data;
+};
+
+export default API;
+
+
+
 
