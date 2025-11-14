@@ -51,7 +51,6 @@ export default function Profile() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { showAlert } = useAlert();
   const navigate = useNavigate();
-
   const [notes, setNotes] = useState([]);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -61,7 +60,6 @@ export default function Profile() {
   const [loadingNotes, setLoadingNotes] = useState(true);
   const [noteToDelete, setNoteToDelete] = useState(null);
   const [confirmNoteOpen, setConfirmNoteOpen] = useState(false);
-
   const [tasks, setTasks] = useState([]);
   const [loadingTasks, setLoadingTasks] = useState(true);
   const [taskToDelete, setTaskToDelete] = useState(null);
@@ -70,8 +68,9 @@ export default function Profile() {
   const [status, setStatus] = useState("pending");
   const [priority, setPriority] = useState("medium");
   const [dueDate, setDueDate] = useState("");
-
-  const [activity, setActivity] = useState([]);
+  const [activities, setActivities] = useState([]);
+  const [loadingActivities, setLoadingActivities] = useState(true);
+  const [showReport, setShowReport] = useState(false);
   const { token } = useAuth();
 
   // For Recent Activity -----
@@ -79,7 +78,7 @@ export default function Profile() {
     try {
       const res = await getRecentActivity(token);
       if (res.success) {
-        setActivity(res.activities);
+        setActivities(res.activities);
       }
     } catch (err) {
       console.error("Failed to refresh activity:", err);
@@ -114,6 +113,41 @@ export default function Profile() {
 
 
   // ---------
+
+  // --- INSIGHTS CALCULATIONS ---
+  const tasksCompletedThisWeek = tasks.filter(
+    (t) => t.status === "completed" &&
+      new Date(t.updatedAt) >= new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+  ).length;
+
+  const notesCreatedThisWeek = notes.filter(
+    (n) =>
+      new Date(n.createdAt) >= new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+  ).length;
+
+  const totalActivities = activities.length;
+
+  const productivityScore = Math.min(
+    100,
+    Math.round(
+      (tasksCompletedThisWeek * 10) +
+      (notesCreatedThisWeek * 6) +
+      (totalActivities * 2)
+    )
+  );
+
+  // Streak logic
+  const activityDates = activities.map(a => new Date(a.createdAt).toDateString());
+  const unique = [...new Set(activityDates)];
+
+  let streak = 0;
+  for (let i = 0; i < unique.length; i++) {
+    const d = new Date(unique[i]);
+    const diff = Date.now() - d.getTime();
+    if (diff <= (i + 1) * 24 * 60 * 60 * 1000) streak++;
+    else break;
+  }
+
 
   const getAccountAge = (createdAt) => {
     if (!createdAt) return "Unknown";
@@ -405,8 +439,8 @@ export default function Profile() {
                 </h3>
 
                 <ul className="space-y-4 text-gray-700 text-sm max-h-64 overflow-y-auto pr-2">
-                  {activity.length > 0 ? (
-                    activity.slice(0, 10).map((item, i) => (
+                  {activities.length > 0 ? (
+                    activities.slice(0, 10).map((item, i) => (
                       <li
                         key={item._id || i}
                         className="flex items-center justify-between p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-all duration-200"
@@ -433,36 +467,94 @@ export default function Profile() {
 
 
               {/* Insights Panel */}
-              <div className="bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-600 text-white rounded-3xl shadow-xl p-8 relative overflow-hidden">
-                <div className="absolute inset-0 opacity-10"></div>
-                <h3 className="text-xl font-semibold mb-6">Performance Insights (Beta)</h3>
-                <div className="space-y-6">
-                  <div>
-                    <p className="text-sm text-indigo-100">Weekly Progress</p>
-                    <div className="w-full h-2 bg-white/30 rounded-full mt-2">
-                      <div className="w-3/4 h-full bg-white rounded-full"></div>
-                    </div>
-                    <p className="text-xs text-indigo-100 mt-1">75% completed</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-indigo-100">Tasks vs Notes</p>
-                    <div className="flex items-center gap-3 mt-3">
-                      <div className="w-3 h-3 bg-green-400 rounded-full"></div>
-                      <span className="text-xs">{completedTasks} Tasks Completed</span>
-                    </div>
+              <div className="rounded-3xl p-7 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.06)] border border-gray-100 relative overflow-hidden">
+
+                {/* Soft background gradient */}
+                <div className="absolute inset-0 bg-gradient-to-br from-indigo-50 via-purple-50 to-blue-50 opacity-60"></div>
+
+                <div className="relative z-10">
+                  <h3 className="text-lg font-semibold text-gray-800 mb-5">Performance Insights</h3>
+
+                  {/* Productivity Score */}
+                  <div className="mb-6">
+                    <p className="text-sm text-gray-600">Productivity Score</p>
+
                     <div className="flex items-center gap-3 mt-2">
-                      <div className="w-3 h-3 bg-blue-400 rounded-full"></div>
-                      <span className="text-xs">{notes.length} Notes Created</span>
+                      {/* Circular Progress */}
+                      <div className="w-12 h-12 relative">
+                        <svg className="w-full h-full transform -rotate-90">
+                          <circle
+                            cx="24"
+                            cy="24"
+                            r="20"
+                            stroke="#e5e7eb"
+                            strokeWidth="5"
+                            fill="transparent"
+                          />
+                          <circle
+                            cx="24"
+                            cy="24"
+                            r="20"
+                            stroke="#6366f1"
+                            strokeWidth="5"
+                            fill="transparent"
+                            strokeDasharray={125}
+                            strokeDashoffset={125 - (125 * productivityScore) / 100}
+                            strokeLinecap="round"
+                          />
+                        </svg>
+                      </div>
+
+                      <div>
+                        <p className="font-bold text-xl text-gray-800">{productivityScore}%</p>
+                        <p className="text-xs text-gray-500 -mt-1">Efficiency this week</p>
+                      </div>
                     </div>
                   </div>
-                  <button className="mt-6 w-full bg-white text-indigo-700 font-semibold py-2 rounded-full hover:bg-indigo-100 transition-all">
-                    View Full Report
+
+                  {/* Quick Weekly Stats */}
+                  <div className="grid grid-cols-2 gap-4 mb-6">
+                    <div className="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                      <p className="text-xs text-gray-500">Tasks Completed</p>
+                      <p className="text-lg font-semibold text-gray-800 mt-1">
+                        {tasksCompletedThisWeek}
+                      </p>
+                    </div>
+
+                    <div className="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                      <p className="text-xs text-gray-500">Notes Created</p>
+                      <p className="text-lg font-semibold text-gray-800 mt-1">
+                        {notesCreatedThisWeek}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Streak */}
+                  <div className="p-4 bg-gradient-to-r from-purple-500/10 to-indigo-500/10 rounded-xl border border-indigo-100 mb-5">
+                    <div className="flex items-center justify-between">
+                      <p className="text-sm text-gray-600">Active Streak</p>
+                      <p className="text-lg font-semibold text-indigo-600">{streak} days 🔥</p>
+                    </div>
+                  </div>
+
+                  {/* Mini Insight Row */}
+                  <p className="text-xs text-gray-500 mb-4">
+                    {totalActivities} interactions logged this week
+                  </p>
+
+                  {/* CTA */}
+                  <button
+                    onClick={() => setShowReport(true)}
+                    className="w-full py-2 bg-indigo-600 text-white rounded-xl text-sm font-medium hover:bg-indigo-700 transition"
+                  >
+                    View Full Report →
                   </button>
                 </div>
               </div>
             </div>
           </div>
         );
+
 
 
       case "notes":
@@ -1136,6 +1228,156 @@ export default function Profile() {
 
         {renderContent()}
       </main>
+
+      {/* Full Report Modal */}
+      {showReport && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
+        >
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.25 }}
+            className="bg-white w-[92%] max-w-4xl rounded-2xl p-6 md:p-10 shadow-2xl overflow-y-auto max-h-[90vh]"
+          >
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-800">
+                📘 Productivity Intelligence Report
+              </h2>
+              <button
+                onClick={() => setShowReport(false)}
+                className="text-gray-600 hover:text-gray-900 text-xl"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+
+              <div className="bg-gradient-to-br from-indigo-500 to-blue-600 p-5 rounded-2xl text-white shadow-lg">
+                <p className="text-sm opacity-90">Productivity Score</p>
+                <p className="text-4xl font-bold">{productivityScore}%</p>
+                <p className="text-xs mt-2 opacity-80">
+                  Based on activity, tasks, notes & weekly engagement
+                </p>
+              </div>
+
+              <div className="bg-gradient-to-br from-yellow-500 to-orange-600 p-5 rounded-2xl text-white shadow-lg">
+                <p className="text-sm opacity-90">Energy Level</p>
+
+                <div className="mt-2 w-full h-2 bg-white/30 rounded-full">
+                  <div
+                    className="h-full bg-white rounded-full"
+                    style={{
+                      width: `${Math.min(100, Math.round((notesCreatedThisWeek + tasksCompletedThisWeek) * 4))}%`,
+                    }}
+                  />
+                </div>
+
+                <p className="text-2xl font-bold mt-3">
+                  {Math.min(100, Math.round((notesCreatedThisWeek + tasksCompletedThisWeek) * 4))}
+                </p>
+                <p className="text-xs opacity-80 mt-1">Based on weekly creation output</p>
+              </div>
+
+              <div className="bg-gradient-to-br from-green-500 to-emerald-600 p-5 rounded-2xl text-white shadow-lg">
+                <p className="text-sm opacity-90">Consistency Rating</p>
+
+                <p className="text-4xl font-bold">{Math.min(100, streak * 10)}%</p>
+                <p className="text-xs opacity-80 mt-2">{streak} active day streak</p>
+              </div>
+
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+
+              <div className="bg-gray-50 p-6 rounded-2xl border shadow-sm">
+                <h3 className="font-semibold text-gray-800 mb-4">📌 Task Breakdown</h3>
+
+                <div className="space-y-2 text-sm">
+                  <p>High Priority:
+                    <span className="font-semibold text-red-600 ml-2">
+                      {tasks.filter(t => t.priority === "high").length}
+                    </span>
+                  </p>
+                  <p>Medium Priority:
+                    <span className="font-semibold text-orange-600 ml-2">
+                      {tasks.filter(t => t.priority === "medium").length}
+                    </span>
+                  </p>
+                  <p>Low Priority:
+                    <span className="font-semibold text-green-600 ml-2">
+                      {tasks.filter(t => t.priority === "low").length}
+                    </span>
+                  </p>
+                </div>
+
+                <div className="mt-4">
+                  <p className="text-xs text-gray-500 mb-1">Completion Progress</p>
+                  <div className="h-2 w-full bg-gray-200 rounded-full">
+                    <div
+                      className="h-full bg-indigo-500 rounded-full"
+                      style={{ width: `${taskProgress}%` }}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-gray-50 p-6 rounded-2xl border shadow-sm">
+                <h3 className="font-semibold text-gray-800 mb-4">📝 Notes Insights</h3>
+
+                <div className="space-y-2 text-sm">
+                  <p>Notes This Week:
+                    <span className="font-semibold text-blue-600 ml-2">
+                      {notesCreatedThisWeek}
+                    </span>
+                  </p>
+
+                  <p>Total Notes:
+                    <span className="font-semibold text-blue-600 ml-2">
+                      {notes.length}
+                    </span>
+                  </p>
+
+                  <p>Avg Note Size:
+                    <span className="font-semibold text-blue-600 ml-2">
+                      {notes.length > 0
+                        ? Math.round(
+                          notes.reduce((a, b) => a + b.content.length, 0) /
+                          notes.length
+                        )
+                        : 0}{" "}
+                      chars
+                    </span>
+                  </p>
+                </div>
+              </div>
+
+            </div>
+
+            <div className="bg-gradient-to-br from-indigo-50 to-purple-50 p-6 rounded-2xl border shadow-sm mb-6">
+              <h3 className="font-semibold text-gray-800 mb-3">✨ Suggestions for You</h3>
+
+              <ul className="text-sm space-y-2 text-gray-700">
+                <li>• Try to maintain your streak — it boosts consistency.</li>
+                <li>• Focus more on medium-priority tasks this week.</li>
+                <li>• Add a few daily notes to keep your activity high.</li>
+                <li>• You're close to increasing your productivity score — keep it up!</li>
+              </ul>
+            </div>
+
+            <button
+              onClick={() => setShowReport(false)}
+              className="w-full py-3 bg-indigo-600 text-white font-semibold rounded-xl hover:bg-indigo-700 transition"
+            >
+              Close Report
+            </button>
+
+          </motion.div>
+        </motion.div>
+      )}
 
       {/* Note Delete Confirm Dialog */}
       <Dialog
