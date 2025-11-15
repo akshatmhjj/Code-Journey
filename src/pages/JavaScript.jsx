@@ -308,7 +308,7 @@ console.log("Parsed Object:", parsed);`,
                 >
                     JavaScript – The Language of the Web
                 </motion.h1>
-                <p className="mt-6 text-gray-400 max-w-2xl mx-auto text-lg">
+                <p className="mt-6 text-gray-400 max-w-2xl mx-auto text-lg font-medium">
                     JavaScript brings interactivity and logic to the web. It powers everything
                     from simple buttons to full-fledged applications like YouTube and Gmail.
                 </p>
@@ -467,6 +467,17 @@ console.log("Parsed Object:", parsed);`,
                             {codeExamples[example].preview}
                         </div>
                     )}
+                </div>
+
+                <div className="mt-14 flex justify-center">
+                    <a
+                        href="/code-journey-editor"
+                        className="px-6 py-3 rounded-xl bg-gradient-to-r from-yellow-400 to-orange-400 
+                   text-black font-semibold shadow-lg hover:shadow-orange-500/40
+                   hover:scale-[1.02] transition-all duration-300"
+                    >
+                        Try This Code in the Editor →
+                    </a>
                 </div>
             </Section>
 

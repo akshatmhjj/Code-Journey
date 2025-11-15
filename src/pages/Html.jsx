@@ -223,7 +223,7 @@ const HTML = () => {
                 >
                     HTML – The Language of the Web
                 </motion.h1>
-                <p className="mt-6 text-gray-400 max-w-2xl mx-auto text-lg">
+                <p className="mt-6 text-gray-400 max-w-2xl mx-auto text-lg font-medium">
                     HyperText Markup Language (HTML) is the foundation of web content.
                     Every webpage you see is built upon its structure.
                 </p>
@@ -248,7 +248,7 @@ const HTML = () => {
                         </p>
                         <p className="text-gray-400 mb-3">
                             The modern version, <span className="text-orange-400">HTML5</span>,
-                            introduced semantic elements that improve accessibility and SEO —
+                            introduced semantic elements that improve accessibility and SEO -
                             making your webpages meaningful to browsers and users alike.
                         </p>
                         <p className="text-gray-400 mb-3">
@@ -433,7 +433,19 @@ const HTML = () => {
                         </div>
                     )}
                 </div>
+                <div className="mt-14 flex justify-center">
+                    <a
+                        href="/code-journey-editor"
+                        className="px-6 py-3 rounded-xl bg-gradient-to-r from-orange-300 to-pink-400
+                   text-black font-semibold shadow-lg hover:shadow-pink-500/40
+                   hover:scale-[1.02] transition-all duration-300"
+                    >
+                        Try This Code in the Editor →
+                    </a>
+                </div>
+
             </Section>
+
 
             <Section className="text-center">
                 <h2 className="text-4xl font-bold mb-16 text-white">

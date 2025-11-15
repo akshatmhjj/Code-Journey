@@ -22,7 +22,7 @@ const About = () => {
     {
       icon: Target,
       title: "Clear Direction",
-      description: "We map every learner's path step-by-step — no confusion, only progress.",
+      description: "We map every learner's path step-by-step - no confusion, only progress.",
     },
     {
       icon: Lightbulb,
@@ -37,7 +37,7 @@ const About = () => {
     {
       icon: Award,
       title: "Excellence",
-      description: "Our goal: help you master development the right way — not the fast way.",
+      description: "Our goal: help you master development the right way - not the fast way.",
     },
   ];
 
@@ -78,7 +78,7 @@ const About = () => {
           </h1>
 
           <p className="text-xl md:text-2xl text-white/90 leading-relaxed font-light tracking-wide">
-            Code Journey was born from a simple idea — learning to code should be{" "}
+            Code Journey was born from a simple idea - learning to code should be{" "}
             <span className="text-purple-300 font-semibold">
               clear, structured, and human.
             </span>{" "}
@@ -111,7 +111,7 @@ const About = () => {
               <h2 className="text-3xl font-bold text-white">Our Vision</h2>
             </div>
             <p className="text-lg text-white/85 leading-relaxed font-light">
-              To be the global launchpad for self-taught developers — empowering learners
+              To be the global launchpad for self-taught developers - empowering learners
               to build careers, products, and futures through accessible, high-quality tech education.
             </p>
           </div>

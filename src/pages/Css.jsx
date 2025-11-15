@@ -203,7 +203,7 @@ p {
                 >
                     CSS – Styling the Web As You Think
                 </motion.h1>
-                <p className="mt-6 text-gray-400 max-w-2xl mx-auto text-lg">
+                <p className="mt-6 text-gray-400 max-w-2xl mx-auto text-lg font-medium">
                     Cascading Style Sheets (CSS) give life to HTML, defining layout,
                     color, animation, and design across the web.
                 </p>
@@ -222,7 +222,7 @@ p {
                             Why CSS is the Heart of Design
                         </h2>
                         <p className="text-gray-400 mb-3">
-                            CSS defines the visual presentation of a webpage — from colors and
+                            CSS defines the visual presentation of a webpage - from colors and
                             fonts to layouts and animations. It separates structure from style,
                             keeping code clean and maintainable.
                         </p>
@@ -387,6 +387,17 @@ p {
                             {codeExamples[example].preview}
                         </div>
                     )}
+                </div>
+
+                <div className="mt-14 flex justify-center">
+                    <a
+                        href="/code-journey-editor"
+                        className="px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-400
+                   text-black font-semibold shadow-lg hover:shadow-blue-500/40
+                   hover:scale-[1.02] transition-all duration-300"
+                    >
+                        Try This Code in the Editor →
+                    </a>
                 </div>
             </Section>
 

@@ -140,7 +140,7 @@ const Home = () => {
                                     },
                                     {
                                         title: "3. Learn What Actually Matters",
-                                        text: "We highlight what the tech industry values — and what you can skip for now.",
+                                        text: "We highlight what the tech industry values - and what you can skip for now.",
                                     },
                                     {
                                         title: "4. Become Ready For Advanced Learning",

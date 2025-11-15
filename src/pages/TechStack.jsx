@@ -6,36 +6,36 @@ import ColorBends from "../components/ColorBends";
 
 const stacks = [
     {
-        title: "HTML — The Structure",
+        title: "HTML - The Structure",
         desc: `HTML (HyperText Markup Language) forms the very backbone of every web page. 
-    It defines the structure and meaning of your content — organizing text, images, links, and sections into a logical hierarchy. 
+    It defines the structure and meaning of your content - organizing text, images, links, and sections into a logical hierarchy. 
     Think of it as the blueprint that everything else builds upon.`,
         icon: <Globe className="w-14 h-14 text-orange-400" />,
         link: "/html",
         gradient: "from-orange-400/30 via-amber-400/20 to-yellow-400/10",
     },
     {
-        title: "CSS — The Design",
+        title: "CSS - The Design",
         desc: `CSS (Cascading Style Sheets) gives style and life to the web. 
-    It defines colors, layouts, spacing, animations, and transitions — making your pages beautiful, responsive, and modern. 
+    It defines colors, layouts, spacing, animations, and transitions - making your pages beautiful, responsive, and modern. 
     Every polished UI you see online owes its beauty to CSS.`,
         icon: <Palette className="w-14 h-14 text-blue-400" />,
         link: "/css",
         gradient: "from-blue-500/30 via-cyan-500/20 to-sky-400/10",
     },
     {
-        title: "JavaScript — The Logic",
+        title: "JavaScript - The Logic",
         desc: `JavaScript is the brain of web applications. 
-    It adds interactivity, logic, and dynamic updates — turning static pages into interactive experiences. 
+    It adds interactivity, logic, and dynamic updates - turning static pages into interactive experiences. 
     From animations to APIs, JS is what makes the web *alive.*`,
         icon: <Code className="w-14 h-14 text-yellow-400" />,
         link: "/javascript",
         gradient: "from-yellow-400/30 via-amber-400/20 to-orange-400/10",
     },
     {
-        title: "Database — The Memory",
+        title: "Database - The Memory",
         desc: `Databases store, manage, and deliver data for applications. 
-    Whether it’s user information, content, or analytics — the database ensures your app remembers and responds intelligently. 
+    Whether it’s user information, content, or analytics - the database ensures your app remembers and responds intelligently. 
     It’s the beating heart of full-stack systems.`,
         icon: <Database className="w-14 h-14 text-green-400" />,
         link: "/database",

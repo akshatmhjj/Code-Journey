@@ -25,7 +25,7 @@ const features = [
     {
         icon: <Zap className="w-7 h-7 text-yellow-400" />,
         title: "Instant Preview Engine",
-        description: "Get real-time feedback as you code — no reloads, no delays.",
+        description: "Get real-time feedback as you code - no reloads, no delays.",
     },
     {
         icon: <Cloud className="w-7 h-7 text-purple-400" />,
@@ -35,7 +35,7 @@ const features = [
     {
         icon: <Layers className="w-7 h-7 text-green-400" />,
         title: "Multi-Tab Workspace",
-        description: "Switch between files and manage code like a full IDE — but lighter.",
+        description: "Switch between files and manage code like a full IDE - but lighter.",
     },
     {
         icon: <Eye className="w-7 h-7 text-pink-400" />,
@@ -119,7 +119,7 @@ const CJEditorLanding = () => {
                     transition={{ delay: 0.3, duration: 1 }}
                     className="max-w-2xl mt-6 text-lg text-gray-300"
                 >
-                    A cinematic online IDE by <span className="text-blue-400 font-semibold">Code Journey</span> —
+                    A cinematic online IDE by <span className="text-blue-400 font-semibold">Code Journey</span> -
                     built for creativity, collaboration, and the joy of building beautiful code.
                 </motion.p>
 
@@ -158,7 +158,7 @@ const CJEditorLanding = () => {
                     viewport={{ once: true }}
                     className="max-w-3xl mx-auto text-gray-400 text-lg leading-relaxed"
                 >
-                    CJ Editor isn’t just another online editor — it’s an <b>experience</b>.
+                    CJ Editor isn’t just another online editor - it’s an <b>experience</b>.
                     We designed it for the modern creator who values performance, minimalism, and flow.
                     Every animation, every color, and every line of code is here to inspire your journey.
                 </motion.p>
@@ -173,10 +173,10 @@ const CJEditorLanding = () => {
                     <div className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 p-[1px] rounded-2xl backdrop-blur-lg">
                         <div className="bg-[#0a0b10]/80 rounded-2xl px-10 py-8 border border-gray-800 shadow-[0_0_40px_rgba(59,130,246,0.2)] max-w-3xl">
                             <p className="text-gray-300 text-lg leading-relaxed">
-                                “CJ Editor is the bridge between imagination and creation —
+                                “CJ Editor is the bridge between imagination and creation -
                                 where learning meets design, and code feels like art.”
                             </p>
-                            <p className="text-gray-500 mt-3">— The Code Journey Team</p>
+                            <p className="text-gray-500 mt-3">- The Code Journey Team</p>
                         </div>
                     </div>
                 </motion.div>

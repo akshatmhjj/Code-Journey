@@ -2,21 +2,21 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ColorBends from "../components/ColorBends";
 import {
-  Database,
-  Grid2X2,
-  Code,
-  Eye,
-  ArrowRight,
-  BookOpen,
-  Youtube,
-  Layers,
-  Settings,
-  Fingerprint,
-  Cpu,
-  Lock,
-  RefreshCw,
-  ShieldCheck,
-  X,
+    Database,
+    Grid2X2,
+    Code,
+    Eye,
+    ArrowRight,
+    BookOpen,
+    Youtube,
+    Layers,
+    Settings,
+    Fingerprint,
+    Cpu,
+    Lock,
+    RefreshCw,
+    ShieldCheck,
+    X,
 } from "lucide-react";
 
 
@@ -198,9 +198,9 @@ db.users.find({ name: "Eve" });`,
                 <motion.h1 className="text-5xl md:text-7xl font-extrabold mt-8 bg-gradient-to-r from-green-400 via-teal-400 to-emerald-400 bg-clip-text text-transparent">
                     Databases – The Heart of Every Application
                 </motion.h1>
-                <p className="mt-6 text-gray-400 max-w-2xl mx-auto text-lg">
+                <p className="mt-6 text-gray-400 max-w-2xl mx-auto text-lg font-medium">
                     Databases store and organize the information that makes applications
-                    come alive — from user accounts to analytics.
+                    come alive from user accounts to analytics.
                 </p>
             </Section>
 
@@ -222,14 +222,14 @@ db.users.find({ name: "Eve" });`,
                             updated.
                         </p>
                         <p className="text-gray-400 mb-3">
-                            Databases are the backbone of modern software — from websites and
+                            Databases are the backbone of modern software, from websites and
                             apps to analytics and cloud platforms.
                         </p>
                         <p className="text-gray-400">
                             Whether you're using <span className="text-emerald-400">SQL</span>{" "}
                             for structured data or{" "}
                             <span className="text-teal-400">NoSQL</span> for flexible,
-                            document-based storage — databases keep everything running.
+                            document-based storage, databases keep everything running.
                         </p>
                     </div>
                 </div>
@@ -245,22 +245,22 @@ db.users.find({ name: "Eve" });`,
                     {[
                         {
                             title: "Tables & Rows",
-                            desc: "Databases store data in tables — think of them like Excel sheets, where each row is a record and each column is a property.",
+                            desc: "Databases store data in tables - think of them like Excel sheets, where each row is a record and each column is a property.",
                             icon: <Grid2X2 className="text-green-400" />,
                         },
                         {
                             title: "Primary & Foreign Keys",
-                            desc: "A primary key gives each record a unique ID, while foreign keys connect one table’s data to another’s — building relationships.",
+                            desc: "A primary key gives each record a unique ID, while foreign keys connect one table’s data to another’s - building relationships.",
                             icon: <Fingerprint className="text-emerald-400" />,
                         },
                         {
                             title: "CRUD Operations",
-                            desc: "These are the four main ways to manage data — Create new info, Read existing data, Update old info, and Delete what’s no longer needed.",
+                            desc: "These are the four main ways to manage data - Create new info, Read existing data, Update old info, and Delete what’s no longer needed.",
                             icon: <Settings className="text-teal-400" />,
                         },
                         {
                             title: "Joins",
-                            desc: "A JOIN lets you combine data from multiple tables — for example, matching users with their orders.",
+                            desc: "A JOIN lets you combine data from multiple tables - for example, matching users with their orders.",
                             icon: <Settings className="text-blue-400" />,
                         },
                         {
@@ -270,27 +270,27 @@ db.users.find({ name: "Eve" });`,
                         },
                         {
                             title: "NoSQL Databases",
-                            desc: "Unlike SQL, NoSQL stores data as documents, key-value pairs, or graphs — flexible and great for large or unstructured data.",
+                            desc: "Unlike SQL, NoSQL stores data as documents, key-value pairs, or graphs - flexible and great for large or unstructured data.",
                             icon: <Database className="text-purple-400" />,
                         },
                         {
                             title: "Normalization",
-                            desc: "This is the process of organizing data to remove duplicates and make storage efficient — like cleaning up your shelves for easy access.",
+                            desc: "This is the process of organizing data to remove duplicates and make storage efficient - like cleaning up your shelves for easy access.",
                             icon: <Layers className="text-pink-400" />,
                         },
-                        {
-                            title: "Transactions",
-                            desc: "A transaction is a group of actions that must all happen successfully — or none at all — keeping data accurate and safe.",
-                            icon: <Lock className="text-indigo-400" />,
-                        },
+                        // {
+                        //     title: "Transactions",
+                        //     desc: "A transaction is a group of actions that must all happen successfully - or none at all - keeping data accurate and safe.",
+                        //     icon: <Lock className="text-indigo-400" />,
+                        // },
                         {
                             title: "Backup & Recovery",
-                            desc: "Databases are regularly backed up so you can restore them if something goes wrong — like an undo button for your data.",
+                            desc: "Databases are regularly backed up so you can restore them if something goes wrong - like an undo button for your data.",
                             icon: <RefreshCw className="text-orange-400" />,
                         },
                         {
                             title: "ACID Properties",
-                            desc: "These four rules — Atomicity, Consistency, Isolation, Durability — make sure every transaction is safe and reliable.",
+                            desc: "These four rules - Atomicity, Consistency, Isolation, Durability - make sure every transaction is safe and reliable.",
                             icon: <ShieldCheck className="text-cyan-400" />,
                         },
                     ].map((item, i) => (
@@ -362,6 +362,17 @@ db.users.find({ name: "Eve" });`,
                         </div>
                     )}
                 </div>
+
+                {/* <div className="mt-14 flex justify-center">
+                    <a
+                        href="/code-journey-editor"
+                        className="px-6 py-3 rounded-xl bg-gradient-to-r from-green-400 to-emerald-400
+                   text-black font-semibold shadow-lg hover:shadow-green-500/40
+                   hover:scale-[1.02] transition-all duration-300"
+                    >
+                        Try This Code in the Editor →
+                    </a>
+                </div> */}
             </Section>
 
             {/* Resources */}

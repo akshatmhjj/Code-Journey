@@ -86,7 +86,7 @@ function FAQ() {
                     </h2>
 
                     <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-                        Everything you need to know about Code Journey — your personal
+                        Everything you need to know about Code Journey - your personal
                         guide to becoming a web developer.
                     </p>
 
@@ -114,7 +114,7 @@ function FAQ() {
                             Still have questions?
                         </h4>
                         <p className="text-gray-400 mb-2">
-                            Can't find the answer you're looking for? Reach out to us — we'll
+                            Can't find the answer you're looking for? Reach out to us - we'll
                             be happy to help!
                         </p>
                     </div>

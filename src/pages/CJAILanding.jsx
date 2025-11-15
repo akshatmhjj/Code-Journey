@@ -22,7 +22,7 @@ const features = [
   {
     icon: <Code2 className="w-7 h-7 text-blue-400" />,
     title: "Smart Web Dev Assistant",
-    desc: "Ask about React, Node, APIs, debugging, and deployment — get contextual, insightful responses that teach the why, not just the how.",
+    desc: "Ask about React, Node, APIs, debugging, and deployment - get contextual, insightful responses that teach the why, not just the how.",
   },
   {
     icon: <Cpu className="w-7 h-7 text-cyan-400" />,
@@ -32,7 +32,7 @@ const features = [
   {
     icon: <Layers className="w-7 h-7 text-purple-400" />,
     title: "Covers the Full Stack",
-    desc: "From frontend to backend, from React to MongoDB — master every layer of modern web development.",
+    desc: "From frontend to backend, from React to MongoDB - master every layer of modern web development.",
   },
   {
     icon: <Globe2 className="w-7 h-7 text-green-400" />,
@@ -42,7 +42,7 @@ const features = [
   {
     icon: <Zap className="w-7 h-7 text-yellow-400" />,
     title: "Lightning-Fast Streaming",
-    desc: "Experience instant response streaming that keeps up with your thoughts — no waiting, no lag.",
+    desc: "Experience instant response streaming that keeps up with your thoughts - no waiting, no lag.",
   },
   {
     icon: <Terminal className="w-7 h-7 text-pink-400" />,
@@ -121,7 +121,7 @@ const CJAILanding = () => {
           transition={{ delay: 0.3, duration: 1 }}
           className="max-w-2xl mt-6 text-lg text-gray-300"
         >
-          Your AI mentor for web development — learn, debug, and create with deep clarity, powered by next-gen reasoning.
+          Your AI mentor for web development - learn, debug, and create with deep clarity, powered by next-gen reasoning.
         </motion.p>
 
         <motion.div
@@ -160,7 +160,7 @@ const CJAILanding = () => {
           viewport={{ once: true }}
           className="max-w-3xl mx-auto text-gray-400 text-lg leading-relaxed"
         >
-          Code Journey AI isn’t just another chatbot — it’s a personal dev companion.
+          Code Journey AI isn’t just another chatbot - it’s a personal dev companion.
           It helps you think like a developer, solve complex problems, and master the web ecosystem,
           all through elegant, meaningful conversations.
         </motion.p>

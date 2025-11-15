@@ -45,7 +45,7 @@ export default function Terms() {
                         Introduction
                         </h2>
                         <p>
-                            Welcome to <strong>Code Journey</strong> — a guided learning platform
+                            Welcome to <strong>Code Journey</strong> - a guided learning platform
                             designed to simplify your web development journey. These Terms
                             govern your use of our website, resources, and all services provided.
                             By using Code Journey, you agree to be bound by these Terms. If you
