@@ -69,7 +69,7 @@ const Home = () => {
 
 
                     <section className="w-full py-24 px-6 bg-black/20">
-                        <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                        <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
 
                             {[
                                 {
