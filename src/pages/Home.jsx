@@ -3,14 +3,14 @@ import DarkVeil from "../components/DarkVeil";
 import ShinyText from "../components/Shinytext";
 import { motion } from "framer-motion";
 import { Rocket, Compass, Brain, Sparkles } from "lucide-react";
-import CinematicBG from "../components/CinematicBG";
+// import CinematicBG from "../components/CinematicBG";
 
 const Home = () => {
     return (
         <div className="relative w-full min-h-screen bg-black m-0 p-0 overflow-hidden">
 
             <div className="relative w-full h-screen m-0 p-0 overflow-hidden">
-                <div className="absolute inset-0 z-0">
+                <div className="fixed inset-0 z-0 pointer-events-none">
                     <DarkVeil />
                 </div>
 
@@ -39,11 +39,11 @@ const Home = () => {
             </div>
 
             <div className="relative w-full z-0">
-                <CinematicBG />
+                {/* <CinematicBG /> */}
 
                 <div className="relative z-10">
 
-                    <section id="First-Section" className="w-full py-24 px-6 bg-black/20">
+                    <section id="First-Section" className="w-full py-24 px-6">
                         <motion.div
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
@@ -68,8 +68,8 @@ const Home = () => {
                     </section>
 
 
-                    <section className="w-full py-24 px-6 bg-black/20">
-                        <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
+                    <section className="w-full py-24 px-6">
+                        <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
 
                             {[
                                 {
@@ -122,7 +122,7 @@ const Home = () => {
                     </section>
 
 
-                    <section className="w-full py-24 px-6 bg-black/20">
+                    <section className="w-full py-24 px-6">
                         <div className="max-w-4xl mx-auto">
                             <h2 className="text-3xl sm:text-4xl font-bold text-white text-center mb-16">
                                 What Your <span className="text-blue-400">CJ Journey</span> Looks Like
@@ -164,7 +164,7 @@ const Home = () => {
                     </section>
 
 
-                    <section className="w-full py-28 px-6 bg-black/20 text-center">
+                    <section className="w-full py-28 px-6 text-center">
                         <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
                             Ready To Start Your Journey?
                         </h2>
