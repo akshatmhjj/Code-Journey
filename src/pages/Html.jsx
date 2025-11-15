@@ -199,7 +199,7 @@ const HTML = () => {
                     rel="noopener noreferrer"
                 >
                     <motion.button
-                        className="inline-flex items-center justify-center rounded-full border border-orange-200 bg-gradient-to-r from-orange-200 via-pink-200 to-red-200 text-black cursor-pointer px-4 py-1.5 text-sm font-semibold shadow-lg hover:shadow-orange-500/30 transition-all duration-300"
+                        className="inline-flex items-center justify-center rounded-full border border-orange-200 bg-gradient-to-r from-orange-200 via-pink-200 to-red-200 text-black cursor-pointer px-4 py-1.5 text-sm font-semibold shadow-lg hover:shadow-orange-500/30 transition-all duration-300 mb-8"
                     >
                         HTML V5
                     </motion.button>
