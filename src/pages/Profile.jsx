@@ -532,7 +532,7 @@ export default function Profile() {
                   {/* Streak */}
                   <div className="p-4 bg-gradient-to-r from-purple-500/10 to-indigo-500/10 rounded-xl border border-indigo-100 mb-5">
                     <div className="flex items-center justify-between">
-                      <p className="text-sm text-gray-600">Active Streak</p>
+                      <p className="text-sm text-gray-600">Active Streak (beta)</p>
                       <p className="text-lg font-semibold text-indigo-600">{streak} days 🔥</p>
                     </div>
                   </div>

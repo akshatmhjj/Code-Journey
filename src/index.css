@@ -1,8 +1,10 @@
 @import "tailwindcss";
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
+  scroll-behavior: smooth;
 }
 
 ::-webkit-scrollbar {
@@ -15,7 +17,7 @@ html, body {
   white-space: pre-wrap;
 }
 
-.markdown-body p + p {
+.markdown-body p+p {
   margin-top: 0.75rem;
 }
 
@@ -35,3 +37,56 @@ html, body {
   word-break: break-word !important;
 }
 
+@keyframes nebulaMove {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+
+  50% {
+    transform: translate(-40px, 30px) scale(1.05);
+  }
+
+  100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+}
+
+@keyframes nebulaMoveReverse {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+
+  50% {
+    transform: translate(40px, -20px) scale(1.05);
+  }
+
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+@keyframes subtleGlow {
+  0% {
+    opacity: 0.55;
+  }
+
+  50% {
+    opacity: 0.85;
+  }
+
+  100% {
+    opacity: 0.55;
+  }
+}
+
+.animate-nebulaMove {
+  animation: nebulaMove 28s ease-in-out infinite;
+}
+
+.animate-nebulaMoveReverse {
+  animation: nebulaMoveReverse 35s ease-in-out infinite;
+}
+
+.animate-subtleGlow {
+  animation: subtleGlow 12s ease-in-out infinite;
+}
