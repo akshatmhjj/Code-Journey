@@ -33,12 +33,12 @@ const Header = () => {
       ],
     },
     {
-      label: "Contact",
+      label: "Explore",
       bgColor: "#271E37",
       textColor: "#fff",
       links: [
+        { label: "Hall Of Badges", ariaLabel: "", href: "/badges" },
         { label: "Email", ariaLabel: "Email us" },
-        { label: "Twitter", ariaLabel: "Twitter" },
         { label: "LinkedIn", ariaLabel: "LinkedIn" },
       ],
     },

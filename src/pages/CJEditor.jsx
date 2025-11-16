@@ -3,9 +3,8 @@ import Editor from "@monaco-editor/react";
 import { Trash2 } from "lucide-react";
 import { getUserFiles, saveFile as saveFileAPI, deleteFile as deleteFileAPI } from "../lib/api";
 import { useAlert } from "../context/AlertContext";
+import { useBadges } from "../context/BadgeContext";
 
-
-// Default code
 const DEFAULT_HTML = `<!doctype html>
 <html>
   <head>
@@ -51,6 +50,9 @@ btn?.addEventListener("click", () => {
 });`;
 
 export default function CodeEditorPage() {
+    const { triggerBadge } = useBadges();
+    const hasTyped = useRef(false);
+
     const [activeTab, setActiveTab] = useState("html");
     const [html, setHtml] = useState(DEFAULT_HTML);
     const [css, setCss] = useState(DEFAULT_CSS);
@@ -115,6 +117,8 @@ ${j}
     };
 
     const runCode = () => {
+        triggerBadge("preview_launched");
+
         const output = buildHtmlForPreview(html, css, js);
         setConsoleLogs([]);
         if (iframeRef.current) {
@@ -145,6 +149,7 @@ ${j}
             const updatedFiles = [savedFile, ...files.filter((f) => f.name !== nameToSave)];
             setFiles(updatedFiles);
             setFileName(savedFile.name);
+            triggerBadge("file_saved");
 
             showAlert("✅ File saved successfully!", "success");
         } catch (err) {
@@ -355,10 +360,16 @@ ${j}
                                     language={activeTab === "html" ? "html" : activeTab === "css" ? "css" : "javascript"}
                                     value={activeTab === "html" ? html : activeTab === "css" ? css : js}
                                     onChange={(val) => {
+                                        if (!hasTyped.current && val?.trim().length > 0) {
+                                            hasTyped.current = true;
+                                            triggerBadge("code_typed");
+                                        }
+
                                         if (activeTab === "html") setHtml(val || "");
                                         if (activeTab === "css") setCss(val || "");
                                         if (activeTab === "js") setJs(val || "");
                                     }}
+
                                     options={{
                                         fontSize: 13,
                                         minimap: { enabled: false },

@@ -40,8 +40,10 @@ import {
   Button,
   Fade,
 } from "@mui/material";
+import { useBadges } from "../context/BadgeContext";
 
 export default function Profile() {
+  const { triggerBadge } = useBadges();
   const { user, logout } = useAuth();
   const [profile, setProfile] = useState(user);
   const [loading, setLoading] = useState(true);
@@ -55,7 +57,8 @@ export default function Profile() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [editingNote, setEditingNote] = useState(null);
-  const [showModal, setShowModal] = useState(false);
+  const [showNoteModal, setShowNoteModal] = useState(false);
+  const [showTaskModal, setShowTaskModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [loadingNotes, setLoadingNotes] = useState(true);
   const [noteToDelete, setNoteToDelete] = useState(null);
@@ -205,13 +208,24 @@ export default function Profile() {
     setLoadingTasks(true);
     try {
       const res = await getTasks();
-      setTasks(res.tasks || []);
+      // Defensive logging — check what the API actually returned
+      console.debug("[fetchTasks] API response:", res);
+
+      // Common shapes: { success: true, tasks: [...] } OR { tasks: [...] } OR [...]
+      const tasksFromRes =
+        res?.tasks ??                // preferred
+        (res?.data && res.data.tasks) ?? // fallback if double-wrapped
+        (Array.isArray(res) ? res : undefined) ?? // if API returned array directly
+        [];
+
+      setTasks(tasksFromRes);
     } catch (err) {
       console.error("Error fetching tasks:", err);
     } finally {
       setLoadingTasks(false);
     }
   };
+
 
   const totalTasks = tasks.length;
   const completedTasks = tasks.filter(t => t.status === "completed").length;
@@ -224,8 +238,9 @@ export default function Profile() {
     setEditingTask(task);
     setTitle(task.title);
     setContent(task.description);
-    setShowModal(true);
+    setShowTaskModal(true);
   };
+
 
   const handleTaskDelete = (task) => {
     setTaskToDelete(task);
@@ -568,7 +583,7 @@ export default function Profile() {
             {/* Add Note Button */}
             <div className="mb-6 flex justify-end">
               <button
-                onClick={() => setShowModal(true)}
+                onClick={() => setShowNoteModal(true)}
                 className="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition-all shadow-md"
               >
                 + Add Note
@@ -576,7 +591,7 @@ export default function Profile() {
             </div>
 
             {/* Add/Edit Note Modal */}
-            {showModal && (
+            {showNoteModal && (
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -596,7 +611,7 @@ export default function Profile() {
                     </h3>
                     <button
                       onClick={() => {
-                        setShowModal(false);
+                        setShowNoteModal(false);
                         setEditingNote(null);
                         setTitle("");
                         setContent("");
@@ -617,11 +632,12 @@ export default function Profile() {
                           showAlert("Note updated successfully.", "success");
                         } else {
                           await createNote({ title, content });
+                          triggerBadge("task_created");
                           showAlert("Note saved successfully.", "success");
                         }
                         setTitle("");
                         setContent("");
-                        setShowModal(false);
+                        setShowNoteModal(false);
                         await fetchNotes();
                         await refreshActivity();
                       } catch (err) {
@@ -707,7 +723,7 @@ export default function Profile() {
                             setEditingNote(note);
                             setTitle(note.title);
                             setContent(note.content);
-                            setShowModal(true);
+                            setShowNoteModal(true);
                           }}
                           className="p-2 rounded-full bg-yellow-100 text-yellow-700 hover:bg-yellow-200 transition hover:rotate-6 hover:scale-105"
                           title="Edit Note"
@@ -753,7 +769,7 @@ export default function Profile() {
             <div className="mb-6 flex justify-end">
               <button
                 onClick={() => {
-                  setShowModal(true);
+                  setShowTaskModal(true);
                   setEditingTask(null);
                   setTitle("");
                   setContent("");
@@ -765,7 +781,7 @@ export default function Profile() {
             </div>
 
             {/* Add/Edit Task Modal */}
-            {showModal && (
+            {showTaskModal && (
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -785,7 +801,7 @@ export default function Profile() {
                     </h3>
                     <button
                       onClick={() => {
-                        setShowModal(false);
+                        setShowTaskModal(false);
                         setEditingTask(null);
                         setTitle("");
                         setContent("");
@@ -813,6 +829,7 @@ export default function Profile() {
                           showAlert("Task updated successfully.", "success");
                         } else {
                           await createTask(payload);
+                          triggerBadge("task_created");
                           showAlert("Task created successfully.", "success");
                         }
                         setTitle("");
@@ -820,7 +837,7 @@ export default function Profile() {
                         setStatus("pending");
                         setPriority("medium");
                         setDueDate("");
-                        setShowModal(false);
+                        setShowTaskModal(false);
                         await fetchTasks();
                         await refreshActivity();
                       } catch (err) {

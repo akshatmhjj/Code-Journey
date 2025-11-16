@@ -1,0 +1,72 @@
+{
+  "categories": [
+    {
+      "id": "BEGINNER_JOURNEY",
+      "name": "Beginner Journey",
+      "badges": [
+        "FIRST_LINE_OF_CODE",
+        "FIRST_PREVIEW_LAUNCH",
+        "FIRST_FILE_SAVED"
+      ]
+    },
+    {
+      "id": "FILE_MASTERY",
+      "name": "File Mastery",
+      "badges": [
+        "FILE_EXPLORER_NINJA"
+      ]
+    },
+    {
+      "id": "TASK_PROGRESS",
+      "name": "Task & Notes Progress",
+      "badges": [
+        "FIRST_TASK_NOTE",
+        "FIVE_TASKS_NOTES"
+      ]
+    }
+  ],
+  "badges": {
+    "FIRST_LINE_OF_CODE": {
+      "id": "FIRST_LINE_OF_CODE",
+      "name": "First Line of Code",
+      "description": "You wrote your first line of code!",
+      "triggerEvent": "code_typed",
+      "requirement": 1
+    },
+    "FIRST_PREVIEW_LAUNCH": {
+      "id": "FIRST_PREVIEW_LAUNCH",
+      "name": "First Preview Launch",
+      "description": "You launched your first code preview!",
+      "triggerEvent": "preview_launched",
+      "requirement": 1
+    },
+    "FIRST_FILE_SAVED": {
+      "id": "FIRST_FILE_SAVED",
+      "name": "First File Saved",
+      "description": "You saved your first file.",
+      "triggerEvent": "file_saved",
+      "requirement": 1
+    },
+    "FILE_EXPLORER_NINJA": {
+      "id": "FILE_EXPLORER_NINJA",
+      "name": "File Explorer Ninja",
+      "description": "You created or saved 5 files.",
+      "triggerEvent": "file_saved",
+      "requirement": 5
+    },
+    "FIRST_TASK_NOTE": {
+      "id": "FIRST_TASK_NOTE",
+      "name": "First Task or Note",
+      "description": "You created your first task/note!",
+      "triggerEvent": "task_created",
+      "requirement": 1
+    },
+    "FIVE_TASKS_NOTES": {
+      "id": "FIVE_TASKS_NOTES",
+      "name": "Task Keeper",
+      "description": "You created 5 tasks/notes.",
+      "triggerEvent": "task_created",
+      "requirement": 5
+    }
+  }
+}

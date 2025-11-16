@@ -143,6 +143,21 @@ export const getRecentActivity = async (token) => {
   return res.data;
 };
 
+// ==============================
+// ===== BADGES ROUTES ==========
+// ==============================
+
+export const sendBadgeEvent = async (payload) => {
+  const res = await API.post("/badges/event", payload);
+  return res.data;
+};
+
+export const getUserBadges = async (userId) => {
+  const res = await API.get(`/badges/user/${userId}`);
+  return res.data;
+};
+
+
 export default API;
 
 
