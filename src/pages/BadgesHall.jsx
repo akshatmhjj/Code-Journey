@@ -1,6 +1,7 @@
 import React from "react";
 import { useBadges } from "../context/BadgeContext";
 import ShinyText from "../components/Shinytext";
+import { LightWaves } from "../components/LightWaves";
 
 export default function BadgesHall() {
   const { badgeMeta, unlockedBadges } = useBadges();
@@ -18,20 +19,19 @@ export default function BadgesHall() {
   );
 
   return (
-    <div className="relative min-h-screen pt-36 pb-20 px-5 md:px-14 overflow-x-hidden">
+    <div className="relative min-h-screen pt-36 pb-20 px-5 md:px-14 overflow-hidden">
 
-      {/* Fixed Cinematic BG */}
-      <div
-        className="fixed inset-0 -z-20 bg-cover bg-center bg-fixed"
-        style={{
-          backgroundImage:
-            "url('https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=1920')",
-          filter: "brightness(0.35) contrast(1.12) saturate(1.2)",
-        }}
-      />
+      <div className="fixed inset-0 bg-black -z-50" />
 
-      {/* Soft Overlay */}
-      <div className="fixed inset-0 bg-gradient-to-b from-black/40 to-black/80 -z-10 backdrop-blur-[2px]" />
+      <LightWaves
+        className="fixed inset-0 -z-40 pointer-events-none"
+        length="160vh"
+        speed={10}
+        count={12}
+        blur={80}
+        color="rgba(80, 160, 255, 0.35)" />
+
+      <div className="fixed inset-0 bg-gradient-to-b from-black/60 to-black/95 backdrop-blur-[1px] -z-10" />
 
       {/* Page Title */}
       <div className="flex justify-center w-full">
