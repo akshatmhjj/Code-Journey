@@ -65,7 +65,7 @@ export default function Register() {
         </h1>
 
         <form className="space-y-6" onSubmit={handleSubmit}>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block mb-2 text-sm font-medium text-gray-300">
                 Full Name <span className="text-red-500">*</span>
@@ -97,7 +97,7 @@ export default function Register() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block mb-2 text-sm font-medium text-gray-300">
                 Email Address <span className="text-red-500">*</span>
@@ -137,7 +137,7 @@ export default function Register() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block mb-2 text-sm font-medium text-gray-300">
                 Location
