@@ -1,7 +1,7 @@
 import React from "react";
 import { useBadges } from "../context/BadgeContext";
 import ShinyText from "../components/Shinytext";
-import { LightWaves } from "../components/LightWaves";
+import ColorBends from "../components/ColorBends";
 
 export default function BadgesHall() {
   const { badgeMeta, unlockedBadges } = useBadges();
@@ -21,17 +21,22 @@ export default function BadgesHall() {
   return (
     <div className="relative min-h-screen pt-36 pb-20 px-5 md:px-14 overflow-hidden">
 
-      <div className="fixed inset-0 bg-black -z-50" />
+      <div className="fixed inset-0 -z-10">
+        <ColorBends
+          colors={["#ff5c7a", "#8a5cff", "#00ffd1"]}
+          rotation={30}
+          speed={0.3}
+          scale={1.2}
+          frequency={1.5}
+          warpStrength={1.18}
+          mouseInfluence={0.2}
+          parallax={1}
+          noise={0.1}
+          transparent={false}
+        />
+        <div className="absolute inset-0 bg-black/60" />
+      </div>
 
-      <LightWaves
-        className="fixed inset-0 -z-40 pointer-events-none"
-        length="160vh"
-        speed={10}
-        count={12}
-        blur={80}
-        color="rgba(80, 160, 255, 0.35)" />
-
-      <div className="fixed inset-0 bg-gradient-to-b from-black/60 to-black/95 backdrop-blur-[1px] -z-10" />
 
       {/* Page Title */}
       <div className="flex justify-center w-full">

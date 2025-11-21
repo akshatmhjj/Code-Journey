@@ -39,7 +39,7 @@ const Home = () => {
             </div>
 
             <div className="relative w-full z-0">
-                {/* <CinematicBG /> */}
+                
 
                 <div className="relative z-10">
 
